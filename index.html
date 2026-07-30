@@ -430,15 +430,15 @@
                 <input type="hidden" id="m-form-id">
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Track Title *</label>
-                        <input type="text" id="m-form-title-input" required class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Artist *</label>
-                        <input type="text" id="m-form-artist" required class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
-                    </div>
-                </div>
+    <div>
+        <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Track Title *</label>
+        <input type="text" id="m-form-title-input" required class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
+    </div>
+    <div>
+        <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Artist *</label>
+        <input type="text" id="m-form-artist" required class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
+    </div>
+</div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
@@ -659,7 +659,7 @@
             document.getElementById('w-api-results').innerHTML = `<p class="text-[11px] text-emerald-600 font-semibold py-1.5 text-center bg-emerald-50 rounded-lg border border-emerald-200">✓ Metadata and poster auto-filled successfully!</p>`;
         }
 
-        // --- RELIABLE MUSIC API SEARCH (APPLE MUSIC iTUNES CATALOG WITH T-POP SUPPORT) ---
+        // --- RELIABLE MUSIC API SEARCH WITH SAFE DATA BINDING ---
 async function searchOnlineMusiclist() {
     const query = document.getElementById('m-api-search-input').value.trim();
     const resultsBox = document.getElementById('m-api-results');
@@ -668,31 +668,26 @@ async function searchOnlineMusiclist() {
     resultsBox.innerHTML = `<p class="text-[11px] text-textMuted py-2 text-center"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Searching music catalog...</p>`;
 
     try {
-        // First try searching specifically in the Thailand (TH) storefront for T-Pop accuracy
         let response = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&country=TH&entity=song&limit=6`);
         let data = await response.json();
 
-        // Fallback to global US/Worldwide catalog if nothing is found locally in TH store
         if (!data.results || data.results.length === 0) {
             response = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=6`);
             data = await response.json();
         }
 
         if (!data.results || data.results.length === 0) {
-            resultsBox.innerHTML = `<p class="text-[11px] text-rose-500 py-2 text-center">No tracks found. You can still fill in the details manually below!</p>`;
+            resultsBox.innerHTML = `<p class="text-[11px] text-rose-500 py-2 text-center">No tracks found. Fill in manually below!</p>`;
             return;
         }
 
-        resultsBox.innerHTML = data.results.map(track => {
-            const title = (track.trackName || '').replace(/'/g, "\\'");
-            const artist = (track.artistName || '').replace(/'/g, "\\'");
-            const album = (track.collectionName || '').replace(/'/g, "\\'");
-            const year = track.releaseDate ? track.releaseDate.split('-')[0] : '';
-            const cover = track.artworkUrl100 ? track.artworkUrl100.replace('100x100bb', '800x800bb') : '';
-            const primaryGenre = track.primaryGenreName || 'T-Pop';
+        // Store results globally in a temporary array so index selection is 100% safe from string breaking
+        window._tempMusicResults = data.results;
 
+        resultsBox.innerHTML = data.results.map((track, index) => {
+            const cover = track.artworkUrl100 ? track.artworkUrl100.replace('100x100bb', '800x800bb') : '';
             return `
-                <div onclick="selectMusicResult('${title}', '${artist}', '${album}', '${year}', '${cover}', '${primaryGenre}')" class="flex items-center space-x-3 p-2.5 rounded-xl bg-bgSurface hover:bg-bgCard border border-borderSubtle cursor-pointer transition-all shadow-xs">
+                <div onclick="selectMusicResultByIndex(${index})" class="flex items-center space-x-3 p-2.5 rounded-xl bg-bgSurface hover:bg-bgCard border border-borderSubtle cursor-pointer transition-all shadow-xs">
                     <img src="${cover || 'https://via.placeholder.com/50x50?text=No+Art'}" class="w-10 h-10 object-cover rounded-lg shrink-0">
                     <div class="flex-1 min-w-0">
                         <h4 class="text-xs font-semibold truncate">${track.trackName}</h4>
@@ -703,28 +698,31 @@ async function searchOnlineMusiclist() {
             `;
         }).join('');
     } catch (err) {
-        resultsBox.innerHTML = `<p class="text-[11px] text-rose-500 py-2 text-center">Connection error during search. You can fill out the form manually.</p>`;
+        resultsBox.innerHTML = `<p class="text-[11px] text-rose-500 py-2 text-center">Connection error during search.</p>`;
     }
+}
+
+function selectMusicResultByIndex(index) {
+    const track = window._tempMusicResults[index];
+    if (!track) return;
+
+    document.getElementById('m-form-title-input').value = track.trackName || '';
+    document.getElementById('m-form-artist').value = track.artistName || '';
+    document.getElementById('m-form-album').value = track.collectionName || '';
+    document.getElementById('m-form-year').value = track.releaseDate ? track.releaseDate.split('-')[0] : '';
+    document.getElementById('m-form-art-base64').value = track.artworkUrl100 ? track.artworkUrl100.replace('100x100bb', '800x800bb') : '';
+    
+    const genre = track.primaryGenreName || 'T-Pop';
+    const genreSelect = document.getElementById('m-form-genre');
+    for(let opt of genreSelect.options) {
+        if(genre.toLowerCase().includes(opt.value.toLowerCase())) {
+            genreSelect.value = opt.value;
+            break;
         }
+    }
 
-        function selectMusicResult(title, artist, album, year, cover, genre) {
-            document.getElementById('m-form-title-input').value = title;
-            document.getElementById('m-form-artist').value = artist;
-            document.getElementById('m-form-album').value = album;
-            document.getElementById('m-form-year').value = year;
-            document.getElementById('m-form-art-base64').value = cover;
-            
-            const genreSelect = document.getElementById('m-form-genre');
-            for(let opt of genreSelect.options) {
-                if(genre.toLowerCase().includes(opt.value.toLowerCase())) {
-                    genreSelect.value = opt.value;
-                    break;
-                }
-            }
-
-            document.getElementById('m-api-results').innerHTML = `<p class="text-[11px] text-emerald-600 font-semibold py-1.5 text-center bg-emerald-50 rounded-lg border border-emerald-200">✓ Track metadata & cover auto-filled successfully!</p>`;
-        }
-
+    document.getElementById('m-api-results').innerHTML = `<p class="text-[11px] text-emerald-600 font-semibold py-1.5 text-center bg-emerald-50 rounded-lg border border-emerald-200">✓ Track metadata & cover auto-filled successfully!</p>`;
+}
         // --- WATCHLIST RENDER & LOGIC ---
         function setWatchTab(tab) {
             currentWatchTab = tab;

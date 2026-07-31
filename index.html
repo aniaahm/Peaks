@@ -82,12 +82,17 @@
         <header class="max-w-7xl mx-auto w-full flex justify-between items-center z-10">
             <div class="flex items-center space-x-3">
                 <span class="w-2.5 h-2.5 rounded-full bg-accentGold animate-pulse"></span>
-                <span class="text-xs uppercase tracking-[0.2em] font-medium text-textMuted">Private Archive</span>
+                <span class="text-xs uppercase tracking-[0.2em] font-medium text-textMuted">PEAKS Vault System</span>
             </div>
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-3">
+                <div class="flex items-center space-x-2 bg-bgSurface border border-borderSubtle px-3 py-1.5 rounded-full shadow-xs">
+                    <i class="fa-solid fa-user-circle text-xs text-accentGold"></i>
+                    <span id="current-user-display" class="text-xs font-semibold">Guest</span>
+                    <button onclick="openUserModal()" class="text-[10px] bg-bgCard hover:bg-borderSubtle px-2 py-0.5 rounded-md font-medium transition-colors border border-borderSubtle">Switch / Log In</button>
+                </div>
                 <button onclick="exportData()" class="text-xs text-textMuted hover:text-textMain transition-colors flex items-center space-x-1.5 py-1 px-3 rounded-full border border-borderSubtle hover:border-borderHover bg-bgSurface shadow-xs">
                     <i class="fa-solid fa-download text-[10px]"></i>
-                    <span>Export JSON</span>
+                    <span>Export</span>
                 </button>
                 <label class="text-xs text-textMuted hover:text-textMain transition-colors flex items-center space-x-1.5 py-1 px-3 rounded-full border border-borderSubtle hover:border-borderHover bg-bgSurface shadow-xs cursor-pointer">
                     <i class="fa-solid fa-upload text-[10px]"></i>

@@ -93,10 +93,12 @@
                         <span>Sign Out</span>
                     </button>
                 </div>
-                <button id="google-signin-btn" onclick="signInWithGoogle()" class="text-xs text-textMain hover:opacity-90 transition-all flex items-center space-x-2 py-2 px-4 rounded-full border border-textMain bg-bgSurface font-medium shadow-xs">
-                    <i class="fa-brands fa-google text-xs"></i>
-                    <span>Sign in with Google</span>
-                </button>
+                <div id="auth-form-inputs" class="flex items-center space-x-2">
+                    <input type="email" id="auth-email" placeholder="Email address" class="text-xs py-1.5 px-3 rounded-full border border-borderSubtle bg-bgSurface text-textMain outline-none focus:border-textMain">
+                    <input type="password" id="auth-password" placeholder="Password" class="text-xs py-1.5 px-3 rounded-full border border-borderSubtle bg-bgSurface text-textMain outline-none focus:border-textMain">
+                    <button onclick="signInWithEmail()" class="text-xs text-textMain hover:opacity-90 transition-all py-1.5 px-3 rounded-full border border-textMain bg-bgSurface font-medium shadow-xs">Sign In</button>
+                    <button onclick="signUpWithEmail()" class="text-xs bg-textMain text-bgMain hover:opacity-90 transition-all py-1.5 px-3 rounded-full font-medium shadow-xs">Sign Up</button>
+                </div>
             </div>
         </header>
 
@@ -110,12 +112,16 @@
             <p class="text-lg sm:text-xl text-textMuted max-w-xl mx-auto font-light leading-relaxed mb-14">
                 An editorial archive for cinema, television, and audio collections. Built with instant online lookup and edit generation.
             </p>
-<div id="auth-lock-banner" class="mb-8 p-4 bg-bgSurface border border-borderSubtle rounded-2xl max-w-md mx-auto shadow-editorial">
-                <p class="text-xs text-textMuted mb-3">Please sign in with your Google account to access your private cloud library.</p>
-                <button onclick="signInWithGoogle()" class="w-full py-3 px-4 rounded-xl bg-textMain text-bgMain text-xs font-medium hover:opacity-90 transition-all flex items-center justify-center space-x-2 shadow-xs cursor-pointer">
-                    <i class="fa-brands fa-google"></i>
-                    <span>Continue with Google</span>
-                </button>
+<div id="auth-lock-banner" class="mb-8 p-6 bg-bgSurface border border-borderSubtle rounded-2xl max-w-md mx-auto shadow-editorial text-center">
+                <p class="text-xs text-textMuted mb-4">Please sign in or create an account with your email to access your private cloud library.</p>
+                <div class="space-y-3">
+                    <input type="email" id="banner-auth-email" placeholder="Email address" class="w-full text-xs py-2 px-3 rounded-xl border border-borderSubtle bg-bgMain text-textMain outline-none focus:border-textMain">
+                    <input type="password" id="banner-auth-password" placeholder="Password" class="w-full text-xs py-2 px-3 rounded-xl border border-borderSubtle bg-bgMain text-textMain outline-none focus:border-textMain">
+                    <div class="flex space-x-2 pt-1">
+                        <button onclick="signInWithEmailFromBanner()" class="flex-1 py-2.5 px-4 rounded-xl border border-textMain text-textMain text-xs font-medium hover:bg-borderSubtle transition-all">Sign In</button>
+                        <button onclick="signUpWithEmailFromBanner()" class="flex-1 py-2.5 px-4 rounded-xl bg-textMain text-bgMain text-xs font-medium hover:opacity-90 transition-all">Create Account</button>
+                    </div>
+                </div>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
                 <div onclick="switchApp('watchlist')" class="group bg-bgSurface border border-borderSubtle hover:border-textMain rounded-2xl p-8 text-left transition-all duration-300 shadow-editorial hover:shadow-editorial-hover cursor-pointer relative overflow-hidden">
@@ -546,59 +552,81 @@
 
 
    <script>
-        // --- SUPABASE CLOUD & AUTH CONFIGURATION ---
-        const SUPABASE_URL = 'https://xvqwderaoziwuxeidmbh.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2cXdkZXJhb3ppd3V4ZWlkbWJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU0OTc3MTMsImV4cCI6MjEwMTA3MzcxM30.1zPlFpH90bVNPQ1iF0wZtEy3RuO2_wNHlobqPzEnB-U';
+       // --- SUPABASE EMAIL AUTH CONFIGURATION ---
+        const SUPABASE_URL = 'https://xvqwderaoziwuxeidmbh.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2cXdkZXJhb3ppd3V4ZWlkbWJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU0OTc3MTMsImV4cCI6MjEwMTA3MzcxM30.1zPlFpH90bVNPQ1iF0wZtEy3RuO2_wNHlobqPzEnB-U'; // Keep your anon key here
 
-        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        let currentUser = null;
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        let currentUser = null;
 
-        document.addEventListener("DOMContentLoaded", async () => {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            handleAuthSession(session);
+        document.addEventListener("DOMContentLoaded", async () => {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            handleAuthSession(session);
 
-            supabaseClient.auth.onAuthStateChange((event, session) => {
-                handleAuthSession(session);
-            });
-        });
+            supabaseClient.auth.onAuthStateChange((event, session) => {
+                handleAuthSession(session);
+            });
+        });
 
-        function handleAuthSession(session) {
-            currentUser = session?.user || null;
-            const lockBanner = document.getElementById('auth-lock-banner');
-            const userInfo = document.getElementById('auth-user-info');
-            const emailDisplay = document.getElementById('user-email-display');
-            const signinBtn = document.getElementById('google-signin-btn');
+        function handleAuthSession(session) {
+            currentUser = session?.user || null;
+            const lockBanner = document.getElementById('auth-lock-banner');
+            const userInfo = document.getElementById('auth-user-info');
+            const emailDisplay = document.getElementById('user-email-display');
+            const authFormInputs = document.getElementById('auth-form-inputs');
 
-            if (currentUser) {
-                if (lockBanner) lockBanner.style.display = 'none';
-                if (signinBtn) signinBtn.style.display = 'none';
-                if (userInfo) userInfo.style.display = 'flex';
-                if (emailDisplay) emailDisplay.textContent = currentUser.email;
-                loadUserCloudData();
-            } else {
-                if (lockBanner) lockBanner.style.display = 'block';
-                if (signinBtn) signinBtn.style.display = 'flex';
-                if (userInfo) userInfo.style.display = 'none';
-            }
-        }
+            if (currentUser) {
+                if (lockBanner) lockBanner.style.display = 'none';
+                if (authFormInputs) authFormInputs.style.display = 'none';
+                if (userInfo) userInfo.style.display = 'flex';
+                if (emailDisplay) emailDisplay.textContent = currentUser.email;
+                loadUserCloudData();
+            } else {
+                if (lockBanner) lockBanner.style.display = 'block';
+                if (authFormInputs) authFormInputs.style.display = 'flex';
+                if (userInfo) userInfo.style.display = 'none';
+            }
+        }
 
-        async function signInWithGoogle() {
-            const { error } = await supabaseClient.auth.signInWithOAuth({
-                provider: 'google',
-                options: { redirectTo: window.location.href }
-            });
-            if (error) alert('Error signing in: ' + error.message);
-        }
+        async function signUpWithEmail() {
+            const email = document.getElementById('auth-email').value;
+            const password = document.getElementById('auth-password').value;
+            const { data, error } = await supabaseClient.auth.signUp({ email, password });
+            if (error) { alert(error.message); return; }
+            alert('Account created! Check your email to confirm, or you can sign in now if email confirmations are disabled.');
+        }
 
-        async function signOutUser() {
-            await supabaseClient.auth.signOut();
-            window.location.reload();
-        }
+        async function signInWithEmail() {
+            const email = document.getElementById('auth-email').value;
+            const password = document.getElementById('auth-password').value;
+            const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            if (error) { alert(error.message); return; }
+        }
 
-        async function loadUserCloudData() {
-            if (!currentUser) return;
-            console.log("Connected to cloud workspace for:", currentUser.email);
-        }
+        async function signUpWithEmailFromBanner() {
+            const email = document.getElementById('banner-auth-email').value;
+            const password = document.getElementById('banner-auth-password').value;
+            const { data, error } = await supabaseClient.auth.signUp({ email, password });
+            if (error) { alert(error.message); return; }
+            alert('Account created successfully!');
+        }
+
+        async function signInWithEmailFromBanner() {
+            const email = document.getElementById('banner-auth-email').value;
+            const password = document.getElementById('banner-auth-password').value;
+            const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            if (error) { alert(error.message); return; }
+        }
+
+        async function signOutUser() {
+            await supabaseClient.auth.signOut();
+            window.location.reload();
+        }
+
+        async function loadUserCloudData() {
+            if (!currentUser) return;
+            console.log("Logged in via email as:", currentUser.email);
+        }
 
         let watchDatabase = JSON.parse(localStorage.getItem('peaks_watchlist')) || [
             {

@@ -123,35 +123,59 @@
                     </div>
                 </div>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
-                <div onclick="switchApp('watchlist')" class="group bg-bgSurface border border-borderSubtle hover:border-textMain rounded-2xl p-8 text-left transition-all duration-300 shadow-editorial hover:shadow-editorial-hover cursor-pointer relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-stone-200/40 rounded-bl-full pointer-events-none transition-transform duration-500 group-hover:scale-110"></div>
-                    <div class="flex justify-between items-start mb-10 relative z-10">
-                        <span class="w-10 h-10 rounded-xl bg-bgCard flex items-center justify-center text-textMain border border-borderSubtle group-hover:bg-textMain group-hover:text-bgMain transition-colors">
-                            <i class="fa-solid fa-film text-sm"></i>
-                        </span>
-                        <i class="fa-solid fa-arrow-right text-textMuted group-hover:text-textMain group-hover:translate-x-1 transition-all"></i>
-                    </div>
-                    <h2 class="editorial-title text-3xl mb-2 relative z-10">PEAK.WATCHLIST</h2>
-                    <p class="text-xs text-textMuted font-light leading-relaxed relative z-10">
-                        Archive films, series, ratings, and custom tags with online search.
-                    </p>
-                </div>
-
-                <div onclick="switchApp('musiclist')" class="group bg-bgSurface border border-borderSubtle hover:border-textMain rounded-2xl p-8 text-left transition-all duration-300 shadow-editorial hover:shadow-editorial-hover cursor-pointer relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-stone-200/40 rounded-bl-full pointer-events-none transition-transform duration-500 group-hover:scale-110"></div>
-                    <div class="flex justify-between items-start mb-10 relative z-10">
-                        <span class="w-10 h-10 rounded-xl bg-bgCard flex items-center justify-center text-textMain border border-borderSubtle group-hover:bg-textMain group-hover:text-bgMain transition-colors">
-                            <i class="fa-solid fa-music text-sm"></i>
-                        </span>
-                        <i class="fa-solid fa-arrow-right text-textMuted group-hover:text-textMain group-hover:translate-x-1 transition-all"></i>
-                    </div>
-                    <h2 class="editorial-title text-3xl mb-2 relative z-10">PEAK.MUSICLIST</h2>
-                    <p class="text-xs text-textMuted font-light leading-relaxed relative z-10">
-                        Catalog tracks, artists, and albums instantly via online Apple Music search.
-                    </p>
-                </div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto px-6 py-12">
+    <div onclick="switchView('watchlist-view')" class="group cursor-pointer bg-cream border border-stoneborder hover:border-charcoal rounded-3xl p-8 shadow-soft hover:shadow-hover transition-all duration-300 flex flex-col justify-between min-h-[280px]">
+        <div>
+            <div class="w-12 h-12 rounded-2xl bg-pastelPink flex items-center justify-center text-lg mb-6 shadow-sm group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-film text-charcoal"></i>
             </div>
+            <h2 class="font-serif text-3xl mb-2">PEAK.WATCHLIST</h2>
+            <p class="text-xs text-muted leading-relaxed">Archive movies, series, anime, and dramas with posters, ratings, and notes.</p>
+        </div>
+        <div class="flex items-center text-xs font-semibold tracking-wider uppercase text-charcoal pt-4 border-t border-stoneborder/60 group-hover:translate-x-1 transition-transform">
+            Open Archive <i class="fa-solid fa-arrow-right ml-2"></i>
+        </div>
+    </div>
+
+    <div onclick="switchView('musiclist-view')" class="group cursor-pointer bg-cream border border-stoneborder hover:border-charcoal rounded-3xl p-8 shadow-soft hover:shadow-hover transition-all duration-300 flex flex-col justify-between min-h-[280px]">
+        <div>
+            <div class="w-12 h-12 rounded-2xl bg-pastelGreen flex items-center justify-center text-lg mb-6 shadow-sm group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-music text-charcoal"></i>
+            </div>
+            <h2 class="font-serif text-3xl mb-2">PEAK.MUSICLIST</h2>
+            <p class="text-xs text-muted leading-relaxed">Curate your personal music journal, favorite tracks, albums, and artists.</p>
+        </div>
+        <div class="flex items-center text-xs font-semibold tracking-wider uppercase text-charcoal pt-4 border-t border-stoneborder/60 group-hover:translate-x-1 transition-transform">
+            Open Journal <i class="fa-solid fa-arrow-right ml-2"></i>
+        </div>
+    </div>
+
+    <div onclick="switchView('comiclist-view')" class="group cursor-pointer bg-cream border border-stoneborder hover:border-charcoal rounded-3xl p-8 shadow-soft hover:shadow-hover transition-all duration-300 flex flex-col justify-between min-h-[280px]">
+        <div>
+            <div class="w-12 h-12 rounded-2xl bg-pastelBlue flex items-center justify-center text-lg mb-6 shadow-sm group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-book-open text-charcoal"></i>
+            </div>
+            <h2 class="font-serif text-3xl mb-2">PEAK.COMICLIST</h2>
+            <p class="text-xs text-muted leading-relaxed">Track manga, manhwa, manhua, and webcomics with live search and chapters.</p>
+        </div>
+        <div class="flex items-center text-xs font-semibold tracking-wider uppercase text-charcoal pt-4 border-t border-stoneborder/60 group-hover:translate-x-1 transition-transform">
+            Open Tracker <i class="fa-solid fa-arrow-right ml-2"></i>
+        </div>
+    </div>
+
+    <div onclick="switchView('readlist-view')" class="group cursor-pointer bg-cream border border-stoneborder hover:border-charcoal rounded-3xl p-8 shadow-soft hover:shadow-hover transition-all duration-300 flex flex-col justify-between min-h-[280px]">
+        <div>
+            <div class="w-12 h-12 rounded-2xl bg-pastelYellow flex items-center justify-center text-lg mb-6 shadow-sm group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-feather text-charcoal"></i>
+            </div>
+            <h2 class="font-serif text-3xl mb-2">PEAK.READLIST</h2>
+            <p class="text-xs text-muted leading-relaxed">Private reading log for books, novels, web novels, Wattpad, and fanfictions.</p>
+        </div>
+        <div class="flex items-center text-xs font-semibold tracking-wider uppercase text-charcoal pt-4 border-t border-stoneborder/60 group-hover:translate-x-1 transition-transform">
+            Open Journal <i class="fa-solid fa-arrow-right ml-2"></i>
+        </div>
+    </div>
+</div>
         </main>
 
         <footer class="max-w-7xl mx-auto w-full text-center z-10 text-xs text-textMuted font-light">
@@ -309,8 +333,122 @@
             <div id="musiclist-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6"></div>
         </main>
     </div>
+<div id="comiclist-view" class="hidden min-h-screen flex flex-col">
+    <header class="w-full border-b border-stoneborder bg-cream/80 backdrop-blur-md sticky top-0 z-40 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <button onclick="switchView('portal-view')" class="flex items-center gap-2 text-xs font-semibold tracking-wider uppercase bg-cream border border-stoneborder hover:border-charcoal px-4 py-2 rounded-full transition-colors">
+                <i class="fa-solid fa-arrow-left"></i> PEAKS Portal
+            </button>
+            <h1 class="font-serif text-2xl tracking-wide">PEAK.COMICLIST</h1>
+            <button onclick="comicManager.openModal()" class="bg-charcoal text-cream px-4 py-2 rounded-full text-xs font-semibold hover:bg-muted transition-colors">
+                <i class="fa-solid fa-plus mr-1"></i> Add Comic
+            </button>
+        </div>
+    </header>
+   <main class="flex-grow max-w-7xl w-full mx-auto px-6 py-8 flex flex-col gap-8">
 
+        <section class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+            <div class="bg-cream border border-stoneborder rounded-2xl p-4 shadow-soft flex flex-col justify-between">
+                <span class="text-xs uppercase tracking-wider text-muted font-semibold">Reading</span>
+                <span id="statReading" class="font-serif text-3xl mt-2">0</span>
+            </div>
+            <div class="bg-cream border border-stoneborder rounded-2xl p-4 shadow-soft flex flex-col justify-between">
+                <span class="text-xs uppercase tracking-wider text-muted font-semibold">Completed</span>
+                <span id="statCompleted" class="font-serif text-3xl mt-2">0</span>
+            </div>
+            <div class="bg-cream border border-stoneborder rounded-2xl p-4 shadow-soft flex flex-col justify-between">
+                <span class="text-xs uppercase tracking-wider text-muted font-semibold">On Hold</span>
+                <span id="statOnHold" class="font-serif text-3xl mt-2">0</span>
+            </div>
+            <div class="bg-cream border border-stoneborder rounded-2xl p-4 shadow-soft flex flex-col justify-between">
+                <span class="text-xs uppercase tracking-wider text-muted font-semibold">Dropped</span>
+                <span id="statDropped" class="font-serif text-3xl mt-2">0</span>
+            </div>
+            <div class="bg-cream border border-stoneborder rounded-2xl p-4 shadow-soft flex flex-col justify-between">
+                <span class="text-xs uppercase tracking-wider text-muted font-semibold">Plan to Read</span>
+                <span id="statPlanToRead" class="font-serif text-3xl mt-2">0</span>
+            </div>
+            <div class="bg-cream border border-stoneborder rounded-2xl p-4 shadow-soft flex flex-col justify-between">
+                <span class="text-xs uppercase tracking-wider text-muted font-semibold">Favorites & Avg</span>
+                <div class="flex items-center justify-between mt-2">
+                    <span id="statFavorites" class="text-sm font-bold flex items-center gap-1"><i class="fa-solid fa-heart text-red-400"></i> <span id="statFavCount">0</span></span>
+                    <span id="statAvgRating" class="text-sm font-bold text-amber-600">★ 0.0</span>
+                </div>
+            </div>
+        </section>
 
+        <section class="bg-cream border border-stoneborder rounded-2xl p-4 shadow-soft flex flex-col lg:flex-row gap-4 items-center justify-between">
+            <div class="relative w-full lg:w-80">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-muted text-xs"></i>
+                <input type="text" id="searchInput" placeholder="Search saved comics..." oninput="comicManager.render()" class="w-full bg-paper border border-stoneborder rounded-full pl-10 pr-4 py-2 text-xs focus:outline-none focus:border-charcoal transition-colors">
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+                <select id="filterStatus" onchange="comicManager.render()" class="bg-paper border border-stoneborder rounded-full px-3 py-2 text-xs focus:outline-none focus:border-charcoal">
+                    <option value="All">All Status</option>
+                    <option value="Reading">Reading</option>
+                    <option value="Completed">Completed</option>
+                    <option value="On Hold">On Hold</option>
+                    <option value="Dropped">Dropped</option>
+                    <option value="Plan to Read">Plan to Read</option>
+                </select>
+
+                <select id="filterType" onchange="comicManager.render()" class="bg-paper border border-stoneborder rounded-full px-3 py-2 text-xs focus:outline-none focus:border-charcoal">
+                    <option value="All">All Types</option>
+                    <option value="Manga">Manga</option>
+                    <option value="Manhwa">Manhwa</option>
+                    <option value="Manhua">Manhua</option>
+                    <option value="Webcomic">Webcomic</option>
+                </select>
+
+                <select id="filterGenre" onchange="comicManager.render()" class="bg-paper border border-stoneborder rounded-full px-3 py-2 text-xs focus:outline-none focus:border-charcoal">
+                    <option value="All">All Genres</option>
+                </select>
+
+                <button id="filterFavBtn" onclick="comicManager.toggleFavoriteFilter()" title="Toggle Favorites" class="bg-paper border border-stoneborder rounded-full px-3.5 py-2 text-xs text-muted hover:text-red-500 hover:border-red-300 transition-colors flex items-center gap-1.5">
+                    <i class="fa-solid fa-heart"></i>
+                </button>
+
+                <select id="sortBy" onchange="comicManager.render()" class="bg-paper border border-stoneborder rounded-full px-3 py-2 text-xs focus:outline-none focus:border-charcoal ml-auto">
+                    <option value="recentlyAdded">Recently Added</option>
+                    <option value="recentlyUpdated">Recently Updated</option>
+                    <option value="alphabetical">Alphabetical</option>
+                    <option value="rating">Rating</option>
+                    <option value="progress">Chapters Read</option>
+                </select>
+            </div>
+        </section>
+
+        <section id="comicsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            </section>
+
+        <div id="emptyState" class="hidden flex flex-col items-center justify-center py-20 text-center gap-4">
+            <div class="w-16 h-16 rounded-full bg-pastelPink/30 flex items-center justify-center text-xl text-muted">
+                <i class="fa-solid fa-book-open"></i>
+            </div>
+            <h3 class="font-serif text-2xl">No comics found in your archive</h3>
+            <p class="text-xs text-muted max-w-sm">Start building your personal manga & manhwa collection by clicking the button below or using online search.</p>
+            <button onclick="comicManager.openModal()" class="mt-2 bg-charcoal text-cream px-5 py-2 rounded-full text-xs font-semibold hover:bg-muted transition-colors">
+                Add Your First Comic
+            </button>
+        </div>
+        </main>
+</div>
+<div id="readlist-view" class="hidden min-h-screen flex flex-col">
+    <header class="w-full border-b border-stoneborder bg-cream/80 backdrop-blur-md sticky top-0 z-40 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <button onclick="switchView('portal-view')" class="flex items-center gap-2 text-xs font-semibold tracking-wider uppercase bg-cream border border-stoneborder hover:border-charcoal px-4 py-2 rounded-full transition-colors">
+                <i class="fa-solid fa-arrow-left"></i> PEAKS Portal
+            </button>
+            <h1 class="font-serif text-2xl tracking-wide">PEAK.READLIST</h1>
+            <button onclick="openReadModal()" class="bg-charcoal text-cream px-4 py-2 rounded-full text-xs font-semibold hover:bg-muted transition-colors">
+                <i class="fa-solid fa-plus mr-1"></i> Add Story
+            </button>
+        </div>
+    </header>
+    <main class="max-w-7xl mx-auto px-6 py-8 flex-1 w-full">
+        </main>
+</div>
     <div id="w-form-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
         <div class="bg-bgSurface border border-borderSubtle rounded-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto shadow-modal p-6 sm:p-8 fade-in">
             <div class="flex justify-between items-center mb-6 pb-4 border-b border-borderSubtle">

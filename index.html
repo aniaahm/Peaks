@@ -1022,6 +1022,53 @@
         let comicDatabase = [];
         let readDatabase = [];
 
+        // --- CLOUD SYNC HELPERS ---
+        // Only id/user_id/title/created_at are guaranteed real columns on every
+        // table. Everything else (type, platform, rating, tags, genre, etc.)
+        // is stored inside a single jsonb "data" column so a missing/renamed
+        // column can never again make a save fail silently.
+        const CLOUD_CORE_FIELDS = ['id', 'user_id', 'title', 'created_at', '_synced'];
+
+        function splitForCloud(localItem) {
+            const core = { user_id: localItem.user_id, title: localItem.title || '' };
+            const data = {};
+            Object.keys(localItem).forEach(k => {
+                if (CLOUD_CORE_FIELDS.includes(k)) return;
+                data[k] = localItem[k];
+            });
+            return { core, data };
+        }
+
+        function mergeFromCloud(row) {
+            return { ...(row.data || {}), id: String(row.id), user_id: row.user_id, title: row.title, created_at: row.created_at, _synced: true };
+        }
+
+        // Pushes one local item to Supabase. Inserts (letting the DB assign the
+        // real id, since our client-generated temp ids don't match the
+        // column types) if it has never been synced; otherwise updates by its
+        // real id. On ANY failure the original local item is returned
+        // unchanged (still _synced:false) so nothing is ever lost locally.
+        async function pushItemToCloud(table, localItem) {
+            if (!currentUser) return localItem;
+            const { core, data } = splitForCloud(localItem);
+            try {
+                if (localItem._synced) {
+                    const { error } = await supabaseClient.from(table).update({ ...core, data }).eq('id', localItem.id);
+                    if (error) { console.error(`${table} update failed:`, error.message); return localItem; }
+                    return { ...localItem, _synced: true };
+                } else {
+                    const { data: rows, error } = await supabaseClient.from(table).insert([{ ...core, data, user_id: currentUser.id }]).select();
+                    if (error) { console.error(`${table} insert failed:`, error.message); return localItem; }
+                    const newRow = rows && rows[0];
+                    if (!newRow) return localItem;
+                    return { ...localItem, id: String(newRow.id), user_id: currentUser.id, _synced: true };
+                }
+            } catch (err) {
+                console.error(`${table} sync exception:`, err);
+                return localItem;
+            }
+        }
+
         document.addEventListener("DOMContentLoaded", async () => {
             const { data: { session } } = await supabaseClient.auth.getSession();
             await handleAuthSession(session);
@@ -1048,12 +1095,19 @@
                 if (lockBanner) lockBanner.style.display = 'block';
                 if (authFormInputs) authFormInputs.style.display = 'flex';
                 if (userInfo) userInfo.style.display = 'none';
-                
-                // Clear state
-                watchDatabase = [];
-                musicDatabase = [];
-                comicDatabase = [];
-                readDatabase = [];
+
+                // Not logged in (or session not yet restored): load whatever
+                // is already saved locally instead of wiping it. Local data
+                // is never deleted here - only re-read from localStorage.
+                watchDatabase = JSON.parse(localStorage.getItem('peaks_watchlist')) || [];
+                musicDatabase = JSON.parse(localStorage.getItem('peaks_musiclist')) || [];
+                comicDatabase = JSON.parse(localStorage.getItem('peaks_comiclist')) || [];
+                readDatabase = JSON.parse(localStorage.getItem('peaks_readlist')) || [];
+
+                renderWatchlist();
+                renderMusiclist();
+                comicManager.render();
+                readManager.render();
             }
         }
 
@@ -1095,9 +1149,30 @@
         // --- MIGRATION & CLOUD DATA LOADING ---
         async function loadUserCloudData() {
             if (!currentUser) return;
-            
+
             try {
-                // 1. Fetch from Supabase tables: watchlist, musiclist, comiclist, readlist
+                // 1. Start from whatever is cached locally (guest additions,
+                //    or items a previous sync attempt failed to push).
+                const localWatch = JSON.parse(localStorage.getItem('peaks_watchlist')) || [];
+                const localMusic = JSON.parse(localStorage.getItem('peaks_musiclist')) || [];
+                const localComic = JSON.parse(localStorage.getItem('peaks_comiclist')) || [];
+                const localRead  = JSON.parse(localStorage.getItem('peaks_readlist'))  || [];
+
+                // 2. Push up anything that was never successfully synced BEFORE
+                //    pulling from the cloud, so a pull can never wipe it out.
+                async function pushUnsynced(table, list) {
+                    const out = [];
+                    for (const item of list) {
+                        out.push(item._synced ? item : await pushItemToCloud(table, item));
+                    }
+                    return out;
+                }
+                const pushedWatch = await pushUnsynced('watchlist', localWatch);
+                const pushedMusic = await pushUnsynced('musiclist', localMusic);
+                const pushedComic = await pushUnsynced('comiclist', localComic);
+                const pushedRead  = await pushUnsynced('readlist', localRead);
+
+                // 3. Pull the authoritative cloud state
                 const [wRes, mRes, cRes, rRes] = await Promise.all([
                     supabaseClient.from('watchlist').select('*').eq('user_id', currentUser.id),
                     supabaseClient.from('musiclist').select('*').eq('user_id', currentUser.id),
@@ -1105,41 +1180,24 @@
                     supabaseClient.from('readlist').select('*').eq('user_id', currentUser.id)
                 ]);
 
-                // 2. Check and migrate local storage if cloud is empty and local data exists
-                const localWatch = JSON.parse(localStorage.getItem('peaks_watchlist')) || null;
-                const localMusic = JSON.parse(localStorage.getItem('peaks_musiclist')) || null;
-                const localComic = JSON.parse(localStorage.getItem('peaks_comiclist')) || null;
-                const localRead = JSON.parse(localStorage.getItem('peaks_readlist')) || null;
+                const cloudWatch = (wRes.data || []).map(mergeFromCloud);
+                const cloudMusic = (mRes.data || []).map(mergeFromCloud);
+                const cloudComic = (cRes.data || []).map(mergeFromCloud);
+                const cloudRead  = (rRes.data || []).map(mergeFromCloud);
 
-                if ((!wRes.data || wRes.data.length === 0) && localWatch && localWatch.length > 0) {
-                    const payload = localWatch.map(item => ({ ...item, user_id: currentUser.id }));
-                    await supabaseClient.from('watchlist').insert(payload);
-                }
-                if ((!mRes.data || mRes.data.length === 0) && localMusic && localMusic.length > 0) {
-                    const payload = localMusic.map(item => ({ ...item, user_id: currentUser.id }));
-                    await supabaseClient.from('musiclist').insert(payload);
-                }
-                if ((!cRes.data || cRes.data.length === 0) && localComic && localComic.length > 0) {
-                    const payload = localComic.map(item => ({ ...item, user_id: currentUser.id }));
-                    await supabaseClient.from('comiclist').insert(payload);
-                }
-                if ((!rRes.data || rRes.data.length === 0) && localRead && localRead.length > 0) {
-                    const payload = localRead.map(item => ({ ...item, user_id: currentUser.id }));
-                    await supabaseClient.from('readlist').insert(payload);
+                // 4. Merge: cloud is authoritative, but anything that still
+                //    failed to sync (e.g. offline right now) is kept too
+                //    instead of being silently dropped.
+                function mergeLists(cloudList, pushedList) {
+                    const cloudIds = new Set(cloudList.map(i => i.id));
+                    const stillLocal = pushedList.filter(i => !i._synced && !cloudIds.has(i.id));
+                    return [...cloudList, ...stillLocal];
                 }
 
-                // Re-fetch after potential migration
-                const [wFinal, mFinal, cFinal, rFinal] = await Promise.all([
-                    supabaseClient.from('watchlist').select('*').eq('user_id', currentUser.id),
-                    supabaseClient.from('musiclist').select('*').eq('user_id', currentUser.id),
-                    supabaseClient.from('comiclist').select('*').eq('user_id', currentUser.id),
-                    supabaseClient.from('readlist').select('*').eq('user_id', currentUser.id)
-                ]);
-
-                watchDatabase = wFinal.data || [];
-                musicDatabase = mFinal.data || [];
-                comicDatabase = cFinal.data || [];
-                readDatabase = rFinal.data || [];
+                watchDatabase = mergeLists(cloudWatch, pushedWatch);
+                musicDatabase = mergeLists(cloudMusic, pushedMusic);
+                comicDatabase = mergeLists(cloudComic, pushedComic);
+                readDatabase  = mergeLists(cloudRead, pushedRead);
 
                 // Cache locally
                 localStorage.setItem('peaks_watchlist', JSON.stringify(watchDatabase));
@@ -1153,7 +1211,7 @@
                 readManager.render();
             } catch (err) {
                 console.error("Cloud sync error:", err);
-                // Fallback to local cache
+                // Fallback to local cache - never wipe it on a sync failure.
                 watchDatabase = JSON.parse(localStorage.getItem('peaks_watchlist')) || [];
                 musicDatabase = JSON.parse(localStorage.getItem('peaks_musiclist')) || [];
                 comicDatabase = JSON.parse(localStorage.getItem('peaks_comiclist')) || [];
@@ -1334,7 +1392,8 @@
         async function saveWatchEntry(e) {
             e.preventDefault();
             const id = document.getElementById('w-form-id').value;
-            const entryData = {
+            const existing = id ? watchDatabase.find(i => i.id === id) : null;
+            let entryData = {
                 id: id || 'w_' + Date.now(),
                 user_id: currentUser ? currentUser.id : null,
                 title: document.getElementById('w-form-title-input').value,
@@ -1349,14 +1408,14 @@
                 date: document.getElementById('w-form-date').value,
                 favorite: document.getElementById('w-form-favorite').checked,
                 poster: document.getElementById('w-form-art-base64').value,
-                notes: document.getElementById('w-form-notes').value
+                notes: document.getElementById('w-form-notes').value,
+                _synced: existing ? !!existing._synced : false
             };
 
-            if (currentUser) {
-                await supabaseClient.from('watchlist').upsert([entryData]);
-            }
+            const oldId = entryData.id;
+            entryData = await pushItemToCloud('watchlist', entryData);
 
-            const index = watchDatabase.findIndex(i => i.id === entryData.id);
+            const index = watchDatabase.findIndex(i => i.id === oldId);
             if (index !== -1) watchDatabase[index] = entryData;
             else watchDatabase.unshift(entryData);
 
@@ -1404,8 +1463,10 @@
 
         async function deleteWatchItem(id) {
             if (!confirm('Are you sure you want to delete this entry?')) return;
-            if (currentUser) {
-                await supabaseClient.from('watchlist').delete().eq('id', id);
+            const item = watchDatabase.find(i => i.id === id);
+            if (currentUser && item && item._synced) {
+                const { error } = await supabaseClient.from('watchlist').delete().eq('id', id);
+                if (error) console.error('watchlist delete failed:', error.message);
             }
             watchDatabase = watchDatabase.filter(i => i.id !== id);
             localStorage.setItem('peaks_watchlist', JSON.stringify(watchDatabase));
@@ -1561,7 +1622,8 @@
         async function saveMusicEntry(e) {
             e.preventDefault();
             const id = document.getElementById('m-form-id').value;
-            const entryData = {
+            const existing = id ? musicDatabase.find(i => i.id === id) : null;
+            let entryData = {
                 id: id || 'm_' + Date.now(),
                 user_id: currentUser ? currentUser.id : null,
                 title: document.getElementById('m-form-title-input').value,
@@ -1575,14 +1637,14 @@
                 date: document.getElementById('m-form-date').value,
                 favorite: document.getElementById('m-form-favorite').checked,
                 cover: document.getElementById('m-form-art-base64').value,
-                notes: document.getElementById('m-form-notes').value
+                notes: document.getElementById('m-form-notes').value,
+                _synced: existing ? !!existing._synced : false
             };
 
-            if (currentUser) {
-                await supabaseClient.from('musiclist').upsert([entryData]);
-            }
+            const oldId = entryData.id;
+            entryData = await pushItemToCloud('musiclist', entryData);
 
-            const index = musicDatabase.findIndex(i => i.id === entryData.id);
+            const index = musicDatabase.findIndex(i => i.id === oldId);
             if (index !== -1) musicDatabase[index] = entryData;
             else musicDatabase.unshift(entryData);
 
@@ -1629,8 +1691,10 @@
 
         async function deleteMusicItem(id) {
             if (!confirm('Are you sure you want to delete this track?')) return;
-            if (currentUser) {
-                await supabaseClient.from('musiclist').delete().eq('id', id);
+            const item = musicDatabase.find(i => i.id === id);
+            if (currentUser && item && item._synced) {
+                const { error } = await supabaseClient.from('musiclist').delete().eq('id', id);
+                if (error) console.error('musiclist delete failed:', error.message);
             }
             musicDatabase = musicDatabase.filter(i => i.id !== id);
             localStorage.setItem('peaks_musiclist', JSON.stringify(musicDatabase));
@@ -1734,7 +1798,8 @@
             async saveComic(e) {
                 e.preventDefault();
                 const id = document.getElementById('comicId').value;
-                const comicData = {
+                const existing = id ? comicDatabase.find(c => c.id === id) : null;
+                let comicData = {
                     id: id || 'c_' + Date.now(),
                     user_id: currentUser ? currentUser.id : null,
                     title: document.getElementById('formTitle').value,
@@ -1752,14 +1817,14 @@
                     coverUrl: document.getElementById('formCoverUrl').value,
                     favorite: document.getElementById('formFavorite').checked,
                     notes: document.getElementById('formNotes').value,
-                    updatedAt: new Date().toISOString()
+                    updatedAt: new Date().toISOString(),
+                    _synced: existing ? !!existing._synced : false
                 };
 
-                if (currentUser) {
-                    await supabaseClient.from('comiclist').upsert([comicData]);
-                }
+                const oldId = comicData.id;
+                comicData = await pushItemToCloud('comiclist', comicData);
 
-                const index = comicDatabase.findIndex(c => c.id === comicData.id);
+                const index = comicDatabase.findIndex(c => c.id === oldId);
                 if (index !== -1) comicDatabase[index] = comicData;
                 else comicDatabase.unshift(comicData);
 
@@ -1876,8 +1941,10 @@
             },
             async delete(id) {
                 if (!confirm('Delete this comic?')) return;
-                if (currentUser) {
-                    await supabaseClient.from('comiclist').delete().eq('id', id);
+                const item = comicDatabase.find(c => c.id === id);
+                if (currentUser && item && item._synced) {
+                    const { error } = await supabaseClient.from('comiclist').delete().eq('id', id);
+                    if (error) console.error('comiclist delete failed:', error.message);
                 }
                 comicDatabase = comicDatabase.filter(c => c.id !== id);
                 localStorage.setItem('peaks_comiclist', JSON.stringify(comicDatabase));
@@ -1929,34 +1996,78 @@
                     resultsBox.classList.add('hidden');
                     return;
                 }
+                resultsBox.innerHTML = `<div class="p-3 text-xs text-textMuted">Searching...</div>`;
+                resultsBox.classList.remove('hidden');
+
+                let items = [];
+                let searchError = null;
+
+                // 1. Google Books first
                 try {
                     const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=5`);
-                    const data = await res.json();
-                    const items = data.items || [];
-                    if (items.length === 0) {
-                        resultsBox.innerHTML = `<div class="p-3 text-xs text-textMuted">No books found.</div>`;
-                        resultsBox.classList.remove('hidden');
-                        return;
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.error) {
+                            searchError = data.error.message || `Google Books error ${res.status}`;
+                        } else if (Array.isArray(data.items)) {
+                            items = data.items.map(item => {
+                                const info = item.volumeInfo || {};
+                                return {
+                                    title: info.title || '',
+                                    author: (info.authors || []).join(', '),
+                                    cover: info.imageLinks?.thumbnail || info.imageLinks?.smallThumbnail || '',
+                                    pages: info.pageCount || 0,
+                                    categories: (info.categories || []).join(', ')
+                                };
+                            });
+                        }
+                    } else {
+                        searchError = `Google Books returned HTTP ${res.status}`;
                     }
-                    resultsBox.innerHTML = items.map(item => {
-                        const info = item.volumeInfo || {};
-                        const title = info.title || '';
-                        const author = (info.authors || []).join(', ');
-                        const cover = info.imageLinks?.thumbnail || info.imageLinks?.smallThumbnail || '';
-                        const pages = info.pageCount || 0;
-                        const categories = (info.categories || []).join(', ');
-                        return `
-                            <div onclick="readManager.selectApiBook('${title.replace(/'/g, "\\'")}', '${author.replace(/'/g, "\\'")}', '${cover}', ${pages}, '${categories.replace(/'/g, "\\'")}')" class="flex items-center gap-3 p-2 hover:bg-bgCard cursor-pointer border-b border-borderSubtle text-xs">
-                                <img src="${cover || 'https://via.placeholder.com/35x50?text=No+Img'}" class="w-8 h-10 object-cover rounded">
-                                <div class="flex-1 truncate">
-                                    <div class="font-semibold truncate">${title}</div>
-                                    <div class="text-[10px] text-textMuted truncate">${author}</div>
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
+                } catch (e) {
+                    searchError = e.message || 'Network error contacting Google Books';
+                }
+
+                // 2. Fall back to Open Library if Google Books had nothing usable
+                if (items.length === 0) {
+                    try {
+                        const olRes = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=5`);
+                        if (olRes.ok) {
+                            const olData = await olRes.json();
+                            items = (olData.docs || []).map(doc => ({
+                                title: doc.title || '',
+                                author: (doc.author_name || []).join(', '),
+                                cover: doc.cover_i ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg` : '',
+                                pages: doc.number_of_pages_median || 0,
+                                categories: (doc.subject || []).slice(0, 3).join(', ')
+                            }));
+                            if (items.length > 0) searchError = null;
+                        } else if (!searchError) {
+                            searchError = `Open Library returned HTTP ${olRes.status}`;
+                        }
+                    } catch (e) {
+                        if (!searchError) searchError = e.message || 'Network error contacting Open Library';
+                    }
+                }
+
+                if (items.length === 0) {
+                    resultsBox.innerHTML = searchError
+                        ? `<div class="p-3 text-xs text-rose-500">Search failed: ${searchError}. Please try again.</div>`
+                        : `<div class="p-3 text-xs text-textMuted">No books found.</div>`;
                     resultsBox.classList.remove('hidden');
-                } catch(e) { console.error(e); }
+                    return;
+                }
+
+                resultsBox.innerHTML = items.map(b => `
+                    <div onclick="readManager.selectApiBook('${b.title.replace(/'/g, "\\'")}', '${b.author.replace(/'/g, "\\'")}', '${b.cover}', ${b.pages}, '${b.categories.replace(/'/g, "\\'")}')" class="flex items-center gap-3 p-2 hover:bg-bgCard cursor-pointer border-b border-borderSubtle text-xs">
+                        <img src="${b.cover || 'https://via.placeholder.com/35x50?text=No+Img'}" class="w-8 h-10 object-cover rounded">
+                        <div class="flex-1 truncate">
+                            <div class="font-semibold truncate">${b.title}</div>
+                            <div class="text-[10px] text-textMuted truncate">${b.author}</div>
+                        </div>
+                    </div>
+                `).join('');
+                resultsBox.classList.remove('hidden');
             },
             selectApiBook(title, author, cover, pages, categories) {
                 document.getElementById('readFormTitle').value = title;
@@ -1969,7 +2080,8 @@
             async saveBook(e) {
                 e.preventDefault();
                 const id = document.getElementById('readId').value;
-                const bookData = {
+                const existing = id ? readDatabase.find(b => b.id === id) : null;
+                let bookData = {
                     id: id || 'r_' + Date.now(),
                     user_id: currentUser ? currentUser.id : null,
                     title: document.getElementById('readFormTitle').value,
@@ -1984,14 +2096,14 @@
                     coverUrl: document.getElementById('readFormCoverUrl').value,
                     favorite: document.getElementById('readFormFavorite').checked,
                     notes: document.getElementById('readFormNotes').value,
-                    updatedAt: new Date().toISOString()
+                    updatedAt: new Date().toISOString(),
+                    _synced: existing ? !!existing._synced : false
                 };
 
-                if (currentUser) {
-                    await supabaseClient.from('readlist').upsert([bookData]);
-                }
+                const oldId = bookData.id;
+                bookData = await pushItemToCloud('readlist', bookData);
 
-                const index = readDatabase.findIndex(b => b.id === bookData.id);
+                const index = readDatabase.findIndex(b => b.id === oldId);
                 if (index !== -1) readDatabase[index] = bookData;
                 else readDatabase.unshift(bookData);
 
@@ -2101,8 +2213,10 @@
             },
             async delete(id) {
                 if (!confirm('Delete this book?')) return;
-                if (currentUser) {
-                    await supabaseClient.from('readlist').delete().eq('id', id);
+                const item = readDatabase.find(b => b.id === id);
+                if (currentUser && item && item._synced) {
+                    const { error } = await supabaseClient.from('readlist').delete().eq('id', id);
+                    if (error) console.error('readlist delete failed:', error.message);
                 }
                 readDatabase = readDatabase.filter(b => b.id !== id);
                 localStorage.setItem('peaks_readlist', JSON.stringify(readDatabase));

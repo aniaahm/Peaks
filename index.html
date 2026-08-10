@@ -1922,194 +1922,134 @@
                 btn.className = this.onlyFavorites ? 'bg-textMain text-bgMain rounded-xl px-3 py-2.5 text-xs transition-colors flex items-center gap-1.5 shadow-xs' : 'bg-bgSurface border border-borderSubtle rounded-xl px-3 py-2.5 text-xs text-textMuted hover:text-amber-600 hover:border-textMain transition-colors flex items-center gap-1.5 shadow-xs';
                 this.render();
             },
-            async handleApiSearch(query) {
-                const resultsBox = document.getElementById('readApiSearchResults');
-                if (!query || query.length < 3) {
-                    resultsBox.innerHTML = '';
-                    resultsBox.classList.add('hidden');
-                    return;
-                }
-                try {
-                    const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=5`);
-                    const data = await res.json();
-                    const items = data.items || [];
-                    if (items.length === 0) {
-                        resultsBox.innerHTML = `<div class="p-3 text-xs text-textMuted">No books found.</div>`;
-                        resultsBox.classList.remove('hidden');
-                        return;
+            // Upgraded Dual-API Search (Google Books + Open Library Fallback)
+async function searchOnlineBooks() {
+    let query = apiSearchQuery.value.trim();
+    if (!query) return;
+
+    apiResultsDropdown.innerHTML = `<div style="padding: 16px; text-align: center; color: var(--text-muted);">Searching global book databases...</div>`;
+    apiResultsDropdown.style.display = 'block';
+
+    try {
+        // 1. Try Google Books API First
+        let response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=5`);
+        let data = await response.json();
+
+        let items = data.items || [];
+
+        // 2. If Google Books returns nothing, fallback to Open Library API
+        if (items.length === 0) {
+            const openLibResponse = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=5`);
+            const openLibData = await openLibResponse.json();
+            
+            if (openLibData.docs && openLibData.docs.length > 0) {
+                // Map Open Library format to match structure
+                items = openLibData.docs.map(doc => ({
+                    volumeInfo: {
+                        title: doc.title,
+                        authors: doc.author_name ? doc.author_name : ['Unknown Author'],
+                        imageLinks: doc.cover_i ? { thumbnail: `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg` } : {},
+                        pageCount: doc.number_of_pages_median || 0,
+                        categories: doc.subject ? doc.subject.slice(0, 3) : [],
+                        description: `Published in ${doc.first_publish_year || 'Unknown'}`
                     }
-                    resultsBox.innerHTML = items.map(item => {
-                        const info = item.volumeInfo || {};
-                        const title = info.title || '';
-                        const author = (info.authors || []).join(', ');
-                        const cover = info.imageLinks?.thumbnail || info.imageLinks?.smallThumbnail || '';
-                        const pages = info.pageCount || 0;
-                        const categories = (info.categories || []).join(', ');
-                        return `
-                            <div onclick="readManager.selectApiBook('${title.replace(/'/g, "\\'")}', '${author.replace(/'/g, "\\'")}', '${cover}', ${pages}, '${categories.replace(/'/g, "\\'")}')" class="flex items-center gap-3 p-2 hover:bg-bgCard cursor-pointer border-b border-borderSubtle text-xs">
-                                <img src="${cover || 'https://via.placeholder.com/35x50?text=No+Img'}" class="w-8 h-10 object-cover rounded">
-                                <div class="flex-1 truncate">
-                                    <div class="font-semibold truncate">${title}</div>
-                                    <div class="text-[10px] text-textMuted truncate">${author}</div>
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
-                    resultsBox.classList.remove('hidden');
-                } catch(e) { console.error(e); }
-            },
-            selectApiBook(title, author, cover, pages, categories) {
-                document.getElementById('readFormTitle').value = title;
-                document.getElementById('readFormAuthor').value = author;
-                document.getElementById('readFormCoverUrl').value = cover;
-                document.getElementById('readFormTotalPages').value = pages;
-                document.getElementById('readFormGenres').value = categories;
-                document.getElementById('readApiSearchResults').classList.add('hidden');
-            },
-            async saveBook(e) {
-                e.preventDefault();
-                const id = document.getElementById('readId').value;
-                const bookData = {
-                    id: id || 'r_' + Date.now(),
-                    user_id: currentUser ? currentUser.id : null,
-                    title: document.getElementById('readFormTitle').value,
-                    author: document.getElementById('readFormAuthor').value,
-                    readingStatus: document.getElementById('readFormStatus').value,
-                    genres: document.getElementById('readFormGenres').value.split(',').map(s => s.trim()).filter(Boolean),
-                    pagesRead: parseInt(document.getElementById('readFormPagesRead').value) || 0,
-                    totalPages: parseInt(document.getElementById('readFormTotalPages').value) || 0,
-                    rating: parseFloat(document.getElementById('readFormRating').value) || 0,
-                    startDate: document.getElementById('readFormStartDate').value,
-                    finishDate: document.getElementById('readFormFinishDate').value,
-                    coverUrl: document.getElementById('readFormCoverUrl').value,
-                    favorite: document.getElementById('readFormFavorite').checked,
-                    notes: document.getElementById('readFormNotes').value,
-                    updatedAt: new Date().toISOString()
-                };
-
-                if (currentUser) {
-                    await supabaseClient.from('readlist').upsert([bookData]);
-                }
-
-                const index = readDatabase.findIndex(b => b.id === bookData.id);
-                if (index !== -1) readDatabase[index] = bookData;
-                else readDatabase.unshift(bookData);
-
-                localStorage.setItem('peaks_readlist', JSON.stringify(readDatabase));
-                this.closeModal();
-                this.closeDetail();
-                this.render();
-            },
-            render() {
-                const grid = document.getElementById('readsGrid');
-                const empty = document.getElementById('readEmptyState');
-                const search = document.getElementById('readSearchInput').value.toLowerCase();
-                const filterStatus = document.getElementById('readFilterStatus').value;
-                const filterGenre = document.getElementById('readFilterGenre').value;
-                const sortBy = document.getElementById('readSortBy').value;
-
-                const allGenres = [...new Set(readDatabase.flatMap(b => b.genres || []))];
-                const genreSelect = document.getElementById('readFilterGenre');
-                const currentGenreVal = genreSelect.value;
-                genreSelect.innerHTML = '<option value="All">All Genres</option>' + allGenres.map(g => `<option value="${g}">${g}</option>`).join('');
-                genreSelect.value = allGenres.includes(currentGenreVal) ? currentGenreVal : 'All';
-
-                let filtered = readDatabase.filter(b => {
-                    const matchSearch = b.title.toLowerCase().includes(search) || b.author.toLowerCase().includes(search);
-                    const matchStatus = filterStatus === 'All' || b.readingStatus === filterStatus;
-                    const matchGenre = filterGenre === 'All' || (b.genres && b.genres.includes(filterGenre));
-                    const matchFav = !this.onlyFavorites || b.favorite;
-                    return matchSearch && matchStatus && matchGenre && matchFav;
-                });
-
-                filtered.sort((a, b) => {
-                    if (sortBy === 'recentlyAdded') return new Date(b.id.split('_')[1] || 0) - new Date(a.id.split('_')[1] || 0);
-                    if (sortBy === 'alphabetical') return a.title.localeCompare(b.title);
-                    if (sortBy === 'rating') return b.rating - a.rating;
-                    if (sortBy === 'pages') return (b.pagesRead / (b.totalPages || 1)) - (a.pagesRead / (a.totalPages || 1));
-                    return 0;
-                });
-
-                document.getElementById('readHeaderTotalCount').innerText = readDatabase.length;
-                document.getElementById('readStatReading').innerText = readDatabase.filter(b => b.readingStatus === 'Reading').length;
-                document.getElementById('readStatCompleted').innerText = readDatabase.filter(b => b.readingStatus === 'Completed').length;
-                document.getElementById('readStatOnHold').innerText = readDatabase.filter(b => b.readingStatus === 'On Hold').length;
-                document.getElementById('readStatWantToRead').innerText = readDatabase.filter(b => b.readingStatus === 'Want to Read').length;
-                document.getElementById('readStatFavCount').innerText = readDatabase.filter(b => b.favorite).length;
-                const avgRating = readDatabase.length > 0 ? (readDatabase.reduce((acc, b) => acc + (b.rating || 0), 0) / readDatabase.length).toFixed(1) : '0.0';
-                document.getElementById('readStatAvgRating').innerText = `★ ${avgRating}`;
-
-                if (filtered.length === 0) {
-                    grid.innerHTML = '';
-                    empty.classList.remove('hidden');
-                    return;
-                }
-                empty.classList.add('hidden');
-
-                grid.innerHTML = filtered.map(b => `
-                    <div onclick="readManager.openDetail('${b.id}')" class="group bg-bgSurface border border-borderSubtle hover:border-textMain rounded-2xl overflow-hidden transition-all duration-300 shadow-editorial hover:shadow-editorial-hover cursor-pointer flex flex-col">
-                        <div class="aspect-[2/3] bg-bgCard relative overflow-hidden flex items-center justify-center">
-                            ${b.coverUrl ? `<img src="${b.coverUrl}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">` : `<div class="text-center p-4"><i class="fa-solid fa-bookmark text-2xl text-textMuted/40 mb-2"></i><span class="block editorial-title text-xl text-textMuted line-clamp-2 px-2">${b.title}</span></div>`}
-                            <div class="absolute top-3 left-3"><span class="bg-bgSurface/90 backdrop-blur-xs text-[10px] font-medium px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">${b.readingStatus}</span></div>
-                            ${b.favorite ? `<div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-bgSurface/90 backdrop-blur-xs border border-borderSubtle flex items-center justify-center text-amber-600 shadow-xs"><i class="fa-solid fa-heart text-[10px]"></i></div>` : ''}
-                            <div class="absolute bottom-3 right-3 bg-bgSurface/90 backdrop-blur-xs text-[10px] font-semibold px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">★ ${b.rating}</div>
-                        </div>
-                        <div class="p-4 flex-1 flex flex-col justify-between">
-                            <div>
-                                <h3 class="editorial-title text-xl leading-tight mb-1 group-hover:text-accentGold transition-colors truncate">${b.title}</h3>
-                                <p class="text-[11px] text-textMuted truncate">${b.author}</p>
-                            </div>
-                            <div class="flex items-center justify-between mt-3 pt-3 border-t border-borderSubtle text-[10px] text-textMuted">
-                                <span class="uppercase tracking-wider font-medium">Pages</span>
-                                <span>${b.pagesRead}/${b.totalPages || '?'}</span>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-            },
-            openDetail(id) {
-                const b = readDatabase.find(item => item.id === id);
-                if (!b) return;
-                document.getElementById('readDetailContent').innerHTML = `
-                    <div class="flex flex-col sm:flex-row gap-6 mb-6">
-                        <div class="w-full sm:w-48 aspect-[2/3] bg-bgCard rounded-xl overflow-hidden shrink-0 flex items-center justify-center border border-borderSubtle">
-                            ${b.coverUrl ? `<img src="${b.coverUrl}" class="w-full h-full object-cover">` : `<i class="fa-solid fa-bookmark text-3xl text-textMuted/40"></i>`}
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex items-center space-x-2 mb-2">
-                                <span class="text-[10px] uppercase tracking-wider font-medium px-2.5 py-1 rounded-md bg-bgCard border border-borderSubtle">${b.readingStatus}</span>
-                                ${b.favorite ? '<span class="text-amber-600 text-xs"><i class="fa-solid fa-heart"></i></span>' : ''}
-                            </div>
-                            <h2 class="editorial-title text-4xl mb-1">${b.title}</h2>
-                            <p class="text-xs text-textMuted mb-4">${b.author}</p>
-                            <div class="grid grid-cols-2 gap-4 py-3 border-y border-borderSubtle text-xs mb-4">
-                                <div><span class="text-textMuted block text-[10px] uppercase">Rating</span><span class="font-semibold text-sm">★ ${b.rating} / 5</span></div>
-                                <div><span class="text-textMuted block text-[10px] uppercase">Pages Read</span><span class="font-semibold text-sm">${b.pagesRead} / ${b.totalPages || '?'}</span></div>
-                            </div>
-                        </div>
-                    </div>
-                    ${b.notes ? `<div class="bg-bgCard border border-borderSubtle rounded-xl p-4 mb-6"><h4 class="text-[10px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Notes & Quotes</h4><p class="text-xs text-textMain leading-relaxed whitespace-pre-line">${b.notes}</p></div>` : ''}
-                    <div class="flex justify-between items-center pt-4 border-t border-borderSubtle">
-                        <span class="text-[11px] text-textMuted">Genres: ${(b.genres || []).join(', ') || 'N/A'}</span>
-                        <div class="flex items-center space-x-3">
-                            <button onclick="readManager.delete('${b.id}')" class="px-4 py-2 rounded-xl border border-rose-200 bg-rose-50 text-rose-600 text-xs font-medium">Delete</button>
-                            <button onclick="readManager.closeDetail(); readManager.openModal(readDatabase.find(i => i.id === '${b.id}'))" class="px-5 py-2 rounded-xl bg-textMain text-bgMain text-xs font-medium">Edit</button>
-                        </div>
-                    </div>
-                `;
-                document.getElementById('readDetailModal').style.display = 'flex';
-            },
-            async delete(id) {
-                if (!confirm('Delete this book?')) return;
-                if (currentUser) {
-                    await supabaseClient.from('readlist').delete().eq('id', id);
-                }
-                readDatabase = readDatabase.filter(b => b.id !== id);
-                localStorage.setItem('peaks_readlist', JSON.stringify(readDatabase));
-                this.closeDetail();
-                this.render();
+                }));
             }
-        };
+        }
+
+        if (items.length === 0) {
+            apiResultsDropdown.innerHTML = `
+                <div style="padding: 16px; text-align: center; color: var(--text-muted);">
+                    No matches found online.<br>
+                    <span style="font-size: 0.8rem; color: var(--text-muted);">Feel free to fill out the form manually below!</span>
+                </div>`;
+            return;
+        }
+
+        apiResultsDropdown.innerHTML = '';
+        items.forEach(book => {
+            const info = book.volumeInfo;
+            const title = info.title || 'Unknown Title';
+            const author = info.authors ? info.authors.join(', ') : 'Unknown Author';
+            const thumbnail = info.imageLinks && info.imageLinks.thumbnail ? info.imageLinks.thumbnail.replace('http:', 'https:') : '';
+            const pageCount = info.pageCount || 0;
+            const categories = info.categories ? info.categories : [];
+            const description = info.description || '';
+
+            const itemEl = document.createElement('div');
+            itemEl.className = 'api-result-item';
+            itemEl.innerHTML = `
+                <img src="${thumbnail || 'https://via.placeholder.com/36x52?text=No'}" class="api-result-thumb" alt="">
+                <div class="api-result-info">
+                    <h4>${title}</h4>
+                    <p>${author}</p>
+                </div>
+            `;
+
+            itemEl.onclick = () => {
+                document.getElementById('title').value = title;
+                document.getElementById('author').value = author;
+                document.getElementById('coverUrl').value = thumbnail ? thumbnail.replace('-M.jpg', '-L.jpg') : '';
+                document.getElementById('totalPages').value = pageCount;
+                if (categories.length > 0) {
+                    document.getElementById('genres').value = Array.isArray(categories) ? categories.join(', ') : categories;
+                }
+                if (description) {
+                    document.getElementById('notes').value = typeof description === 'string' ? description.substring(0, 300) + '...' : '';
+                }
+                document.getElementById('platform').value = 'Google Books';
+                document.getElementById('storyType').value = 'Book';
+                apiResultsDropdown.style.display = 'none';
+            };
+
+            apiResultsDropdown.appendChild(itemEl);
+        });
+    } catch (err) {
+        console.error(err);
+        apiResultsDropdown.innerHTML = `<div style="padding: 16px; text-align: center; color: #E11D48;">Search failed. Please fill in details manually.</div>`;
+    }
+}
+        // Theme Toggle
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            body.setAttribute('data-theme', newTheme);
+            themeToggleBtn.innerHTML = newTheme === 'light' ? '<i class="fa-solid fa-moon"></i>' : '<i class="fa-solid fa-sun"></i>';
+        }
+
+        // JSON Export & Import
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(readingList, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "peak-readlist-backup.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function importData(e) {
+            const fileReader = new FileReader();
+            if (e.target.files[0]) {
+                fileReader.readAsText(e.target.files[0], "UTF-8");
+                fileReader.onload = (event) => {
+                    try {
+                        const parsed = JSON.parse(event.target.result);
+                        if (Array.isArray(parsed)) {
+                            readingList = parsed;
+                            saveToStorage();
+                            renderList();
+                            alert('Reading list imported successfully!');
+                        } else {
+                            alert('Invalid JSON format.');
+                        }
+                    } catch (err) {
+                        alert('Error parsing JSON file.');
+                    }
+                };
+            }
+        }
     </script>
 </body>
 </html>

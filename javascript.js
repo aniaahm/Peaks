@@ -90,3 +90,20 @@ async function searchBooks(query) {
     resultsContainer.innerHTML = '<p class="text-xs text-[#71717A] py-2 text-center">Search error. Please enter details manually.</p>';
   }
 }
+// Global navigation switch function
+window.switchApp = function(appName) {
+  console.log("Switching view to:", appName);
+  
+  // Hide all view elements that match the app-view class or naming convention
+  document.querySelectorAll('.app-view, [id$="-view"]').forEach(el => {
+    el.classList.add('hidden');
+  });
+  
+  // Locate the target view and reveal it
+  const targetView = document.getElementById(appName + '-view') || document.getElementById(appName);
+  if (targetView) {
+    targetView.classList.remove('hidden');
+  } else {
+    console.warn("Target view container not found for:", appName);
+  }
+};

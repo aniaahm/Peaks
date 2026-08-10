@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PEAKS — Private Entertainment & Audio Archive</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' width='100%25' height='100%25'%3E%3Cdefs%3E%3ClinearGradient id='sharpPink' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23FFD1DC' /%3E%3Cstop offset='100%25' stop-color='%23FF9bb2' /%3E%3C/linearGradient%3E%3ClinearGradient id='sharpMatcha' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23C5E1A5' /%3E%3Cstop offset='100%25' stop-color='%2382C558' /%3E%3C/linearGradient%3E%3ClinearGradient id='crispWhite' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23FFFFFF' /%3E%3Cstop offset='100%25' stop-color='%23F7F5EA' /%3E%3C/linearGradient%3E%3Cfilter id='crispShadow' x='-10%25' y='-10%25' width='120%25' height='120%25'%3E%3CfeDropShadow dx='1' dy='2' stdDeviation='0.8' flood-color='%2382C558' flood-opacity='0.35'/%3E%3C/filter%3E%3C/defs%3E%3Cg fill='%2382C558'%3E%3Cpath d='M 10 14 L 11.5 17.5 L 15 19 L 11.5 20.5 L 10 24 L 8.5 20.5 L 5 19 L 8.5 17.5 Z' /%3E%3Cpath d='M 54 20 L 55 22.5 L 57.5 23.5 L 55 24.5 L 54 27 L 53 24.5 L 50.5 23.5 L 53 22.5 Z' opacity='0.8' /%3E%3C/g%3E%3Cg filter='url(%23crispShadow)'%3E%3Cpolygon points='24,50 38,20 54,50' fill='url(%23sharpMatcha)' opacity='0.65' stroke='%23FFFFFF' stroke-width='1.5' stroke-linejoin='miter'/%3E%3Cpolygon points='12,52 32,14 52,52' fill='url(%23sharpPink)' stroke='%23FFFFFF' stroke-width='2' stroke-linejoin='miter'/%3E%3Cpolygon points='32,14 41,32 32,29 23,32' fill='url(%23crispWhite)' /%3E%3Cpolyline points='25,41 30,46 41,35' fill='none' stroke='%23FFFFFF' stroke-width='3' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/g%3E%3Cg transform='translate(32, 10)'%3E%3Cpolygon points='0,2 -6,-3 -5,5' fill='url(%23sharpMatcha)' /%3E%3Cpolygon points='0,2 6,-3 5,5' fill='url(%23sharpMatcha)' /%3E%3Cpolygon points='0,0 -1.5,2 0,4 1.5,2' fill='%23FFFFFF' /%3E%3C/g%3E%3C/svg%3E">
-    <script src="https://cdn.tailwindcss.com"></script>
+   <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,10 +31,6 @@
                         accentBlue: '#2A4365',
                         borderSubtle: '#E4E2DD',
                         borderHover: '#D1CFCA',
-                        pastelPink: '#F7C9D9',
-                        pastelGreen: '#B8C6A5',
-                        pastelBlue: '#C9DEF4',
-                        pastelYellow: '#FDF0D5',
                     },
                     boxShadow: {
                         'editorial': '0 10px 30px -5px rgba(20, 20, 20, 0.04), 0 1px 3px rgba(20, 20, 20, 0.02)',
@@ -80,7 +76,6 @@
 </head>
 <body class="bg-bgMain text-textMain font-sans min-h-screen selection:bg-textMain selection:text-bgMain antialiased">
 
-    <!-- PORTAL SCREEN -->
     <div id="portal-screen" class="min-h-screen flex flex-col justify-between p-6 sm:p-12 relative overflow-hidden">
         <div class="absolute -top-40 -left-40 w-96 h-96 bg-accentGold/5 rounded-full blur-3xl pointer-events-none"></div>
         <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-stone-300/30 rounded-full blur-3xl pointer-events-none"></div>
@@ -115,10 +110,9 @@
                 PEAKS
             </h1>
             <p class="text-lg sm:text-xl text-textMuted max-w-xl mx-auto font-light leading-relaxed mb-14">
-                An editorial archive for cinema, television, audio, comics, and reading collections. Built with instant cloud sync and online search.
+                An editorial archive for cinema, television, and audio collections. Built with instant online lookup and edit generation.
             </p>
-
-            <div id="auth-lock-banner" class="mb-8 p-6 bg-bgSurface border border-borderSubtle rounded-2xl max-w-md mx-auto shadow-editorial text-center">
+<div id="auth-lock-banner" class="mb-8 p-6 bg-bgSurface border border-borderSubtle rounded-2xl max-w-md mx-auto shadow-editorial text-center">
                 <p class="text-xs text-textMuted mb-4">Please sign in or create an account with your email to access your private cloud library.</p>
                 <div class="space-y-3">
                     <input type="email" id="banner-auth-email" placeholder="Email address" class="w-full text-xs py-2 px-3 rounded-xl border border-borderSubtle bg-bgMain text-textMain outline-none focus:border-textMain">
@@ -129,7 +123,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
                 <div onclick="switchApp('watchlist')" class="group bg-bgSurface border border-borderSubtle hover:border-textMain rounded-2xl p-8 text-left transition-all duration-300 shadow-editorial hover:shadow-editorial-hover cursor-pointer relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-stone-200/40 rounded-bl-full pointer-events-none transition-transform duration-500 group-hover:scale-110"></div>
@@ -158,34 +151,35 @@
                         Catalog tracks, artists, and albums instantly via online Apple Music search.
                     </p>
                 </div>
+                <!-- PEAK.COMICLIST -->
+<div onclick="window.location.href='./peak.comiclist.html'" class="bg-bgCard border border-borderSubtle/60 rounded-2xl p-6 relative overflow-hidden transition-all hover:border-borderFocus hover:shadow-xl cursor-pointer group flex flex-col justify-between">
+    <div class="absolute top-0 right-0 w-32 h-32 bg-stone-200/40 rounded-bl-full pointer-events-none transition-all duration-300 group-hover:scale-110"></div>
+    <div class="flex justify-between items-start mb-10 relative z-10">
+        <span class="w-10 h-10 rounded-xl bg-bgCard flex items-center justify-center text-textMain border border-borderSubtle shadow-sm">
+            <i class="fa-solid fa-book-open text-sm"></i>
+        </span>
+        <i class="fa-solid fa-arrow-right text-textMuted group-hover:text-textMain group-hover:translate-x-1 transition-all"></i>
+    </div>
+    <h2 class="editorial-title text-3xl mb-2 relative z-10">PEAK.COMICLIST</h2>
+    <p class="text-xs text-textMuted font-light leading-relaxed relative z-10">
+        Personal Manga, Manhwa & Webcomic Tracker.
+    </p>
+</div>
 
-                <div onclick="switchApp('comiclist')" class="group bg-bgSurface border border-borderSubtle hover:border-textMain rounded-2xl p-8 text-left transition-all duration-300 shadow-editorial hover:shadow-editorial-hover cursor-pointer relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-stone-200/40 rounded-bl-full pointer-events-none transition-transform duration-500 group-hover:scale-110"></div>
-                    <div class="flex justify-between items-start mb-10 relative z-10">
-                        <span class="w-10 h-10 rounded-xl bg-bgCard flex items-center justify-center text-textMain border border-borderSubtle group-hover:bg-textMain group-hover:text-bgMain transition-colors">
-                            <i class="fa-solid fa-book-open text-sm"></i>
-                        </span>
-                        <i class="fa-solid fa-arrow-right text-textMuted group-hover:text-textMain group-hover:translate-x-1 transition-all"></i>
-                    </div>
-                    <h2 class="editorial-title text-3xl mb-2 relative z-10">PEAK.COMICLIST</h2>
-                    <p class="text-xs text-textMuted font-light leading-relaxed relative z-10">
-                        Personal Manga, Manhwa & Webcomic Tracker with AniList search.
-                    </p>
-                </div>
-
-                <div onclick="switchApp('readlist')" class="group bg-bgSurface border border-borderSubtle hover:border-textMain rounded-2xl p-8 text-left transition-all duration-300 shadow-editorial hover:shadow-editorial-hover cursor-pointer relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-stone-200/40 rounded-bl-full pointer-events-none transition-transform duration-500 group-hover:scale-110"></div>
-                    <div class="flex justify-between items-start mb-10 relative z-10">
-                        <span class="w-10 h-10 rounded-xl bg-bgCard flex items-center justify-center text-textMain border border-borderSubtle group-hover:bg-textMain group-hover:text-bgMain transition-colors">
-                            <i class="fa-solid fa-bookmark text-sm"></i>
-                        </span>
-                        <i class="fa-solid fa-arrow-right text-textMuted group-hover:text-textMain group-hover:translate-x-1 transition-all"></i>
-                    </div>
-                    <h2 class="editorial-title text-3xl mb-2 relative z-10">PEAK.READLIST</h2>
-                    <p class="text-xs text-textMuted font-light leading-relaxed relative z-10">
-                        Personal Reading Journal & Library with Google Books lookup.
-                    </p>
-                </div>
+<!-- PEAK.READLIST -->
+<div onclick="window.location.href='./peak.readlist.html'" class="bg-bgCard border border-borderSubtle/60 rounded-2xl p-6 relative overflow-hidden transition-all hover:border-borderFocus hover:shadow-xl cursor-pointer group flex flex-col justify-between">
+    <div class="absolute top-0 right-0 w-32 h-32 bg-stone-200/40 rounded-bl-full pointer-events-none transition-all duration-300 group-hover:scale-110"></div>
+    <div class="flex justify-between items-start mb-10 relative z-10">
+        <span class="w-10 h-10 rounded-xl bg-bgCard flex items-center justify-center text-textMain border border-borderSubtle shadow-sm">
+            <i class="fa-solid fa-bookmark text-sm"></i>
+        </span>
+        <i class="fa-solid fa-arrow-right text-textMuted group-hover:text-textMain group-hover:translate-x-1 transition-all"></i>
+    </div>
+    <h2 class="editorial-title text-3xl mb-2 relative z-10">PEAK.READLIST</h2>
+    <p class="text-xs text-textMuted font-light leading-relaxed relative z-10">
+        Personal Reading Journal & Library.
+    </p>
+</div>
             </div>
         </main>
 
@@ -194,7 +188,7 @@
         </footer>
     </div>
 
-    <!-- WATCHLIST APP -->
+
     <div id="watchlist-app" class="hidden min-h-screen flex flex-col fade-in">
         <header class="border-b border-borderSubtle bg-bgSurface/85 backdrop-blur-md sticky top-0 z-30">
             <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -268,7 +262,7 @@
         </main>
     </div>
 
-    <!-- MUSICLIST APP -->
+
     <div id="musiclist-app" class="hidden min-h-screen flex flex-col fade-in">
         <header class="border-b border-borderSubtle bg-bgSurface/85 backdrop-blur-md sticky top-0 z-30">
             <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -345,220 +339,7 @@
         </main>
     </div>
 
-    <!-- COMICLIST APP -->
-    <div id="comiclist-app" class="hidden min-h-screen flex flex-col fade-in">
-        <header class="border-b border-borderSubtle bg-bgSurface/85 backdrop-blur-md sticky top-0 z-30">
-            <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-                <div class="flex items-center space-x-6">
-                    <button onclick="returnToPortal()" class="text-xs text-textMuted hover:text-textMain transition-colors flex items-center space-x-2 py-1 px-3 rounded-full border border-borderSubtle bg-bgMain">
-                        <i class="fa-solid fa-arrow-left text-[10px]"></i>
-                        <span>PEAKS Portal</span>
-                    </button>
-                    <div>
-                        <h1 class="editorial-title text-3xl sm:text-4xl tracking-tight">PEAK.COMICLIST</h1>
-                        <p class="text-[11px] text-textMuted uppercase tracking-widest font-medium">Manga, Manhwa & Webcomic Archive</p>
-                    </div>
-                </div>
 
-                <div class="flex items-center space-x-3">
-                    <div class="hidden md:flex items-center gap-2 bg-bgSurface border border-borderSubtle px-3 py-1.5 rounded-xl text-xs font-medium">
-                        <span class="text-textMuted">Total:</span> <span id="headerTotalCount" class="font-bold">0</span>
-                    </div>
-                    <button onclick="comicManager.openModal()" class="flex items-center space-x-2 py-2.5 px-5 rounded-xl bg-textMain text-bgMain hover:opacity-90 text-xs font-medium transition-all shadow-editorial">
-                        <i class="fa-solid fa-plus text-[10px]"></i>
-                        <span>Add Comic</span>
-                    </button>
-                </div>
-            </div>
-        </header>
-
-        <div class="max-w-7xl mx-auto w-full px-6 py-6 space-y-4">
-            <section class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-                <div class="bg-bgSurface border border-borderSubtle rounded-2xl p-4 shadow-xs flex flex-col justify-between">
-                    <span class="text-xs uppercase tracking-wider text-textMuted font-semibold">Reading</span>
-                    <span id="statReading" class="editorial-title text-3xl mt-2">0</span>
-                </div>
-                <div class="bg-bgSurface border border-borderSubtle rounded-2xl p-4 shadow-xs flex flex-col justify-between">
-                    <span class="text-xs uppercase tracking-wider text-textMuted font-semibold">Completed</span>
-                    <span id="statCompleted" class="editorial-title text-3xl mt-2">0</span>
-                </div>
-                <div class="bg-bgSurface border border-borderSubtle rounded-2xl p-4 shadow-xs flex flex-col justify-between">
-                    <span class="text-xs uppercase tracking-wider text-textMuted font-semibold">On Hold</span>
-                    <span id="statOnHold" class="editorial-title text-3xl mt-2">0</span>
-                </div>
-                <div class="bg-bgSurface border border-borderSubtle rounded-2xl p-4 shadow-xs flex flex-col justify-between">
-                    <span class="text-xs uppercase tracking-wider text-textMuted font-semibold">Dropped</span>
-                    <span id="statDropped" class="editorial-title text-3xl mt-2">0</span>
-                </div>
-                <div class="bg-bgSurface border border-borderSubtle rounded-2xl p-4 shadow-xs flex flex-col justify-between">
-                    <span class="text-xs uppercase tracking-wider text-textMuted font-semibold">Plan to Read</span>
-                    <span id="statPlanToRead" class="editorial-title text-3xl mt-2">0</span>
-                </div>
-                <div class="bg-bgSurface border border-borderSubtle rounded-2xl p-4 shadow-xs flex flex-col justify-between">
-                    <span class="text-xs uppercase tracking-wider text-textMuted font-semibold">Favorites & Avg</span>
-                    <div class="flex items-center justify-between mt-2">
-                        <span id="statFavorites" class="text-xs font-bold flex items-center gap-1"><i class="fa-solid fa-heart text-amber-600"></i> <span id="statFavCount">0</span></span>
-                        <span id="statAvgRating" class="text-xs font-bold text-accentGold">★ 0.0</span>
-                    </div>
-                </div>
-            </section>
-
-            <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4">
-                <div class="flex flex-wrap items-center gap-2">
-                    <div class="relative">
-                        <i class="fa-solid fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-textMuted text-xs"></i>
-                        <input type="text" id="searchInput" placeholder="Search saved comics..." oninput="comicManager.render()" class="bg-bgSurface border border-borderSubtle focus:border-textMain text-xs rounded-xl pl-9 pr-4 py-2.5 w-64 outline-none transition-all shadow-xs">
-                    </div>
-
-                    <select id="filterStatus" onchange="comicManager.render()" class="bg-bgSurface border border-borderSubtle focus:border-textMain rounded-xl px-3 py-2.5 text-xs outline-none shadow-xs font-medium cursor-pointer">
-                        <option value="All">All Status</option>
-                        <option value="Reading">Reading</option>
-                        <option value="Completed">Completed</option>
-                        <option value="On Hold">On Hold</option>
-                        <option value="Dropped">Dropped</option>
-                        <option value="Plan to Read">Plan to Read</option>
-                    </select>
-
-                    <select id="filterType" onchange="comicManager.render()" class="bg-bgSurface border border-borderSubtle focus:border-textMain rounded-xl px-3 py-2.5 text-xs outline-none shadow-xs font-medium cursor-pointer">
-                        <option value="All">All Types</option>
-                        <option value="Manga">Manga</option>
-                        <option value="Manhwa">Manhwa</option>
-                        <option value="Manhua">Manhua</option>
-                        <option value="Webcomic">Webcomic</option>
-                    </select>
-
-                    <select id="filterGenre" onchange="comicManager.render()" class="bg-bgSurface border border-borderSubtle focus:border-textMain rounded-xl px-3 py-2.5 text-xs outline-none shadow-xs font-medium cursor-pointer">
-                        <option value="All">All Genres</option>
-                    </select>
-
-                    <button id="filterFavBtn" onclick="comicManager.toggleFavoriteFilter()" title="Toggle Favorites" class="bg-bgSurface border border-borderSubtle rounded-xl px-3 py-2.5 text-xs text-textMuted hover:text-amber-600 hover:border-textMain transition-colors flex items-center gap-1.5 shadow-xs">
-                        <i class="fa-solid fa-heart"></i>
-                    </button>
-                </div>
-
-                <div class="flex items-center space-x-3 text-xs">
-                    <select id="sortBy" onchange="comicManager.render()" class="bg-bgSurface border border-borderSubtle focus:border-textMain rounded-xl px-3 py-2.5 outline-none shadow-xs font-medium cursor-pointer">
-                        <option value="recentlyAdded">Recently Added</option>
-                        <option value="recentlyUpdated">Recently Updated</option>
-                        <option value="alphabetical">Alphabetical</option>
-                        <option value="rating">Rating</option>
-                        <option value="progress">Chapters Read</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <main class="max-w-7xl mx-auto w-full px-6 pb-20 flex-1">
-            <div id="comicsGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6"></div>
-            <div id="emptyState" class="hidden flex flex-col items-center justify-center py-20 text-center gap-4 text-textMuted">
-                <i class="fa-solid fa-book-open text-3xl mb-1 opacity-40"></i>
-                <p class="text-xs uppercase tracking-wider">No comics found in your archive</p>
-                <button onclick="comicManager.openModal()" class="mt-2 bg-textMain text-bgMain px-5 py-2.5 rounded-xl text-xs font-semibold shadow-editorial">Add Your First Comic</button>
-            </div>
-        </main>
-    </div>
-
-    <!-- READLIST APP -->
-    <div id="readlist-app" class="hidden min-h-screen flex flex-col fade-in">
-        <header class="border-b border-borderSubtle bg-bgSurface/85 backdrop-blur-md sticky top-0 z-30">
-            <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-                <div class="flex items-center space-x-6">
-                    <button onclick="returnToPortal()" class="text-xs text-textMuted hover:text-textMain transition-colors flex items-center space-x-2 py-1 px-3 rounded-full border border-borderSubtle bg-bgMain">
-                        <i class="fa-solid fa-arrow-left text-[10px]"></i>
-                        <span>PEAKS Portal</span>
-                    </button>
-                    <div>
-                        <h1 class="editorial-title text-3xl sm:text-4xl tracking-tight">PEAK.READLIST</h1>
-                        <p class="text-[11px] text-textMuted uppercase tracking-widest font-medium">Personal Reading Journal & Library</p>
-                    </div>
-                </div>
-
-                <div class="flex items-center space-x-3">
-                    <div class="hidden md:flex items-center gap-2 bg-bgSurface border border-borderSubtle px-3 py-1.5 rounded-xl text-xs font-medium">
-                        <span class="text-textMuted">Total:</span> <span id="readHeaderTotalCount" class="font-bold">0</span>
-                    </div>
-                    <button onclick="readManager.openModal()" class="flex items-center space-x-2 py-2.5 px-5 rounded-xl bg-textMain text-bgMain hover:opacity-90 text-xs font-medium transition-all shadow-editorial">
-                        <i class="fa-solid fa-plus text-[10px]"></i>
-                        <span>Add Book</span>
-                    </button>
-                </div>
-            </div>
-        </header>
-
-        <div class="max-w-7xl mx-auto w-full px-6 py-6 space-y-4">
-            <section class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-                <div class="bg-bgSurface border border-borderSubtle rounded-2xl p-4 shadow-xs flex flex-col justify-between">
-                    <span class="text-xs uppercase tracking-wider text-textMuted font-semibold">Reading</span>
-                    <span id="readStatReading" class="editorial-title text-3xl mt-2">0</span>
-                </div>
-                <div class="bg-bgSurface border border-borderSubtle rounded-2xl p-4 shadow-xs flex flex-col justify-between">
-                    <span class="text-xs uppercase tracking-wider text-textMuted font-semibold">Completed</span>
-                    <span id="readStatCompleted" class="editorial-title text-3xl mt-2">0</span>
-                </div>
-                <div class="bg-bgSurface border border-borderSubtle rounded-2xl p-4 shadow-xs flex flex-col justify-between">
-                    <span class="text-xs uppercase tracking-wider text-textMuted font-semibold">On Hold</span>
-                    <span id="readStatOnHold" class="editorial-title text-3xl mt-2">0</span>
-                </div>
-                <div class="bg-bgSurface border border-borderSubtle rounded-2xl p-4 shadow-xs flex flex-col justify-between">
-                    <span class="text-xs uppercase tracking-wider text-textMuted font-semibold">Want to Read</span>
-                    <span id="readStatWantToRead" class="editorial-title text-3xl mt-2">0</span>
-                </div>
-                <div class="bg-bgSurface border border-borderSubtle rounded-2xl p-4 shadow-xs flex flex-col justify-between">
-                    <span class="text-xs uppercase tracking-wider text-textMuted font-semibold">Favorites & Avg</span>
-                    <div class="flex items-center justify-between mt-2">
-                        <span class="text-xs font-bold flex items-center gap-1"><i class="fa-solid fa-heart text-amber-600"></i> <span id="readStatFavCount">0</span></span>
-                        <span id="readStatAvgRating" class="text-xs font-bold text-accentGold">★ 0.0</span>
-                    </div>
-                </div>
-            </section>
-
-            <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4">
-                <div class="flex flex-wrap items-center gap-2">
-                    <div class="relative">
-                        <i class="fa-solid fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-textMuted text-xs"></i>
-                        <input type="text" id="readSearchInput" placeholder="Search saved books..." oninput="readManager.render()" class="bg-bgSurface border border-borderSubtle focus:border-textMain text-xs rounded-xl pl-9 pr-4 py-2.5 w-64 outline-none transition-all shadow-xs">
-                    </div>
-
-                    <select id="readFilterStatus" onchange="readManager.render()" class="bg-bgSurface border border-borderSubtle focus:border-textMain rounded-xl px-3 py-2.5 text-xs outline-none shadow-xs font-medium cursor-pointer">
-                        <option value="All">All Status</option>
-                        <option value="Reading">Reading</option>
-                        <option value="Completed">Completed</option>
-                        <option value="On Hold">On Hold</option>
-                        <option value="Dropped">Dropped</option>
-                        <option value="Want to Read">Want to Read</option>
-                    </select>
-
-                    <select id="readFilterGenre" onchange="readManager.render()" class="bg-bgSurface border border-borderSubtle focus:border-textMain rounded-xl px-3 py-2.5 text-xs outline-none shadow-xs font-medium cursor-pointer">
-                        <option value="All">All Genres</option>
-                    </select>
-
-                    <button id="readFilterFavBtn" onclick="readManager.toggleFavoriteFilter()" title="Toggle Favorites" class="bg-bgSurface border border-borderSubtle rounded-xl px-3 py-2.5 text-xs text-textMuted hover:text-amber-600 hover:border-textMain transition-colors flex items-center gap-1.5 shadow-xs">
-                        <i class="fa-solid fa-heart"></i>
-                    </button>
-                </div>
-
-                <div class="flex items-center space-x-3 text-xs">
-                    <select id="readSortBy" onchange="readManager.render()" class="bg-bgSurface border border-borderSubtle focus:border-textMain rounded-xl px-3 py-2.5 outline-none shadow-xs font-medium cursor-pointer">
-                        <option value="recentlyAdded">Recently Added</option>
-                        <option value="alphabetical">Alphabetical</option>
-                        <option value="rating">Rating</option>
-                        <option value="pages">Pages Read</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <main class="max-w-7xl mx-auto w-full px-6 pb-20 flex-1">
-            <div id="readsGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6"></div>
-            <div id="readEmptyState" class="hidden flex flex-col items-center justify-center py-20 text-center gap-4 text-textMuted">
-                <i class="fa-solid fa-bookmark text-3xl mb-1 opacity-40"></i>
-                <p class="text-xs uppercase tracking-wider">No books found in your library</p>
-                <button onclick="readManager.openModal()" class="mt-2 bg-textMain text-bgMain px-5 py-2.5 rounded-xl text-xs font-semibold shadow-editorial">Add Your First Book</button>
-            </div>
-        </main>
-    </div>
-
-    <!-- MODALS FOR WATCHLIST & MUSICLIST -->
     <div id="w-form-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
         <div class="bg-bgSurface border border-borderSubtle rounded-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto shadow-modal p-6 sm:p-8 fade-in">
             <div class="flex justify-between items-center mb-6 pb-4 border-b border-borderSubtle">
@@ -579,6 +360,7 @@
 
             <form id="w-entry-form" onsubmit="saveWatchEntry(event)" class="space-y-4">
                 <input type="hidden" id="w-form-id">
+
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Title *</label>
@@ -595,6 +377,7 @@
                         </select>
                     </div>
                 </div>
+
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
                         <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Director / Creator</label>
@@ -609,6 +392,7 @@
                         <input type="number" id="w-form-year" placeholder="2026" class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
                     </div>
                 </div>
+
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
                         <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Platform</label>
@@ -626,6 +410,7 @@
                         </select>
                     </div>
                 </div>
+
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Tags (Comma separated)</label>
@@ -636,6 +421,7 @@
                         <input type="date" id="w-form-date" class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
                     </div>
                 </div>
+
                 <div>
                     <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Poster Artwork URL / Upload</label>
                     <div class="flex items-center space-x-3">
@@ -646,14 +432,17 @@
                         </label>
                     </div>
                 </div>
+
                 <div>
                     <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Notes & Edit Ideas</label>
                     <textarea id="w-form-notes" rows="3" placeholder="Cinematography notes, color grading style, timestamp for edits..." class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none resize-none"></textarea>
                 </div>
+
                 <div class="flex items-center space-x-3 pt-2">
                     <input type="checkbox" id="w-form-favorite" class="w-4 h-4 accent-textMain rounded border-borderSubtle">
                     <label for="w-form-favorite" class="text-xs font-medium text-textMain cursor-pointer">Mark as Favorite Curation</label>
                 </div>
+
                 <div class="flex justify-end space-x-3 pt-4 border-t border-borderSubtle">
                     <button type="button" onclick="closeWatchModal()" class="px-5 py-2.5 rounded-xl border border-borderSubtle bg-bgMain text-xs font-medium text-textMuted hover:text-textMain">Cancel</button>
                     <button type="submit" class="px-6 py-2.5 rounded-xl bg-textMain text-bgMain text-xs font-medium hover:opacity-90 shadow-editorial">Save Entry</button>
@@ -661,6 +450,7 @@
             </form>
         </div>
     </div>
+
 
     <div id="m-form-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
         <div class="bg-bgSurface border border-borderSubtle rounded-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto shadow-modal p-6 sm:p-8 fade-in">
@@ -682,16 +472,18 @@
 
             <form id="m-entry-form" onsubmit="saveMusicEntry(event)" class="space-y-4">
                 <input type="hidden" id="m-form-id">
+
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Track Title *</label>
-                        <input type="text" id="m-form-title-input" required class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Artist *</label>
-                        <input type="text" id="m-form-artist" required class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
-                    </div>
-                </div>
+    <div>
+        <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Track Title *</label>
+        <input type="text" id="m-form-title-input" required class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
+    </div>
+    <div>
+        <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Artist *</label>
+        <input type="text" id="m-form-artist" required class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
+    </div>
+</div>
+
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
                         <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Album / Project</label>
@@ -717,6 +509,7 @@
                         <input type="number" id="m-form-year" placeholder="2026" class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
                     </div>
                 </div>
+
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
                         <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Platform / Source</label>
@@ -731,10 +524,12 @@
                         <input type="date" id="m-form-date" class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
                     </div>
                 </div>
+
                 <div>
                     <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Tags (Comma separated)</label>
                     <input type="text" id="m-form-tags" placeholder="slowed, bass-boosted, edit-audio" class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
                 </div>
+
                 <div>
                     <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Cover Artwork URL / Upload</label>
                     <div class="flex items-center space-x-3">
@@ -745,14 +540,17 @@
                         </label>
                     </div>
                 </div>
+
                 <div>
                     <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Notes & Edit Audio Timestamp</label>
                     <textarea id="m-form-notes" rows="3" placeholder="Drop timestamp for Instagram/TikTok edit, pitch notes..." class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none resize-none"></textarea>
                 </div>
+
                 <div class="flex items-center space-x-3 pt-2">
                     <input type="checkbox" id="m-form-favorite" class="w-4 h-4 accent-textMain rounded border-borderSubtle">
                     <label for="m-form-favorite" class="text-xs font-medium text-textMain cursor-pointer">Mark as Favorite Track</label>
                 </div>
+
                 <div class="flex justify-end space-x-3 pt-4 border-t border-borderSubtle">
                     <button type="button" onclick="closeMusicModal()" class="px-5 py-2.5 rounded-xl border border-borderSubtle bg-bgMain text-xs font-medium text-textMuted hover:text-textMain">Cancel</button>
                     <button type="submit" class="px-6 py-2.5 rounded-xl bg-textMain text-bgMain text-xs font-medium hover:opacity-90 shadow-editorial">Save Track</button>
@@ -761,218 +559,7 @@
         </div>
     </div>
 
-    <!-- COMICLIST MODAL -->
-    <div id="comicModal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-bgSurface border border-borderSubtle rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-modal overflow-hidden fade-in">
-            <div class="px-6 py-4 border-b border-borderSubtle flex items-center justify-between bg-bgCard">
-                <h3 id="modalTitle" class="editorial-title text-3xl">Add New Comic</h3>
-                <button onclick="comicManager.closeModal()" class="w-8 h-8 rounded-full bg-bgSurface border border-borderSubtle flex items-center justify-center text-textMuted hover:text-textMain transition-colors">
-                    <i class="fa-solid fa-xmark text-xs"></i>
-                </button>
-            </div>
-            <div class="p-6 overflow-y-auto flex flex-col gap-6">
-                <div class="bg-bgCard border border-borderSubtle rounded-2xl p-4 flex flex-col gap-2 relative">
-                    <label class="text-[11px] uppercase tracking-wider font-semibold text-accentGold flex items-center gap-1.5">
-                        <i class="fa-solid fa-globe mr-1"></i> Search Online (AniList Database)
-                    </label>
-                    <div class="relative">
-                        <input type="text" id="apiSearchInput" placeholder="Type title to auto-fill (e.g. Solo Leveling, One Piece)..." oninput="comicManager.handleApiSearch(this.value)" class="w-full bg-bgSurface border border-borderSubtle rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-textMain transition-colors">
-                        <div id="apiSearchResults" class="absolute left-0 right-0 top-full mt-1 bg-bgSurface border border-borderSubtle rounded-xl shadow-modal max-h-60 overflow-y-auto z-50 hidden"></div>
-                    </div>
-                </div>
-                <form id="comicForm" onsubmit="comicManager.saveComic(event)" class="flex flex-col gap-4">
-                    <input type="hidden" id="comicId">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-[11px] uppercase tracking-wider font-medium text-textMuted">Title *</label>
-                            <input type="text" id="formTitle" required class="bg-bgMain border border-borderSubtle rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-textMain">
-                        </div>
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-[11px] uppercase tracking-wider font-medium text-textMuted">Alternative Title</label>
-                            <input type="text" id="formAltTitle" class="bg-bgMain border border-borderSubtle rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-textMain">
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-[11px] uppercase tracking-wider font-medium text-textMuted">Type</label>
-                            <select id="formType" class="bg-bgMain border border-borderSubtle rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-textMain font-medium">
-                                <option value="Manga">Manga</option>
-                                <option value="Manhwa">Manhwa</option>
-                                <option value="Manhua">Manhua</option>
-                                <option value="Webcomic">Webcomic</option>
-                            </select>
-                        </div>
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-[11px] uppercase tracking-wider font-medium text-textMuted">Reading Status</label>
-                            <select id="formReadingStatus" class="bg-bgMain border border-borderSubtle rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-textMain font-medium">
-                                <option value="Reading">Reading</option>
-                                <option value="Completed">Completed</option>
-                                <option value="On Hold">On Hold</option>
-                                <option value="Dropped">Dropped</option>
-                                <option value="Plan to Read">Plan to Read</option>
-                            </select>
-                        </div>
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-[11px] uppercase tracking-wider font-medium text-textMuted">Status</label>
-                            <select id="formStatus" class="bg-bgMain border border-borderSubtle rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-textMain font-medium">
-                                <option value="Releasing">Releasing</option>
-                                <option value="Finished">Finished</option>
-                                <option value="Not Yet Released">Not Yet Released</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-[11px] uppercase tracking-wider font-medium text-textMuted">Genres (Comma separated)</label>
-                            <input type="text" id="formGenres" placeholder="Action, Fantasy, Romance" class="bg-bgMain border border-borderSubtle rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-textMain">
-                        </div>
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-[11px] uppercase tracking-wider font-medium text-textMuted">Author(s)</label>
-                            <input type="text" id="formAuthor" placeholder="Author name" class="bg-bgMain border border-borderSubtle rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-textMain">
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-[11px] uppercase tracking-wider font-medium text-textMuted">Chapters Read</label>
-                            <input type="number" id="formChaptersRead" min="0" value="0" class="bg-bgMain border border-borderSubtle rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-textMain">
-                        </div>
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-[11px] uppercase tracking-wider font-medium text-textMuted">Total Chapters</label>
-                            <input type="number" id="formTotalChapters" min="0" value="0" class="bg-bgMain border border-borderSubtle rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-textMain">
-                        </div>
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-[11px] uppercase tracking-wider font-medium text-textMuted">Rating (0 - 5)</label>
-                            <input type="number" id="formRating" min="0" max="5" step="0.5" value="0" class="bg-bgMain border border-borderSubtle rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-textMain">
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-[11px] uppercase tracking-wider font-medium text-textMuted">Start Date</label>
-                            <input type="date" id="formStartDate" class="bg-bgMain border border-borderSubtle rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-textMain">
-                        </div>
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-[11px] uppercase tracking-wider font-medium text-textMuted">Finish Date</label>
-                            <input type="date" id="formFinishDate" class="bg-bgMain border border-borderSubtle rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-textMain">
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-1.5">
-                        <label class="text-[11px] uppercase tracking-wider font-medium text-textMuted">Cover Image URL</label>
-                        <input type="url" id="formCoverUrl" placeholder="https://..." class="bg-bgMain border border-borderSubtle rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-textMain">
-                    </div>
-                    <div class="flex flex-col gap-4">
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" id="formFavorite" class="w-4 h-4 accent-textMain rounded border-borderSubtle">
-                            <label for="formFavorite" class="text-xs font-semibold cursor-pointer">Mark as Favorite ❤️</label>
-                        </div>
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-[11px] uppercase tracking-wider font-medium text-textMuted">Personal Notes</label>
-                            <textarea id="formNotes" rows="3" placeholder="Add your personal thoughts, reviews, or favorite quotes..." class="bg-bgMain border border-borderSubtle rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-textMain"></textarea>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-end gap-3 pt-4 border-t border-borderSubtle">
-                        <button type="button" onclick="comicManager.closeModal()" class="px-5 py-2.5 rounded-xl border border-borderSubtle text-xs font-medium text-textMuted hover:text-textMain">Cancel</button>
-                        <button type="submit" class="bg-textMain text-bgMain px-6 py-2.5 rounded-xl text-xs font-medium shadow-editorial hover:opacity-90">Save Comic</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
-    <!-- READLIST MODAL -->
-    <div id="readModal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-bgSurface border border-borderSubtle rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-modal overflow-hidden fade-in">
-            <div class="px-6 py-4 border-b border-borderSubtle flex items-center justify-between bg-bgCard">
-                <h3 id="readModalTitle" class="editorial-title text-3xl">Add New Book</h3>
-                <button onclick="readManager.closeModal()" class="w-8 h-8 rounded-full bg-bgSurface border border-borderSubtle flex items-center justify-center text-textMuted hover:text-textMain transition-colors">
-                    <i class="fa-solid fa-xmark text-xs"></i>
-                </button>
-            </div>
-            <div class="p-6 overflow-y-auto flex flex-col gap-6">
-                <div class="bg-bgCard border border-borderSubtle rounded-2xl p-4 flex flex-col gap-2 relative">
-                    <label class="text-[11px] uppercase tracking-wider font-semibold text-accentGold flex items-center gap-1.5">
-                        <i class="fa-solid fa-globe mr-1"></i> Search Online (Google Books Database)
-                    </label>
-                    <div class="relative">
-                        <input type="text" id="readApiSearchInput" placeholder="Type book title or author..." oninput="readManager.handleApiSearch(this.value)" class="w-full bg-bgSurface border border-borderSubtle rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-textMain transition-colors">
-                        <div id="readApiSearchResults" class="absolute left-0 right-0 top-full mt-1 bg-bgSurface border border-borderSubtle rounded-xl shadow-modal max-h-60 overflow-y-auto z-50 hidden"></div>
-                    </div>
-                </div>
-                <form id="readForm" onsubmit="readManager.saveBook(event)" class="flex flex-col gap-4">
-                    <input type="hidden" id="readId">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-[11px] uppercase tracking-wider font-medium text-textMuted">Title *</label>
-                            <input type="text" id="readFormTitle" required class="bg-bgMain border border-borderSubtle rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-textMain">
-                        </div>
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-[11px] uppercase tracking-wider font-medium text-textMuted">Author *</label>
-                            <input type="text" id="readFormAuthor" required class="bg-bgMain border border-borderSubtle rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-textMain">
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-[11px] uppercase tracking-wider font-medium text-textMuted">Reading Status</label>
-                            <select id="readFormStatus" class="bg-bgMain border border-borderSubtle rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-textMain font-medium">
-                                <option value="Reading">Reading</option>
-                                <option value="Completed">Completed</option>
-                                <option value="On Hold">On Hold</option>
-                                <option value="Dropped">Dropped</option>
-                                <option value="Want to Read">Want to Read</option>
-                            </select>
-                        </div>
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-[11px] uppercase tracking-wider font-medium text-textMuted">Genres / Categories</label>
-                            <input type="text" id="readFormGenres" placeholder="Fiction, Philosophy, Sci-Fi" class="bg-bgMain border border-borderSubtle rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-textMain">
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-[11px] uppercase tracking-wider font-medium text-textMuted">Pages Read</label>
-                            <input type="number" id="readFormPagesRead" min="0" value="0" class="bg-bgMain border border-borderSubtle rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-textMain">
-                        </div>
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-[11px] uppercase tracking-wider font-medium text-textMuted">Total Pages</label>
-                            <input type="number" id="readFormTotalPages" min="0" value="0" class="bg-bgMain border border-borderSubtle rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-textMain">
-                        </div>
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-[11px] uppercase tracking-wider font-medium text-textMuted">Rating (0 - 5)</label>
-                            <input type="number" id="readFormRating" min="0" max="5" step="0.5" value="0" class="bg-bgMain border border-borderSubtle rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-textMain">
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-[11px] uppercase tracking-wider font-medium text-textMuted">Start Date</label>
-                            <input type="date" id="readFormStartDate" class="bg-bgMain border border-borderSubtle rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-textMain">
-                        </div>
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-[11px] uppercase tracking-wider font-medium text-textMuted">Finish Date</label>
-                            <input type="date" id="readFormFinishDate" class="bg-bgMain border border-borderSubtle rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-textMain">
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-1.5">
-                        <label class="text-[11px] uppercase tracking-wider font-medium text-textMuted">Cover Image URL</label>
-                        <input type="url" id="readFormCoverUrl" placeholder="https://..." class="bg-bgMain border border-borderSubtle rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-textMain">
-                    </div>
-                    <div class="flex flex-col gap-4">
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" id="readFormFavorite" class="w-4 h-4 accent-textMain rounded border-borderSubtle">
-                            <label for="readFormFavorite" class="text-xs font-semibold cursor-pointer">Mark as Favorite ❤️</label>
-                        </div>
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-[11px] uppercase tracking-wider font-medium text-textMuted">Personal Notes & Quotes</label>
-                            <textarea id="readFormNotes" rows="3" placeholder="Add book notes or favorite quotes..." class="bg-bgMain border border-borderSubtle rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-textMain"></textarea>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-end gap-3 pt-4 border-t border-borderSubtle">
-                        <button type="button" onclick="readManager.closeModal()" class="px-5 py-2.5 rounded-xl border border-borderSubtle text-xs font-medium text-textMuted hover:text-textMain">Cancel</button>
-                        <button type="submit" class="bg-textMain text-bgMain px-6 py-2.5 rounded-xl text-xs font-medium shadow-editorial hover:opacity-90">Save Book</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- DETAIL MODALS -->
     <div id="w-detail-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
         <div class="bg-bgSurface border border-borderSubtle rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-modal p-6 sm:p-8 fade-in relative">
             <button onclick="closeWatchDetail()" class="absolute top-6 right-6 w-8 h-8 rounded-full bg-bgCard border border-borderSubtle flex items-center justify-center text-textMuted hover:text-textMain transition-colors z-10">
@@ -981,6 +568,7 @@
             <div id="w-detail-content"></div>
         </div>
     </div>
+
 
     <div id="m-detail-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
         <div class="bg-bgSurface border border-borderSubtle rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-modal p-6 sm:p-8 fade-in relative">
@@ -991,91 +579,63 @@
         </div>
     </div>
 
-    <div id="comicDetailModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-        <div class="bg-bgSurface border border-borderSubtle rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-modal p-6 sm:p-8 fade-in relative">
-            <button onclick="comicManager.closeDetail()" class="absolute top-6 right-6 w-8 h-8 rounded-full bg-bgCard border border-borderSubtle flex items-center justify-center text-textMuted hover:text-textMain transition-colors z-10">
-                <i class="fa-solid fa-xmark text-xs"></i>
-            </button>
-            <div id="comicDetailContent"></div>
-        </div>
-    </div>
 
-    <div id="readDetailModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-        <div class="bg-bgSurface border border-borderSubtle rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-modal p-6 sm:p-8 fade-in relative">
-            <button onclick="readManager.closeDetail()" class="absolute top-6 right-6 w-8 h-8 rounded-full bg-bgCard border border-borderSubtle flex items-center justify-center text-textMuted hover:text-textMain transition-colors z-10">
-                <i class="fa-solid fa-xmark text-xs"></i>
-            </button>
-            <div id="readDetailContent"></div>
-        </div>
-    </div>
-
-    <!-- JAVASCRIPT & SUPABASE CLOUD SYNC -->
-    <script>
+   <script>
+       // --- SUPABASE EMAIL AUTH CONFIGURATION ---
         const SUPABASE_URL = 'https://xvqwderaoziwuxeidmbh.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2cXdkZXJhb3ppd3V4ZWlkbWJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU0OTc3MTMsImV4cCI6MjEwMTA3MzcxM30.1zPlFpH90bVNPQ1iF0wZtEy3RuO2_wNHlobqPzEnB-U';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2cXdkZXJhb3ppd3V4ZWlkbWJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU0OTc3MTMsImV4cCI6MjEwMTA3MzcxM30.1zPlFpH90bVNPQ1iF0wZtEy3RuO2_wNHlobqPzEnB-U'; // Keep your anon key here
 
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         let currentUser = null;
 
-        let watchDatabase = [];
-        let musicDatabase = [];
-        let comicDatabase = [];
-        let readDatabase = [];
-
         document.addEventListener("DOMContentLoaded", async () => {
             const { data: { session } } = await supabaseClient.auth.getSession();
-            await handleAuthSession(session);
+            handleAuthSession(session);
 
-            supabaseClient.auth.onAuthStateChange(async (event, session) => {
-                await handleAuthSession(session);
+            supabaseClient.auth.onAuthStateChange((event, session) => {
+                handleAuthSession(session);
             });
         });
 
-        async function handleAuthSession(session) {
+        function handleAuthSession(session) {
             currentUser = session?.user || null;
             const lockBanner = document.getElementById('auth-lock-banner');
             const userInfo = document.getElementById('auth-user-info');
             const emailDisplay = document.getElementById('user-email-display');
-            const authFormInputs = document.getElementById('auth-header-container') ? document.getElementById('auth-form-inputs') : null;
+            const authFormInputs = document.getElementById('auth-form-inputs');
 
             if (currentUser) {
                 if (lockBanner) lockBanner.style.display = 'none';
                 if (authFormInputs) authFormInputs.style.display = 'none';
                 if (userInfo) userInfo.style.display = 'flex';
                 if (emailDisplay) emailDisplay.textContent = currentUser.email;
-                await loadUserCloudData();
+                loadUserCloudData();
             } else {
                 if (lockBanner) lockBanner.style.display = 'block';
                 if (authFormInputs) authFormInputs.style.display = 'flex';
                 if (userInfo) userInfo.style.display = 'none';
-                
-                // Clear state
-                watchDatabase = [];
-                musicDatabase = [];
-                comicDatabase = [];
-                readDatabase = [];
             }
         }
 
         async function signUpWithEmail() {
             const email = document.getElementById('auth-email').value;
             const password = document.getElementById('auth-password').value;
-            const { error } = await supabaseClient.auth.signUp({ email, password });
+            const { data, error } = await supabaseClient.auth.signUp({ email, password });
             if (error) { alert(error.message); return; }
-            alert('Account created! Check your email to confirm, or sign in now.');
+            alert('Account created! Check your email to confirm, or you can sign in now if email confirmations are disabled.');
         }
 
         async function signInWithEmail() {
             const email = document.getElementById('auth-email').value;
             const password = document.getElementById('auth-password').value;
-            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
             if (error) { alert(error.message); return; }
         }
 
         async function signUpWithEmailFromBanner() {
             const email = document.getElementById('banner-auth-email').value;
             const password = document.getElementById('banner-auth-password').value;
-            const { error } = await supabaseClient.auth.signUp({ email, password });
+            const { data, error } = await supabaseClient.auth.signUp({ email, password });
             if (error) { alert(error.message); return; }
             alert('Account created successfully!');
         }
@@ -1083,7 +643,7 @@
         async function signInWithEmailFromBanner() {
             const email = document.getElementById('banner-auth-email').value;
             const password = document.getElementById('banner-auth-password').value;
-            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
             if (error) { alert(error.message); return; }
         }
 
@@ -1092,96 +652,198 @@
             window.location.reload();
         }
 
-        // --- MIGRATION & CLOUD DATA LOADING ---
         async function loadUserCloudData() {
             if (!currentUser) return;
-            
-            try {
-                // 1. Fetch from Supabase tables: watchlist, musiclist, comiclist, readlist
-                const [wRes, mRes, cRes, rRes] = await Promise.all([
-                    supabaseClient.from('watchlist').select('*').eq('user_id', currentUser.id),
-                    supabaseClient.from('musiclist').select('*').eq('user_id', currentUser.id),
-                    supabaseClient.from('comiclist').select('*').eq('user_id', currentUser.id),
-                    supabaseClient.from('readlist').select('*').eq('user_id', currentUser.id)
-                ]);
+            console.log("Logged in via email as:", currentUser.email);
+        }
 
-                // 2. Check and migrate local storage if cloud is empty and local data exists
-                const localWatch = JSON.parse(localStorage.getItem('peaks_watchlist')) || null;
-                const localMusic = JSON.parse(localStorage.getItem('peaks_musiclist')) || null;
-                const localComic = JSON.parse(localStorage.getItem('peaks_comiclist')) || null;
-                const localRead = JSON.parse(localStorage.getItem('peaks_readlist')) || null;
+        let watchDatabase = JSON.parse(localStorage.getItem('peaks_watchlist')) || [
+            {
+                id: 'w1',
+                title: 'Me and Thee',
+                type: 'Series',
+                director: 'X Nuttapong Mongkolsawas',
+                country: 'Thailand',
+                year: '2025',
+                platform: 'Youtube',
+                rating: 10,
+                status: 'watched',
+                tags: ['romance', 'comedy', 'BL'],
+                date: '2025-15-12',
+                favorite: true,
+                poster: 'https://static.tvmaze.com/uploads/images/original_untouched/595/1489375.jpg',
+                notes: 'Thee, a wealthy, dramatic, half-Russian businessman and mafia-linked figure obsessed with Thai soap operas, and Peach, a down-to-earth, grounded photographer who tries to give him a reality check.'
+            }
+        ];
 
-                if ((!wRes.data || wRes.data.length === 0) && localWatch && localWatch.length > 0) {
-                    const payload = localWatch.map(item => ({ ...item, user_id: currentUser.id }));
-                    await supabaseClient.from('watchlist').insert(payload);
-                }
-                if ((!mRes.data || mRes.data.length === 0) && localMusic && localMusic.length > 0) {
-                    const payload = localMusic.map(item => ({ ...item, user_id: currentUser.id }));
-                    await supabaseClient.from('musiclist').insert(payload);
-                }
-                if ((!cRes.data || cRes.data.length === 0) && localComic && localComic.length > 0) {
-                    const payload = localComic.map(item => ({ ...item, user_id: currentUser.id }));
-                    await supabaseClient.from('comiclist').insert(payload);
-                }
-                if ((!rRes.data || rRes.data.length === 0) && localRead && localRead.length > 0) {
-                    const payload = localRead.map(item => ({ ...item, user_id: currentUser.id }));
-                    await supabaseClient.from('readlist').insert(payload);
-                }
+        let musicDatabase = JSON.parse(localStorage.getItem('peaks_musiclist')) || [
+            {
+                id: 'm1',
+                title: 'Die For You',
+                artist: 'The Weeknd',
+                album: 'Starboy',
+                genre: 'R&B',
+                year: '2016',
+                platform: 'Spotify',
+                rating: 9.4,
+                tags: ['slowed', 'reverb', 'dark'],
+                date: '2026-01-20',
+                favorite: true,
+                cover: 'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/36/45/90/3645903b-d36c-9c9e-5dfb-12d99d3e813f/16UMGIM45887.rgb.jpg/600x600bb.jpg',
+                notes: 'Chorus drop is prime for cinematic character edits.'
+            }
+        ];
 
-                // Re-fetch after potential migration
-                const [wFinal, mFinal, cFinal, rFinal] = await Promise.all([
-                    supabaseClient.from('watchlist').select('*').eq('user_id', currentUser.id),
-                    supabaseClient.from('musiclist').select('*').eq('user_id', currentUser.id),
-                    supabaseClient.from('comiclist').select('*').eq('user_id', currentUser.id),
-                    supabaseClient.from('readlist').select('*').eq('user_id', currentUser.id)
-                ]);
+        let currentWatchTab = 'all';
+        let currentMusicTab = 'all';
 
-                watchDatabase = wFinal.data || [];
-                musicDatabase = mFinal.data || [];
-                comicDatabase = cFinal.data || [];
-                readDatabase = rFinal.data || [];
+        function switchApp(appKey) {
+            document.getElementById('portal-screen').classList.add('hidden');
+            document.getElementById('watchlist-app').classList.add('hidden');
+            document.getElementById('musiclist-app').classList.add('hidden');
 
-                // Cache locally
-                localStorage.setItem('peaks_watchlist', JSON.stringify(watchDatabase));
-                localStorage.setItem('peaks_musiclist', JSON.stringify(musicDatabase));
-                localStorage.setItem('peaks_comiclist', JSON.stringify(comicDatabase));
-                localStorage.setItem('peaks_readlist', JSON.stringify(readDatabase));
-
+            if (appKey === 'watchlist') {
+                document.getElementById('watchlist-app').classList.remove('hidden');
                 renderWatchlist();
+            } else if (appKey === 'musiclist') {
+                document.getElementById('musiclist-app').classList.remove('hidden');
                 renderMusiclist();
-                comicManager.render();
-                readManager.render();
-            } catch (err) {
-                console.error("Cloud sync error:", err);
-                // Fallback to local cache
-                watchDatabase = JSON.parse(localStorage.getItem('peaks_watchlist')) || [];
-                musicDatabase = JSON.parse(localStorage.getItem('peaks_musiclist')) || [];
-                comicDatabase = JSON.parse(localStorage.getItem('peaks_comiclist')) || [];
-                readDatabase = JSON.parse(localStorage.getItem('peaks_readlist')) || [];
             }
         }
 
-        // --- APP NAVIGATION ---
-        function switchApp(appKey) {
-            ['portal-screen', 'watchlist-app', 'musiclist-app', 'comiclist-app', 'readlist-app'].forEach(id => {
-                document.getElementById(id).classList.add('hidden');
-            });
-            document.getElementById(`${appKey}-app`).classList.remove('hidden');
-            if (appKey === 'watchlist') renderWatchlist();
-            if (appKey === 'musiclist') renderMusiclist();
-            if (appKey === 'comiclist') comicManager.render();
-            if (appKey === 'readlist') readManager.render();
-        }
-
         function returnToPortal() {
-            ['watchlist-app', 'musiclist-app', 'comiclist-app', 'readlist-app'].forEach(id => {
-                document.getElementById(id).classList.add('hidden');
-            });
+            document.getElementById('watchlist-app').classList.add('hidden');
+            document.getElementById('musiclist-app').classList.add('hidden');
             document.getElementById('portal-screen').classList.remove('hidden');
         }
 
-        // --- WATCHLIST LOGIC ---
-        let currentWatchTab = 'all';
+        // --- RELIABLE WATCHLIST API SEARCH (TVMAZE / TV/DRAMA CATALOG) ---
+        async function searchOnlineWatchlist() {
+            const query = document.getElementById('w-api-search-input').value.trim();
+            const resultsBox = document.getElementById('w-api-results');
+            if (!query) return;
+
+            resultsBox.innerHTML = `<p class="text-[11px] text-textMuted py-2 text-center"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Searching online archive...</p>`;
+
+            try {
+                const response = await fetch(`https://api.tvmaze.com/search/shows?q=${encodeURIComponent(query)}`);
+                const data = await response.json();
+
+                if (!data || data.length === 0) {
+                    resultsBox.innerHTML = `<p class="text-[11px] text-rose-500 py-2 text-center">No shows or dramas found. Try another title.</p>`;
+                    return;
+                }
+
+                resultsBox.innerHTML = data.slice(0, 6).map(item => {
+                    const show = item.show;
+                    const cleanTitle = (show.name || '').replace(/'/g, "\\'");
+                    const year = show.premiered ? show.premiered.split('-')[0] : '';
+                    const country = show.network && show.network.country ? show.network.country.name : (show.webChannel && show.webChannel.country ? show.webChannel.country.name : '');
+                    const poster = show.image && show.image.original ? show.image.original : (show.image && show.image.medium ? show.image.medium : '');
+                    const summary = show.summary ? show.summary.replace(/<[^>]*>?/gm, '').substring(0, 140) + '...' : '';
+                    const genres = show.genres ? show.genres.join(', ') : 'Series';
+
+                    return `
+                        <div onclick="selectWatchResult('${cleanTitle}', '${year}', '${country}', '${genres}', '${poster}', '${summary.replace(/'/g, "\\'")}')" class="flex items-center space-x-3 p-2.5 rounded-xl bg-bgSurface hover:bg-bgCard border border-borderSubtle cursor-pointer transition-all shadow-xs">
+                            <img src="${poster || 'https://via.placeholder.com/50x75?text=No+Img'}" class="w-10 h-14 object-cover rounded-lg shrink-0">
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-xs font-semibold truncate">${show.name} (${year || 'N/A'})</h4>
+                                <p class="text-[10px] text-textMuted truncate">${genres} • ${country || 'Global'}</p>
+                            </div>
+                            <span class="text-[10px] bg-textMain text-bgMain px-2.5 py-1 rounded-lg shrink-0 font-medium">Select</span>
+                        </div>
+                    `;
+                }).join('');
+            } catch (err) {
+                resultsBox.innerHTML = `<p class="text-[11px] text-rose-500 py-2 text-center">Connection error. Please check your internet connection.</p>`;
+            }
+        }
+
+        function selectWatchResult(title, year, country, genres, poster, summary) {
+            document.getElementById('w-form-title-input').value = title;
+            document.getElementById('w-form-year').value = year;
+            document.getElementById('w-form-country').value = country;
+            document.getElementById('w-form-art-base64').value = poster;
+            document.getElementById('w-form-notes').value = summary;
+            
+            // Set type based on genres
+            const typeSelect = document.getElementById('w-form-type');
+            if (genres.toLowerCase().includes('animation') || genres.toLowerCase().includes('anime')) {
+                typeSelect.value = 'Anime';
+            } else if (genres.toLowerCase().includes('documentary')) {
+                typeSelect.value = 'Documentary';
+            } else {
+                typeSelect.value = 'Series';
+            }
+
+            document.getElementById('w-api-results').innerHTML = `<p class="text-[11px] text-emerald-600 font-semibold py-1.5 text-center bg-emerald-50 rounded-lg border border-emerald-200">✓ Metadata and poster auto-filled successfully!</p>`;
+        }
+
+        // --- RELIABLE MUSIC API SEARCH WITH SAFE DATA BINDING ---
+async function searchOnlineMusiclist() {
+    const query = document.getElementById('m-api-search-input').value.trim();
+    const resultsBox = document.getElementById('m-api-results');
+    if (!query) return;
+
+    resultsBox.innerHTML = `<p class="text-[11px] text-textMuted py-2 text-center"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Searching music catalog...</p>`;
+
+    try {
+        let response = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&country=TH&entity=song&limit=6`);
+        let data = await response.json();
+
+        if (!data.results || data.results.length === 0) {
+            response = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=6`);
+            data = await response.json();
+        }
+
+        if (!data.results || data.results.length === 0) {
+            resultsBox.innerHTML = `<p class="text-[11px] text-rose-500 py-2 text-center">No tracks found. Fill in manually below!</p>`;
+            return;
+        }
+
+        // Store results globally in a temporary array so index selection is 100% safe from string breaking
+        window._tempMusicResults = data.results;
+
+        resultsBox.innerHTML = data.results.map((track, index) => {
+            const cover = track.artworkUrl100 ? track.artworkUrl100.replace('100x100bb', '800x800bb') : '';
+            return `
+                <div onclick="selectMusicResultByIndex(${index})" class="flex items-center space-x-3 p-2.5 rounded-xl bg-bgSurface hover:bg-bgCard border border-borderSubtle cursor-pointer transition-all shadow-xs">
+                    <img src="${cover || 'https://via.placeholder.com/50x50?text=No+Art'}" class="w-10 h-10 object-cover rounded-lg shrink-0">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-xs font-semibold truncate">${track.trackName}</h4>
+                        <p class="text-[10px] text-textMuted truncate">${track.artistName} • ${track.collectionName || ''}</p>
+                    </div>
+                    <span class="text-[10px] bg-textMain text-bgMain px-2.5 py-1 rounded-lg shrink-0 font-medium">Select</span>
+                </div>
+            `;
+        }).join('');
+    } catch (err) {
+        resultsBox.innerHTML = `<p class="text-[11px] text-rose-500 py-2 text-center">Connection error during search.</p>`;
+    }
+}
+
+function selectMusicResultByIndex(index) {
+    const track = window._tempMusicResults[index];
+    if (!track) return;
+
+    document.getElementById('m-form-title-input').value = track.trackName || '';
+    document.getElementById('m-form-artist').value = track.artistName || '';
+    document.getElementById('m-form-album').value = track.collectionName || '';
+    document.getElementById('m-form-year').value = track.releaseDate ? track.releaseDate.split('-')[0] : '';
+    document.getElementById('m-form-art-base64').value = track.artworkUrl100 ? track.artworkUrl100.replace('100x100bb', '800x800bb') : '';
+    
+    const genre = track.primaryGenreName || 'T-Pop';
+    const genreSelect = document.getElementById('m-form-genre');
+    for(let opt of genreSelect.options) {
+        if(genre.toLowerCase().includes(opt.value.toLowerCase())) {
+            genreSelect.value = opt.value;
+            break;
+        }
+    }
+
+    document.getElementById('m-api-results').innerHTML = `<p class="text-[11px] text-emerald-600 font-semibold py-1.5 text-center bg-emerald-50 rounded-lg border border-emerald-200">✓ Track metadata & cover auto-filled successfully!</p>`;
+}
+        // --- WATCHLIST RENDER & LOGIC ---
         function setWatchTab(tab) {
             currentWatchTab = tab;
             ['all', 'watched', 'watchlist', 'favorites'].forEach(t => {
@@ -1249,55 +911,75 @@
             `).join('');
         }
 
-        async function searchOnlineWatchlist() {
-            const query = document.getElementById('w-api-search-input').value.trim();
-            const resultsBox = document.getElementById('w-api-results');
-            if (!query) return;
-            resultsBox.innerHTML = `<p class="text-[11px] text-textMuted py-2 text-center"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Searching online archive...</p>`;
-            try {
-                const response = await fetch(`https://api.tvmaze.com/search/shows?q=${encodeURIComponent(query)}`);
-                const data = await response.json();
-                if (!data || data.length === 0) {
-                    resultsBox.innerHTML = `<p class="text-[11px] text-rose-500 py-2 text-center">No shows found.</p>`;
-                    return;
-                }
-                resultsBox.innerHTML = data.slice(0, 5).map(item => {
-                    const show = item.show;
-                    const cleanTitle = (show.name || '').replace(/'/g, "\\'");
-                    const year = show.premiered ? show.premiered.split('-')[0] : '';
-                    const country = show.network && show.network.country ? show.network.country.name : '';
-                    const poster = show.image && show.image.original ? show.image.original : '';
-                    const summary = show.summary ? show.summary.replace(/<[^>]*>?/gm, '').substring(0, 100) + '...' : '';
-                    const genres = show.genres ? show.genres.join(', ') : 'Series';
-                    return `
-                        <div onclick="selectWatchResult('${cleanTitle}', '${year}', '${country}', '${genres}', '${poster}', '${summary.replace(/'/g, "\\'")}')" class="flex items-center space-x-3 p-2 rounded-xl bg-bgSurface hover:bg-bgCard border border-borderSubtle cursor-pointer">
-                            <img src="${poster || 'https://via.placeholder.com/40x60?text=No+Img'}" class="w-8 h-12 object-cover rounded">
-                            <div class="flex-1 min-w-0">
-                                <h4 class="text-xs font-semibold truncate">${show.name} (${year || 'N/A'})</h4>
-                                <p class="text-[10px] text-textMuted truncate">${genres}</p>
-                            </div>
-                            <span class="text-[10px] bg-textMain text-bgMain px-2 py-1 rounded">Select</span>
-                        </div>
-                    `;
-                }).join('');
-            } catch (err) {
-                resultsBox.innerHTML = `<p class="text-[11px] text-rose-500 py-2 text-center">Search error.</p>`;
+        // --- MUSICLIST RENDER & LOGIC ---
+        function setMusicTab(tab) {
+            currentMusicTab = tab;
+            ['all', 'favorites'].forEach(t => {
+                const btn = document.getElementById(`m-tab-${t}`);
+                if (btn) btn.className = (t === tab) ? 'px-3 py-1.5 rounded-lg font-medium transition-all tab-active' : 'px-3 py-1.5 rounded-lg font-medium transition-all tab-inactive';
+            });
+            renderMusiclist();
+        }
+
+        function renderMusiclist() {
+            const grid = document.getElementById('musiclist-grid');
+            const search = document.getElementById('music-search').value.toLowerCase();
+            const filterGenre = document.getElementById('music-filter-genre').value;
+            const sortMode = document.getElementById('music-sort').value;
+
+            let filtered = musicDatabase.filter(item => {
+                const matchesTab = currentMusicTab === 'all' ? true : item.favorite;
+                const matchesGenre = filterGenre === 'all' || item.genre === filterGenre;
+                const matchesSearch = !search || item.title.toLowerCase().includes(search) || item.artist.toLowerCase().includes(search);
+                return matchesTab && matchesGenre && matchesSearch;
+            });
+
+            filtered.sort((a, b) => {
+                if (sortMode === 'date-desc') return new Date(b.date || 0) - new Date(a.date || 0);
+                if (sortMode === 'rating-desc') return b.rating - a.rating;
+                if (sortMode === 'title-asc') return a.title.localeCompare(b.title);
+                if (sortMode === 'artist-asc') return a.artist.localeCompare(b.artist);
+                return 0;
+            });
+
+            // STRICTLY TOTALS AS REQUESTED
+            document.getElementById('music-count-display').innerText = `Showing ${filtered.length} tracks`;
+            document.getElementById('music-stats-display').innerText = `Total: ${musicDatabase.length}`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full py-20 text-center text-textMuted"><i class="fa-solid fa-music text-3xl mb-3 opacity-40"></i><p class="text-xs uppercase tracking-wider">No matching tracks found</p></div>`;
+                return;
             }
+
+            grid.innerHTML = filtered.map(item => `
+                <div onclick="openMusicDetailView('${item.id}')" class="group bg-bgSurface border border-borderSubtle hover:border-textMain rounded-2xl overflow-hidden transition-all duration-300 shadow-editorial hover:shadow-editorial-hover cursor-pointer flex flex-col">
+                    <div class="aspect-square bg-bgCard relative overflow-hidden flex items-center justify-center">
+                        ${item.cover ? `<img src="${item.cover}" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">` : `<div class="text-center p-4"><i class="fa-solid fa-compact-disc text-3xl text-textMuted/40 mb-2"></i><span class="block editorial-title text-xl text-textMuted line-clamp-1 px-2">${item.title}</span></div>`}
+                        <div class="absolute top-3 left-3"><span class="bg-bgSurface/90 backdrop-blur-xs text-[10px] font-medium px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">${item.genre}</span></div>
+                        ${item.favorite ? `<div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-bgSurface/90 backdrop-blur-xs border border-borderSubtle flex items-center justify-center text-amber-600 shadow-xs"><i class="fa-solid fa-heart text-[10px]"></i></div>` : ''}
+                        <div class="absolute bottom-3 right-3 bg-bgSurface/90 backdrop-blur-xs text-[10px] font-semibold px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">★ ${item.rating}</div>
+                    </div>
+                    <div class="p-4 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h3 class="editorial-title text-xl leading-tight mb-0.5 group-hover:text-accentGold transition-colors truncate">${item.title}</h3>
+                            <p class="text-[11px] text-textMuted truncate">${item.artist}</p>
+                        </div>
+                        <div class="flex items-center justify-between mt-3 pt-3 border-t border-borderSubtle text-[10px] text-textMuted">
+                            <span class="truncate pr-2">${item.album || 'Single'}</span>
+                            <span class="shrink-0">${item.platform || ''}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
         }
 
-        function selectWatchResult(title, year, country, genres, poster, summary) {
-            document.getElementById('w-form-title-input').value = title;
-            document.getElementById('w-form-year').value = year;
-            document.getElementById('w-form-country').value = country;
-            document.getElementById('w-form-art-base64').value = poster;
-            document.getElementById('w-form-notes').value = summary;
-            document.getElementById('w-api-results').innerHTML = `<p class="text-[11px] text-emerald-600 font-semibold py-1 text-center">✓ Auto-filled!</p>`;
-        }
-
+        // --- WATCHLIST MODALS & PERSISTENCE ---
         function openWatchModal(item = null) {
             document.getElementById('w-entry-form').reset();
             document.getElementById('w-form-id').value = '';
             document.getElementById('w-api-results').innerHTML = '';
+            document.getElementById('w-api-search-input').value = '';
+
             if (item) {
                 document.getElementById('w-form-title').innerText = 'Edit Watchlist Entry';
                 document.getElementById('w-form-id').value = item.id;
@@ -1331,12 +1013,11 @@
             reader.readAsDataURL(file);
         }
 
-        async function saveWatchEntry(e) {
+        function saveWatchEntry(e) {
             e.preventDefault();
             const id = document.getElementById('w-form-id').value;
             const entryData = {
                 id: id || 'w_' + Date.now(),
-                user_id: currentUser ? currentUser.id : null,
                 title: document.getElementById('w-form-title-input').value,
                 type: document.getElementById('w-form-type').value,
                 director: document.getElementById('w-form-director').value,
@@ -1352,13 +1033,12 @@
                 notes: document.getElementById('w-form-notes').value
             };
 
-            if (currentUser) {
-                await supabaseClient.from('watchlist').upsert([entryData]);
+            if (id) {
+                const index = watchDatabase.findIndex(i => i.id === id);
+                if (index !== -1) watchDatabase[index] = entryData;
+            } else {
+                watchDatabase.unshift(entryData);
             }
-
-            const index = watchDatabase.findIndex(i => i.id === entryData.id);
-            if (index !== -1) watchDatabase[index] = entryData;
-            else watchDatabase.unshift(entryData);
 
             localStorage.setItem('peaks_watchlist', JSON.stringify(watchDatabase));
             closeWatchModal();
@@ -1381,19 +1061,19 @@
                             ${item.favorite ? '<span class="text-amber-600 text-xs"><i class="fa-solid fa-heart"></i></span>' : ''}
                         </div>
                         <h2 class="editorial-title text-4xl mb-1">${item.title}</h2>
-                        <p class="text-xs text-textMuted mb-4">${item.director || 'Unknown Creator'} ${item.year ? `(${item.year})` : ''}</p>
+                        <p class="text-xs text-textMuted mb-4">${item.director || 'Unknown Creator'} ${item.year ? `(${item.year})` : ''} ${item.country ? `• ${item.country}` : ''}</p>
                         <div class="grid grid-cols-2 gap-4 py-3 border-y border-borderSubtle text-xs mb-4">
                             <div><span class="text-textMuted block text-[10px] uppercase">Rating</span><span class="font-semibold text-sm">★ ${item.rating} / 10</span></div>
                             <div><span class="text-textMuted block text-[10px] uppercase">Platform</span><span class="font-semibold text-sm">${item.platform || 'N/A'}</span></div>
                         </div>
                     </div>
                 </div>
-                ${item.notes ? `<div class="bg-bgCard border border-borderSubtle rounded-xl p-4 mb-6"><h4 class="text-[10px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Notes</h4><p class="text-xs text-textMain leading-relaxed whitespace-pre-line">${item.notes}</p></div>` : ''}
+                ${item.notes ? `<div class="bg-bgCard border border-borderSubtle rounded-xl p-4 mb-6"><h4 class="text-[10px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Notes & Edit Ideas</h4><p class="text-xs text-textMain leading-relaxed whitespace-pre-line">${item.notes}</p></div>` : ''}
                 <div class="flex justify-between items-center pt-4 border-t border-borderSubtle">
                     <span class="text-[11px] text-textMuted">Added: ${item.date || 'N/A'}</span>
                     <div class="flex items-center space-x-3">
                         <button onclick="deleteWatchItem('${item.id}')" class="px-4 py-2 rounded-xl border border-rose-200 bg-rose-50 text-rose-600 text-xs font-medium">Delete</button>
-                        <button onclick="closeWatchDetail(); openWatchModal(watchDatabase.find(i => i.id === '${item.id}'))" class="px-5 py-2 rounded-xl bg-textMain text-bgMain text-xs font-medium">Edit</button>
+                        <button onclick="closeWatchDetail(); openWatchModal(watchDatabase.find(i => i.id === '${item.id}'))" class="px-5 py-2 rounded-xl bg-textMain text-bgMain text-xs font-medium">Edit Entry</button>
                     </div>
                 </div>
             `;
@@ -1402,11 +1082,8 @@
 
         function closeWatchDetail() { document.getElementById('w-detail-modal').style.display = 'none'; }
 
-        async function deleteWatchItem(id) {
+        function deleteWatchItem(id) {
             if (!confirm('Are you sure you want to delete this entry?')) return;
-            if (currentUser) {
-                await supabaseClient.from('watchlist').delete().eq('id', id);
-            }
             watchDatabase = watchDatabase.filter(i => i.id !== id);
             localStorage.setItem('peaks_watchlist', JSON.stringify(watchDatabase));
             closeWatchDetail();
@@ -1418,114 +1095,13 @@
             openWatchDetailView(watchDatabase[Math.floor(Math.random() * watchDatabase.length)].id);
         }
 
-        // --- MUSICLIST LOGIC ---
-        let currentMusicTab = 'all';
-        function setMusicTab(tab) {
-            currentMusicTab = tab;
-            ['all', 'favorites'].forEach(t => {
-                const btn = document.getElementById(`m-tab-${t}`);
-                if (btn) btn.className = (t === tab) ? 'px-3 py-1.5 rounded-lg font-medium transition-all tab-active' : 'px-3 py-1.5 rounded-lg font-medium transition-all tab-inactive';
-            });
-            renderMusiclist();
-        }
-
-        function renderMusiclist() {
-            const grid = document.getElementById('musiclist-grid');
-            const search = document.getElementById('music-search').value.toLowerCase();
-            const filterGenre = document.getElementById('music-filter-genre').value;
-            const sortMode = document.getElementById('music-sort').value;
-
-            let filtered = musicDatabase.filter(item => {
-                const matchesTab = currentMusicTab === 'all' ? true : item.favorite;
-                const matchesGenre = filterGenre === 'all' || item.genre === filterGenre;
-                const matchesSearch = !search || item.title.toLowerCase().includes(search) || item.artist.toLowerCase().includes(search);
-                return matchesTab && matchesGenre && matchesSearch;
-            });
-
-            filtered.sort((a, b) => {
-                if (sortMode === 'date-desc') return new Date(b.date || 0) - new Date(a.date || 0);
-                if (sortMode === 'rating-desc') return b.rating - a.rating;
-                if (sortMode === 'title-asc') return a.title.localeCompare(b.title);
-                if (sortMode === 'artist-asc') return a.artist.localeCompare(b.artist);
-                return 0;
-            });
-
-            document.getElementById('music-count-display').innerText = `Showing ${filtered.length} tracks`;
-            document.getElementById('music-stats-display').innerText = `Total: ${musicDatabase.length}`;
-
-            if (filtered.length === 0) {
-                grid.innerHTML = `<div class="col-span-full py-20 text-center text-textMuted"><i class="fa-solid fa-music text-3xl mb-3 opacity-40"></i><p class="text-xs uppercase tracking-wider">No matching tracks found</p></div>`;
-                return;
-            }
-
-            grid.innerHTML = filtered.map(item => `
-                <div onclick="openMusicDetailView('${item.id}')" class="group bg-bgSurface border border-borderSubtle hover:border-textMain rounded-2xl overflow-hidden transition-all duration-300 shadow-editorial hover:shadow-editorial-hover cursor-pointer flex flex-col">
-                    <div class="aspect-square bg-bgCard relative overflow-hidden flex items-center justify-center">
-                        ${item.cover ? `<img src="${item.cover}" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">` : `<div class="text-center p-4"><i class="fa-solid fa-compact-disc text-3xl text-textMuted/40 mb-2"></i><span class="block editorial-title text-xl text-textMuted line-clamp-1 px-2">${item.title}</span></div>`}
-                        <div class="absolute top-3 left-3"><span class="bg-bgSurface/90 backdrop-blur-xs text-[10px] font-medium px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">${item.genre}</span></div>
-                        ${item.favorite ? `<div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-bgSurface/90 backdrop-blur-xs border border-borderSubtle flex items-center justify-center text-amber-600 shadow-xs"><i class="fa-solid fa-heart text-[10px]"></i></div>` : ''}
-                        <div class="absolute bottom-3 right-3 bg-bgSurface/90 backdrop-blur-xs text-[10px] font-semibold px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">★ ${item.rating}</div>
-                    </div>
-                    <div class="p-4 flex-1 flex flex-col justify-between">
-                        <div>
-                            <h3 class="editorial-title text-xl leading-tight mb-0.5 group-hover:text-accentGold transition-colors truncate">${item.title}</h3>
-                            <p class="text-[11px] text-textMuted truncate">${item.artist}</p>
-                        </div>
-                        <div class="flex items-center justify-between mt-3 pt-3 border-t border-borderSubtle text-[10px] text-textMuted">
-                            <span class="truncate pr-2">${item.album || 'Single'}</span>
-                            <span class="shrink-0">${item.platform || ''}</span>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        async function searchOnlineMusiclist() {
-            const query = document.getElementById('m-api-search-input').value.trim();
-            const resultsBox = document.getElementById('m-api-results');
-            if (!query) return;
-            resultsBox.innerHTML = `<p class="text-[11px] text-textMuted py-2 text-center"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Searching music catalog...</p>`;
-            try {
-                const response = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=5`);
-                const data = await response.json();
-                if (!data.results || data.results.length === 0) {
-                    resultsBox.innerHTML = `<p class="text-[11px] text-rose-500 py-2 text-center">No tracks found.</p>`;
-                    return;
-                }
-                window._tempMusicResults = data.results;
-                resultsBox.innerHTML = data.results.map((track, index) => {
-                    const cover = track.artworkUrl100 ? track.artworkUrl100.replace('100x100bb', '600x600bb') : '';
-                    return `
-                        <div onclick="selectMusicResultByIndex(${index})" class="flex items-center space-x-3 p-2 rounded-xl bg-bgSurface hover:bg-bgCard border border-borderSubtle cursor-pointer">
-                            <img src="${cover || 'https://via.placeholder.com/40x40?text=No+Art'}" class="w-10 h-10 object-cover rounded">
-                            <div class="flex-1 min-w-0">
-                                <h4 class="text-xs font-semibold truncate">${track.trackName}</h4>
-                                <p class="text-[10px] text-textMuted truncate">${track.artistName}</p>
-                            </div>
-                            <span class="text-[10px] bg-textMain text-bgMain px-2 py-1 rounded">Select</span>
-                        </div>
-                    `;
-                }).join('');
-            } catch (err) {
-                resultsBox.innerHTML = `<p class="text-[11px] text-rose-500 py-2 text-center">Search error.</p>`;
-            }
-        }
-
-        function selectMusicResultByIndex(index) {
-            const track = window._tempMusicResults[index];
-            if (!track) return;
-            document.getElementById('m-form-title-input').value = track.trackName || '';
-            document.getElementById('m-form-artist').value = track.artistName || '';
-            document.getElementById('m-form-album').value = track.collectionName || '';
-            document.getElementById('m-form-year').value = track.releaseDate ? track.releaseDate.split('-')[0] : '';
-            document.getElementById('m-form-art-base64').value = track.artworkUrl100 ? track.artworkUrl100.replace('100x100bb', '600x600bb') : '';
-            document.getElementById('m-api-results').innerHTML = `<p class="text-[11px] text-emerald-600 font-semibold py-1 text-center">✓ Track auto-filled!</p>`;
-        }
-
+        // --- MUSICLIST MODALS & PERSISTENCE ---
         function openMusicModal(item = null) {
             document.getElementById('m-entry-form').reset();
             document.getElementById('m-form-id').value = '';
             document.getElementById('m-api-results').innerHTML = '';
+            document.getElementById('m-api-search-input').value = '';
+
             if (item) {
                 document.getElementById('m-form-title').innerText = 'Edit Track Entry';
                 document.getElementById('m-form-id').value = item.id;
@@ -1558,12 +1134,11 @@
             reader.readAsDataURL(file);
         }
 
-        async function saveMusicEntry(e) {
+        function saveMusicEntry(e) {
             e.preventDefault();
             const id = document.getElementById('m-form-id').value;
             const entryData = {
                 id: id || 'm_' + Date.now(),
-                user_id: currentUser ? currentUser.id : null,
                 title: document.getElementById('m-form-title-input').value,
                 artist: document.getElementById('m-form-artist').value,
                 album: document.getElementById('m-form-album').value,
@@ -1578,13 +1153,12 @@
                 notes: document.getElementById('m-form-notes').value
             };
 
-            if (currentUser) {
-                await supabaseClient.from('musiclist').upsert([entryData]);
+            if (id) {
+                const index = musicDatabase.findIndex(i => i.id === id);
+                if (index !== -1) musicDatabase[index] = entryData;
+            } else {
+                musicDatabase.unshift(entryData);
             }
-
-            const index = musicDatabase.findIndex(i => i.id === entryData.id);
-            if (index !== -1) musicDatabase[index] = entryData;
-            else musicDatabase.unshift(entryData);
 
             localStorage.setItem('peaks_musiclist', JSON.stringify(musicDatabase));
             closeMusicModal();
@@ -1606,19 +1180,19 @@
                             ${item.favorite ? '<span class="text-amber-600 text-xs"><i class="fa-solid fa-heart"></i></span>' : ''}
                         </div>
                         <h2 class="editorial-title text-4xl mb-1">${item.title}</h2>
-                        <p class="text-xs text-textMuted mb-4">${item.artist} ${item.album ? `• ${item.album}` : ''}</p>
+                        <p class="text-xs text-textMuted mb-4">${item.artist} ${item.album ? `• ${item.album}` : ''} ${item.year ? `(${item.year})` : ''}</p>
                         <div class="grid grid-cols-2 gap-4 py-3 border-y border-borderSubtle text-xs mb-4">
                             <div><span class="text-textMuted block text-[10px] uppercase">Rating</span><span class="font-semibold text-sm">★ ${item.rating} / 10</span></div>
                             <div><span class="text-textMuted block text-[10px] uppercase">Platform</span><span class="font-semibold text-sm">${item.platform || 'N/A'}</span></div>
                         </div>
                     </div>
                 </div>
-                ${item.notes ? `<div class="bg-bgCard border border-borderSubtle rounded-xl p-4 mb-6"><h4 class="text-[10px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Notes</h4><p class="text-xs text-textMain leading-relaxed whitespace-pre-line">${item.notes}</p></div>` : ''}
+                ${item.notes ? `<div class="bg-bgCard border border-borderSubtle rounded-xl p-4 mb-6"><h4 class="text-[10px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Notes & Edit Audio Timestamp</h4><p class="text-xs text-textMain leading-relaxed whitespace-pre-line">${item.notes}</p></div>` : ''}
                 <div class="flex justify-between items-center pt-4 border-t border-borderSubtle">
                     <span class="text-[11px] text-textMuted">Added: ${item.date || 'N/A'}</span>
                     <div class="flex items-center space-x-3">
                         <button onclick="deleteMusicItem('${item.id}')" class="px-4 py-2 rounded-xl border border-rose-200 bg-rose-50 text-rose-600 text-xs font-medium">Delete</button>
-                        <button onclick="closeMusicDetail(); openMusicModal(musicDatabase.find(i => i.id === '${item.id}'))" class="px-5 py-2 rounded-xl bg-textMain text-bgMain text-xs font-medium">Edit</button>
+                        <button onclick="closeMusicDetail(); openMusicModal(musicDatabase.find(i => i.id === '${item.id}'))" class="px-5 py-2 rounded-xl bg-textMain text-bgMain text-xs font-medium">Edit Track</button>
                     </div>
                 </div>
             `;
@@ -1627,11 +1201,8 @@
 
         function closeMusicDetail() { document.getElementById('m-detail-modal').style.display = 'none'; }
 
-        async function deleteMusicItem(id) {
+        function deleteMusicItem(id) {
             if (!confirm('Are you sure you want to delete this track?')) return;
-            if (currentUser) {
-                await supabaseClient.from('musiclist').delete().eq('id', id);
-            }
             musicDatabase = musicDatabase.filter(i => i.id !== id);
             localStorage.setItem('peaks_musiclist', JSON.stringify(musicDatabase));
             closeMusicDetail();
@@ -1643,413 +1214,33 @@
             openMusicDetailView(musicDatabase[Math.floor(Math.random() * musicDatabase.length)].id);
         }
 
-        // --- COMICMANAGER LOGIC ---
-        const comicManager = {
-            onlyFavorites: false,
-            openModal(comic = null) {
-                document.getElementById('comicForm').reset();
-                document.getElementById('comicId').value = '';
-                document.getElementById('apiSearchResults').innerHTML = '';
-                document.getElementById('apiSearchResults').classList.add('hidden');
-                if (comic) {
-                    document.getElementById('modalTitle').innerText = 'Edit Comic';
-                    document.getElementById('comicId').value = comic.id;
-                    document.getElementById('formTitle').value = comic.title;
-                    document.getElementById('formAltTitle').value = comic.altTitle || '';
-                    document.getElementById('formType').value = comic.type;
-                    document.getElementById('formReadingStatus').value = comic.readingStatus;
-                    document.getElementById('formStatus').value = comic.status;
-                    document.getElementById('formGenres').value = comic.genres ? comic.genres.join(', ') : '';
-                    document.getElementById('formAuthor').value = comic.author || '';
-                    document.getElementById('formChaptersRead').value = comic.chaptersRead;
-                    document.getElementById('formTotalChapters').value = comic.totalChapters;
-                    document.getElementById('formRating').value = comic.rating;
-                    document.getElementById('formStartDate').value = comic.startDate || '';
-                    document.getElementById('formFinishDate').value = comic.finishDate || '';
-                    document.getElementById('formCoverUrl').value = comic.coverUrl || '';
-                    document.getElementById('formFavorite').checked = !!comic.favorite;
-                    document.getElementById('formNotes').value = comic.notes || '';
-                } else {
-                    document.getElementById('modalTitle').innerText = 'Add New Comic';
-                }
-                document.getElementById('comicModal').style.display = 'flex';
-            },
-            closeModal() { document.getElementById('comicModal').style.display = 'none'; },
-            closeDetail() { document.getElementById('comicDetailModal').style.display = 'none'; },
-            toggleFavoriteFilter() {
-                this.onlyFavorites = !this.onlyFavorites;
-                const btn = document.getElementById('filterFavBtn');
-                btn.className = this.onlyFavorites ? 'bg-textMain text-bgMain rounded-xl px-3 py-2.5 text-xs transition-colors flex items-center gap-1.5 shadow-xs' : 'bg-bgSurface border border-borderSubtle rounded-xl px-3 py-2.5 text-xs text-textMuted hover:text-amber-600 hover:border-textMain transition-colors flex items-center gap-1.5 shadow-xs';
-                this.render();
-            },
-            async handleApiSearch(query) {
-                const resultsBox = document.getElementById('apiSearchResults');
-                if (!query || query.length < 3) {
-                    resultsBox.innerHTML = '';
-                    resultsBox.classList.add('hidden');
-                    return;
-                }
-                try {
-                    const res = await fetch('https://graphql.anilist.co', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                        body: JSON.stringify({
-                            query: `query ($search: String) { Page(page: 1, perPage: 5) { media(search: $search, type: MANGA) { id title { romaji english } coverImage { large } chapters status genres staff { nodes { name { full } } } } } }`,
-                            variables: { search: query }
-                        })
-                    });
-                    const json = await res.json();
-                    const media = json.data?.Page?.media || [];
-                    if (media.length === 0) {
-                        resultsBox.innerHTML = `<div class="p-3 text-xs text-textMuted">No comics found.</div>`;
-                        resultsBox.classList.remove('hidden');
-                        return;
-                    }
-                    resultsBox.innerHTML = media.map(m => {
-                        const title = m.title.english || m.title.romaji;
-                        const author = m.staff?.nodes?.[0]?.name?.full || '';
-                        return `
-                            <div onclick="comicManager.selectApiMedia(${m.id}, '${title.replace(/'/g, "\\'")}', '${(m.title.romaji || '').replace(/'/g, "\\'")}', '${m.coverImage?.large || ''}', ${m.chapters || 0}, '${m.status || 'Releasing'}', '${(m.genres || []).join(', ')}', '${author.replace(type => type, '')}')" class="flex items-center gap-3 p-2 hover:bg-bgCard cursor-pointer border-b border-borderSubtle text-xs">
-                                <img src="${m.coverImage?.large || ''}" class="w-8 h-10 object-cover rounded">
-                                <div class="flex-1 truncate">
-                                    <div class="font-semibold truncate">${title}</div>
-                                    <div class="text-[10px] text-textMuted">${m.chapters || '?'} ch • ${m.status}</div>
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
-                    resultsBox.classList.remove('hidden');
-                } catch(e) { console.error(e); }
-            },
-            selectApiMedia(id, title, altTitle, cover, chapters, status, genres, author) {
-                document.getElementById('formTitle').value = title;
-                document.getElementById('formAltTitle').value = altTitle;
-                document.getElementById('formCoverUrl').value = cover;
-                document.getElementById('formTotalChapters').value = chapters || 0;
-                document.getElementById('formGenres').value = genres;
-                document.getElementById('formAuthor').value = author;
-                document.getElementById('formStatus').value = status === 'RELEASING' ? 'Releasing' : 'Finished';
-                document.getElementById('apiSearchResults').classList.add('hidden');
-            },
-            async saveComic(e) {
-                e.preventDefault();
-                const id = document.getElementById('comicId').value;
-                const comicData = {
-                    id: id || 'c_' + Date.now(),
-                    user_id: currentUser ? currentUser.id : null,
-                    title: document.getElementById('formTitle').value,
-                    altTitle: document.getElementById('formAltTitle').value,
-                    type: document.getElementById('formType').value,
-                    readingStatus: document.getElementById('formReadingStatus').value,
-                    status: document.getElementById('formStatus').value,
-                    genres: document.getElementById('formGenres').value.split(',').map(s => s.trim()).filter(Boolean),
-                    author: document.getElementById('formAuthor').value,
-                    chaptersRead: parseInt(document.getElementById('formChaptersRead').value) || 0,
-                    totalChapters: parseInt(document.getElementById('formTotalChapters').value) || 0,
-                    rating: parseFloat(document.getElementById('formRating').value) || 0,
-                    startDate: document.getElementById('formStartDate').value,
-                    finishDate: document.getElementById('formFinishDate').value,
-                    coverUrl: document.getElementById('formCoverUrl').value,
-                    favorite: document.getElementById('formFavorite').checked,
-                    notes: document.getElementById('formNotes').value,
-                    updatedAt: new Date().toISOString()
-                };
-
-                if (currentUser) {
-                    await supabaseClient.from('comiclist').upsert([comicData]);
-                }
-
-                const index = comicDatabase.findIndex(c => c.id === comicData.id);
-                if (index !== -1) comicDatabase[index] = comicData;
-                else comicDatabase.unshift(comicData);
-
-                localStorage.setItem('peaks_comiclist', JSON.stringify(comicDatabase));
-                this.closeModal();
-                this.closeDetail();
-                this.render();
-            },
-            render() {
-                const grid = document.getElementById('comicsGrid');
-                const empty = document.getElementById('emptyState');
-                const search = document.getElementById('searchInput').value.toLowerCase();
-                const filterStatus = document.getElementById('filterStatus').value;
-                const filterType = document.getElementById('filterType').value;
-                const filterGenre = document.getElementById('filterGenre').value;
-                const sortBy = document.getElementById('sortBy').value;
-
-                // Populate genres dropdown dynamically
-                const allGenres = [...new Set(comicDatabase.flatMap(c => c.genres || []))];
-                const genreSelect = document.getElementById('filterGenre');
-                const currentGenreVal = genreSelect.value;
-                genreSelect.innerHTML = '<option value="All">All Genres</option>' + allGenres.map(g => `<option value="${g}">${g}</option>`).join('');
-                genreSelect.value = allGenres.includes(currentGenreVal) ? currentGenreVal : 'All';
-
-                let filtered = comicDatabase.filter(c => {
-                    const matchSearch = c.title.toLowerCase().includes(search) || (c.author && c.author.toLowerCase().includes(search));
-                    const matchStatus = filterStatus === 'All' || c.readingStatus === filterStatus;
-                    const matchType = filterType === 'All' || c.type === filterType;
-                    const matchGenre = filterGenre === 'All' || (c.genres && c.genres.includes(filterGenre));
-                    const matchFav = !this.onlyFavorites || c.favorite;
-                    return matchSearch && matchStatus && matchType && matchGenre && matchFav;
-                });
-
-                filtered.sort((a, b) => {
-                    if (sortBy === 'recentlyAdded') return new Date(b.id.split('_')[1] || 0) - new Date(a.id.split('_')[1] || 0);
-                    if (sortBy === 'recentlyUpdated') return new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0);
-                    if (sortBy === 'alphabetical') return a.title.localeCompare(b.title);
-                    if (sortBy === 'rating') return b.rating - a.rating;
-                    if (sortBy === 'progress') return (b.chaptersRead / (b.totalChapters || 1)) - (a.chaptersRead / (a.totalChapters || 1));
-                    return 0;
-                });
-
-                // Stats
-                document.getElementById('headerTotalCount').innerText = comicDatabase.length;
-                document.getElementById('statReading').innerText = comicDatabase.filter(c => c.readingStatus === 'Reading').length;
-                document.getElementById('statCompleted').innerText = comicDatabase.filter(c => c.readingStatus === 'Completed').length;
-                document.getElementById('statOnHold').innerText = comicDatabase.filter(c => c.readingStatus === 'On Hold').length;
-                document.getElementById('statDropped').innerText = comicDatabase.filter(c => c.readingStatus === 'Dropped').length;
-                document.getElementById('statPlanToRead').innerText = comicDatabase.filter(c => c.readingStatus === 'Plan to Read').length;
-                document.getElementById('statFavCount').innerText = comicDatabase.filter(c => c.favorite).length;
-                const avgRating = comicDatabase.length > 0 ? (comicDatabase.reduce((acc, c) => acc + (c.rating || 0), 0) / comicDatabase.length).toFixed(1) : '0.0';
-                document.getElementById('statAvgRating').innerText = `★ ${avgRating}`;
-
-                if (filtered.length === 0) {
-                    grid.innerHTML = '';
-                    empty.classList.remove('hidden');
-                    return;
-                }
-                empty.classList.add('hidden');
-
-                grid.innerHTML = filtered.map(c => `
-                    <div onclick="comicManager.openDetail('${c.id}')" class="group bg-bgSurface border border-borderSubtle hover:border-textMain rounded-2xl overflow-hidden transition-all duration-300 shadow-editorial hover:shadow-editorial-hover cursor-pointer flex flex-col">
-                        <div class="aspect-[2/3] bg-bgCard relative overflow-hidden flex items-center justify-center">
-                            ${c.coverUrl ? `<img src="${c.coverUrl}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">` : `<div class="text-center p-4"><i class="fa-solid fa-book text-2xl text-textMuted/40 mb-2"></i><span class="block editorial-title text-xl text-textMuted line-clamp-2 px-2">${c.title}</span></div>`}
-                            <div class="absolute top-3 left-3"><span class="bg-bgSurface/90 backdrop-blur-xs text-[10px] font-medium px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">${c.type}</span></div>
-                            ${c.favorite ? `<div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-bgSurface/90 backdrop-blur-xs border border-borderSubtle flex items-center justify-center text-amber-600 shadow-xs"><i class="fa-solid fa-heart text-[10px]"></i></div>` : ''}
-                            <div class="absolute bottom-3 right-3 bg-bgSurface/90 backdrop-blur-xs text-[10px] font-semibold px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">★ ${c.rating}</div>
-                        </div>
-                        <div class="p-4 flex-1 flex flex-col justify-between">
-                            <div>
-                                <h3 class="editorial-title text-xl leading-tight mb-1 group-hover:text-accentGold transition-colors truncate">${c.title}</h3>
-                                <p class="text-[11px] text-textMuted truncate">${c.author || 'Unknown Author'}</p>
-                            </div>
-                            <div class="flex items-center justify-between mt-3 pt-3 border-t border-borderSubtle text-[10px] text-textMuted">
-                                <span class="uppercase tracking-wider font-medium">${c.readingStatus}</span>
-                                <span>Ch. ${c.chaptersRead}/${c.totalChapters || '?'}</span>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-            },
-            openDetail(id) {
-                const c = comicDatabase.find(item => item.id === id);
-                if (!c) return;
-                document.getElementById('comicDetailContent').innerHTML = `
-                    <div class="flex flex-col sm:flex-row gap-6 mb-6">
-                        <div class="w-full sm:w-48 aspect-[2/3] bg-bgCard rounded-xl overflow-hidden shrink-0 flex items-center justify-center border border-borderSubtle">
-                            ${c.coverUrl ? `<img src="${c.coverUrl}" class="w-full h-full object-cover">` : `<i class="fa-solid fa-book text-3xl text-textMuted/40"></i>`}
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex items-center space-x-2 mb-2">
-                                <span class="text-[10px] uppercase tracking-wider font-medium px-2.5 py-1 rounded-md bg-bgCard border border-borderSubtle">${c.type}</span>
-                                <span class="text-[10px] uppercase tracking-wider font-medium px-2.5 py-1 rounded-md bg-bgCard border border-borderSubtle">${c.readingStatus}</span>
-                                ${c.favorite ? '<span class="text-amber-600 text-xs"><i class="fa-solid fa-heart"></i></span>' : ''}
-                            </div>
-                            <h2 class="editorial-title text-4xl mb-1">${c.title}</h2>
-                            <p class="text-xs text-textMuted mb-4">${c.author || 'Unknown Author'}</p>
-                            <div class="grid grid-cols-2 gap-4 py-3 border-y border-borderSubtle text-xs mb-4">
-                                <div><span class="text-textMuted block text-[10px] uppercase">Rating</span><span class="font-semibold text-sm">★ ${c.rating} / 5</span></div>
-                                <div><span class="text-textMuted block text-[10px] uppercase">Progress</span><span class="font-semibold text-sm">${c.chaptersRead} / ${c.totalChapters || '?'} Ch.</span></div>
-                            </div>
-                        </div>
-                    </div>
-                    ${c.notes ? `<div class="bg-bgCard border border-borderSubtle rounded-xl p-4 mb-6"><h4 class="text-[10px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Notes</h4><p class="text-xs text-textMain leading-relaxed whitespace-pre-line">${c.notes}</p></div>` : ''}
-                    <div class="flex justify-between items-center pt-4 border-t border-borderSubtle">
-                        <span class="text-[11px] text-textMuted">Genres: ${(c.genres || []).join(', ') || 'N/A'}</span>
-                        <div class="flex items-center space-x-3">
-                            <button onclick="comicManager.delete('${c.id}')" class="px-4 py-2 rounded-xl border border-rose-200 bg-rose-50 text-rose-600 text-xs font-medium">Delete</button>
-                            <button onclick="comicManager.closeDetail(); comicManager.openModal(comicDatabase.find(i => i.id === '${c.id}'))" class="px-5 py-2 rounded-xl bg-textMain text-bgMain text-xs font-medium">Edit</button>
-                        </div>
-                    </div>
-                `;
-                document.getElementById('comicDetailModal').style.display = 'flex';
-            },
-            async delete(id) {
-                if (!confirm('Delete this comic?')) return;
-                if (currentUser) {
-                    await supabaseClient.from('comiclist').delete().eq('id', id);
-                }
-                comicDatabase = comicDatabase.filter(c => c.id !== id);
-                localStorage.setItem('peaks_comiclist', JSON.stringify(comicDatabase));
-                this.closeDetail();
-                this.render();
-            }
-        };
-
-        // --- READMANAGER LOGIC ---
-        const readManager = {
-            onlyFavorites: false,
-            openModal(book = null) {
-                document.getElementById('readForm').reset();
-                document.getElementById('readId').value = '';
-                document.getElementById('readApiSearchResults').innerHTML = '';
-                document.getElementById('readApiSearchResults').classList.add('hidden');
-                if (book) {
-                    document.getElementById('readModalTitle').innerText = 'Edit Book';
-                    document.getElementById('readId').value = book.id;
-                    document.getElementById('readFormTitle').value = book.title;
-                    document.getElementById('readFormAuthor').value = book.author;
-                    document.getElementById('readFormStatus').value = book.readingStatus;
-                    document.getElementById('readFormGenres').value = book.genres ? book.genres.join(', ') : '';
-                    document.getElementById('readFormPagesRead').value = book.pagesRead;
-                    document.getElementById('readFormTotalPages').value = book.totalPages;
-                    document.getElementById('readFormRating').value = book.rating;
-                    document.getElementById('readFormStartDate').value = book.startDate || '';
-                    document.getElementById('readFormFinishDate').value = book.finishDate || '';
-                    document.getElementById('readFormCoverUrl').value = book.coverUrl || '';
-                    document.getElementById('readFormFavorite').checked = !!book.favorite;
-                    document.getElementById('readFormNotes').value = book.notes || '';
-                } else {
-                    document.getElementById('readModalTitle').innerText = 'Add New Book';
-                }
-                document.getElementById('readModal').style.display = 'flex';
-            },
-            closeModal() { document.getElementById('readModal').style.display = 'none'; },
-            closeDetail() { document.getElementById('readDetailModal').style.display = 'none'; },
-            toggleFavoriteFilter() {
-                this.onlyFavorites = !this.onlyFavorites;
-                const btn = document.getElementById('readFilterFavBtn');
-                btn.className = this.onlyFavorites ? 'bg-textMain text-bgMain rounded-xl px-3 py-2.5 text-xs transition-colors flex items-center gap-1.5 shadow-xs' : 'bg-bgSurface border border-borderSubtle rounded-xl px-3 py-2.5 text-xs text-textMuted hover:text-amber-600 hover:border-textMain transition-colors flex items-center gap-1.5 shadow-xs';
-                this.render();
-            },
-            // Upgraded Dual-API Search (Google Books + Open Library Fallback)
-async function searchOnlineBooks() {
-    let query = apiSearchQuery.value.trim();
-    if (!query) return;
-
-    apiResultsDropdown.innerHTML = `<div style="padding: 16px; text-align: center; color: var(--text-muted);">Searching global book databases...</div>`;
-    apiResultsDropdown.style.display = 'block';
-
-    try {
-        // 1. Try Google Books API First
-        let response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=5`);
-        let data = await response.json();
-
-        let items = data.items || [];
-
-        // 2. If Google Books returns nothing, fallback to Open Library API
-        if (items.length === 0) {
-            const openLibResponse = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=5`);
-            const openLibData = await openLibResponse.json();
-            
-            if (openLibData.docs && openLibData.docs.length > 0) {
-                // Map Open Library format to match structure
-                items = openLibData.docs.map(doc => ({
-                    volumeInfo: {
-                        title: doc.title,
-                        authors: doc.author_name ? doc.author_name : ['Unknown Author'],
-                        imageLinks: doc.cover_i ? { thumbnail: `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg` } : {},
-                        pageCount: doc.number_of_pages_median || 0,
-                        categories: doc.subject ? doc.subject.slice(0, 3) : [],
-                        description: `Published in ${doc.first_publish_year || 'Unknown'}`
-                    }
-                }));
-            }
-        }
-
-        if (items.length === 0) {
-            apiResultsDropdown.innerHTML = `
-                <div style="padding: 16px; text-align: center; color: var(--text-muted);">
-                    No matches found online.<br>
-                    <span style="font-size: 0.8rem; color: var(--text-muted);">Feel free to fill out the form manually below!</span>
-                </div>`;
-            return;
-        }
-
-        apiResultsDropdown.innerHTML = '';
-        items.forEach(book => {
-            const info = book.volumeInfo;
-            const title = info.title || 'Unknown Title';
-            const author = info.authors ? info.authors.join(', ') : 'Unknown Author';
-            const thumbnail = info.imageLinks && info.imageLinks.thumbnail ? info.imageLinks.thumbnail.replace('http:', 'https:') : '';
-            const pageCount = info.pageCount || 0;
-            const categories = info.categories ? info.categories : [];
-            const description = info.description || '';
-
-            const itemEl = document.createElement('div');
-            itemEl.className = 'api-result-item';
-            itemEl.innerHTML = `
-                <img src="${thumbnail || 'https://via.placeholder.com/36x52?text=No'}" class="api-result-thumb" alt="">
-                <div class="api-result-info">
-                    <h4>${title}</h4>
-                    <p>${author}</p>
-                </div>
-            `;
-
-            itemEl.onclick = () => {
-                document.getElementById('title').value = title;
-                document.getElementById('author').value = author;
-                document.getElementById('coverUrl').value = thumbnail ? thumbnail.replace('-M.jpg', '-L.jpg') : '';
-                document.getElementById('totalPages').value = pageCount;
-                if (categories.length > 0) {
-                    document.getElementById('genres').value = Array.isArray(categories) ? categories.join(', ') : categories;
-                }
-                if (description) {
-                    document.getElementById('notes').value = typeof description === 'string' ? description.substring(0, 300) + '...' : '';
-                }
-                document.getElementById('platform').value = 'Google Books';
-                document.getElementById('storyType').value = 'Book';
-                apiResultsDropdown.style.display = 'none';
-            };
-
-            apiResultsDropdown.appendChild(itemEl);
-        });
-    } catch (err) {
-        console.error(err);
-        apiResultsDropdown.innerHTML = `<div style="padding: 16px; text-align: center; color: #E11D48;">Search failed. Please fill in details manually.</div>`;
-    }
-}
-        // Theme Toggle
-        function toggleTheme() {
-            const body = document.body;
-            const currentTheme = body.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            body.setAttribute('data-theme', newTheme);
-            themeToggleBtn.innerHTML = newTheme === 'light' ? '<i class="fa-solid fa-moon"></i>' : '<i class="fa-solid fa-sun"></i>';
-        }
-
-        // JSON Export & Import
+        // --- EXPORT & IMPORT ---
         function exportData() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(readingList, null, 2));
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", "peak-readlist-backup.json");
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
+            const backup = { watchlist: watchDatabase, musiclist: musicDatabase, exportedAt: new Date().toISOString() };
+            const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `peaks_archive_backup_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
         }
 
-        function importData(e) {
-            const fileReader = new FileReader();
-            if (e.target.files[0]) {
-                fileReader.readAsText(e.target.files[0], "UTF-8");
-                fileReader.onload = (event) => {
-                    try {
-                        const parsed = JSON.parse(event.target.result);
-                        if (Array.isArray(parsed)) {
-                            readingList = parsed;
-                            saveToStorage();
-                            renderList();
-                            alert('Reading list imported successfully!');
-                        } else {
-                            alert('Invalid JSON format.');
-                        }
-                    } catch (err) {
-                        alert('Error parsing JSON file.');
-                    }
-                };
-            }
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.watchlist) { watchDatabase = data.watchlist; localStorage.setItem('peaks_watchlist', JSON.stringify(watchDatabase)); }
+                    if (data.musiclist) { musicDatabase = data.musiclist; localStorage.setItem('peaks_musiclist', JSON.stringify(musicDatabase)); }
+                    alert('PEAKS archive successfully restored.');
+                    renderWatchlist();
+                    renderMusiclist();
+                } catch (err) { alert('Invalid backup file.'); }
+            };
+            reader.readAsText(file);
         }
     </script>
 </body>
-</html>

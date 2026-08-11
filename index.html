@@ -227,7 +227,7 @@
                 <div class="flex flex-wrap items-center gap-2">
                     <div class="relative">
                         <i class="fa-solid fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-textMuted text-xs"></i>
-                        <input type="text" id="watch-search" oninput="renderWatchlist()" placeholder="Search title, director, tags..." class="bg-bgSurface border border-borderSubtle focus:border-textMain text-xs rounded-xl pl-9 pr-4 py-2.5 w-64 outline-none transition-all shadow-xs">
+                        <input type="text" id="watch-search" oninput="renderWatchlist()" placeholder="Search title..." class="bg-bgSurface border border-borderSubtle focus:border-textMain text-xs rounded-xl pl-9 pr-4 py-2.5 w-64 outline-none transition-all shadow-xs">
                     </div>
                     
                     <div class="flex bg-bgSurface border border-borderSubtle rounded-xl p-1 shadow-xs text-xs">
@@ -252,7 +252,7 @@
                         <option value="date-desc">Newest Added</option>
                         <option value="rating-desc">Highest Rated</option>
                         <option value="title-asc">Title (A-Z)</option>
-                        <option value="year-desc">Release Year</option>
+                        <option value="year-desc">Release Date</option>
                     </select>
                 </div>
             </div>
@@ -595,18 +595,14 @@
                         </select>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div>
-                        <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Director / Creator</label>
-                        <input type="text" id="w-form-director" class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
-                    </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Country</label>
                         <input type="text" id="w-form-country" placeholder="e.g. USA, Korea, Japan" class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
                     </div>
                     <div>
-                        <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Release Year</label>
-                        <input type="number" id="w-form-year" placeholder="2026" class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
+                        <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Release Date</label>
+                        <input type="text" id="w-form-year" placeholder="2026-03-29" class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
                     </div>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -624,16 +620,6 @@
                             <option value="watched">Watched</option>
                             <option value="watchlist">Watchlist</option>
                         </select>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Tags (Comma separated)</label>
-                        <input type="text" id="w-form-tags" placeholder="cinematic, edit-audio, dark" class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Watch Date</label>
-                        <input type="date" id="w-form-date" class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
                     </div>
                 </div>
                 <div>
@@ -717,23 +703,15 @@
                         <input type="number" id="m-form-year" placeholder="2026" class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
                     </div>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Platform / Source</label>
-                        <input type="text" id="m-form-platform" placeholder="Spotify, Vinyl, FLAC" class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
+                        <input type="text" id="m-form-platform" placeholder="Spotify, Apple Music, Vinyl" class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
                     </div>
                     <div>
                         <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Rating (1-10)</label>
                         <input type="number" id="m-form-rating" min="1" max="10" step="0.1" value="9" class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
                     </div>
-                    <div>
-                        <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Add Date</label>
-                        <input type="date" id="m-form-date" class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Tags (Comma separated)</label>
-                    <input type="text" id="m-form-tags" placeholder="slowed, bass-boosted, edit-audio" class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
                 </div>
                 <div>
                     <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Cover Artwork URL / Upload</label>
@@ -818,6 +796,8 @@
                                 <option value="Releasing">Releasing</option>
                                 <option value="Finished">Finished</option>
                                 <option value="Not Yet Released">Not Yet Released</option>
+                                <option value="Cancelled">Cancelled</option>
+                                <option value="Hiatus">Hiatus</option>
                             </select>
                         </div>
                     </div>
@@ -890,7 +870,7 @@
             <div class="p-6 overflow-y-auto flex flex-col gap-6">
                 <div class="bg-bgCard border border-borderSubtle rounded-2xl p-4 flex flex-col gap-2 relative">
                     <label class="text-[11px] uppercase tracking-wider font-semibold text-accentGold flex items-center gap-1.5">
-                        <i class="fa-solid fa-globe mr-1"></i> Search Online (Google Books Database)
+                        <i class="fa-solid fa-globe mr-1"></i> Search Online (Google Books & Open Library Database)
                     </label>
                     <div class="relative">
                         <input type="text" id="readApiSearchInput" placeholder="Type book title or author..." oninput="readManager.handleApiSearch(this.value)" class="w-full bg-bgSurface border border-borderSubtle rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-textMain transition-colors">
@@ -1023,10 +1003,6 @@
         let readDatabase = [];
 
         // --- CLOUD SYNC HELPERS ---
-        // Only id/user_id/title/created_at are guaranteed real columns on every
-        // table. Everything else (type, platform, rating, tags, genre, etc.)
-        // is stored inside a single jsonb "data" column so a missing/renamed
-        // column can never again make a save fail silently.
         const CLOUD_CORE_FIELDS = ['id', 'user_id', 'title', 'created_at', '_synced'];
 
         function splitForCloud(localItem) {
@@ -1043,11 +1019,6 @@
             return { ...(row.data || {}), id: String(row.id), user_id: row.user_id, title: row.title, created_at: row.created_at, _synced: true };
         }
 
-        // Pushes one local item to Supabase. Inserts (letting the DB assign the
-        // real id, since our client-generated temp ids don't match the
-        // column types) if it has never been synced; otherwise updates by its
-        // real id. On ANY failure the original local item is returned
-        // unchanged (still _synced:false) so nothing is ever lost locally.
         async function pushItemToCloud(table, localItem) {
             if (!currentUser) return localItem;
             const { core, data } = splitForCloud(localItem);
@@ -1096,9 +1067,6 @@
                 if (authFormInputs) authFormInputs.style.display = 'flex';
                 if (userInfo) userInfo.style.display = 'none';
 
-                // Not logged in (or session not yet restored): load whatever
-                // is already saved locally instead of wiping it. Local data
-                // is never deleted here - only re-read from localStorage.
                 watchDatabase = JSON.parse(localStorage.getItem('peaks_watchlist')) || [];
                 musicDatabase = JSON.parse(localStorage.getItem('peaks_musiclist')) || [];
                 comicDatabase = JSON.parse(localStorage.getItem('peaks_comiclist')) || [];
@@ -1146,20 +1114,15 @@
             window.location.reload();
         }
 
-        // --- MIGRATION & CLOUD DATA LOADING ---
         async function loadUserCloudData() {
             if (!currentUser) return;
 
             try {
-                // 1. Start from whatever is cached locally (guest additions,
-                //    or items a previous sync attempt failed to push).
                 const localWatch = JSON.parse(localStorage.getItem('peaks_watchlist')) || [];
                 const localMusic = JSON.parse(localStorage.getItem('peaks_musiclist')) || [];
                 const localComic = JSON.parse(localStorage.getItem('peaks_comiclist')) || [];
                 const localRead  = JSON.parse(localStorage.getItem('peaks_readlist'))  || [];
 
-                // 2. Push up anything that was never successfully synced BEFORE
-                //    pulling from the cloud, so a pull can never wipe it out.
                 async function pushUnsynced(table, list) {
                     const out = [];
                     for (const item of list) {
@@ -1172,7 +1135,6 @@
                 const pushedComic = await pushUnsynced('comiclist', localComic);
                 const pushedRead  = await pushUnsynced('readlist', localRead);
 
-                // 3. Pull the authoritative cloud state
                 const [wRes, mRes, cRes, rRes] = await Promise.all([
                     supabaseClient.from('watchlist').select('*').eq('user_id', currentUser.id),
                     supabaseClient.from('musiclist').select('*').eq('user_id', currentUser.id),
@@ -1185,9 +1147,6 @@
                 const cloudComic = (cRes.data || []).map(mergeFromCloud);
                 const cloudRead  = (rRes.data || []).map(mergeFromCloud);
 
-                // 4. Merge: cloud is authoritative, but anything that still
-                //    failed to sync (e.g. offline right now) is kept too
-                //    instead of being silently dropped.
                 function mergeLists(cloudList, pushedList) {
                     const cloudIds = new Set(cloudList.map(i => i.id));
                     const stillLocal = pushedList.filter(i => !i._synced && !cloudIds.has(i.id));
@@ -1199,7 +1158,6 @@
                 comicDatabase = mergeLists(cloudComic, pushedComic);
                 readDatabase  = mergeLists(cloudRead, pushedRead);
 
-                // Cache locally
                 localStorage.setItem('peaks_watchlist', JSON.stringify(watchDatabase));
                 localStorage.setItem('peaks_musiclist', JSON.stringify(musicDatabase));
                 localStorage.setItem('peaks_comiclist', JSON.stringify(comicDatabase));
@@ -1211,7 +1169,6 @@
                 readManager.render();
             } catch (err) {
                 console.error("Cloud sync error:", err);
-                // Fallback to local cache - never wipe it on a sync failure.
                 watchDatabase = JSON.parse(localStorage.getItem('peaks_watchlist')) || [];
                 musicDatabase = JSON.parse(localStorage.getItem('peaks_musiclist')) || [];
                 comicDatabase = JSON.parse(localStorage.getItem('peaks_comiclist')) || [];
@@ -1219,7 +1176,6 @@
             }
         }
 
-        // --- APP NAVIGATION ---
         function switchApp(appKey) {
             ['portal-screen', 'watchlist-app', 'musiclist-app', 'comiclist-app', 'readlist-app'].forEach(id => {
                 document.getElementById(id).classList.add('hidden');
@@ -1263,15 +1219,15 @@
                     currentWatchTab === 'favorites' ? item.favorite : true;
 
                 const matchesType = filterType === 'all' || item.type === filterType;
-                const matchesSearch = !search || item.title.toLowerCase().includes(search) || (item.director && item.director.toLowerCase().includes(search));
+                const matchesSearch = !search || item.title.toLowerCase().includes(search);
                 return matchesTab && matchesType && matchesSearch;
             });
 
             filtered.sort((a, b) => {
-                if (sortMode === 'date-desc') return new Date(b.date || 0) - new Date(a.date || 0);
+                if (sortMode === 'date-desc') return new Date(b.created_at || 0) - new Date(a.created_at || 0);
                 if (sortMode === 'rating-desc') return b.rating - a.rating;
                 if (sortMode === 'title-asc') return a.title.localeCompare(b.title);
-                if (sortMode === 'year-desc') return (parseInt(b.year) || 0) - (parseInt(a.year) || 0);
+                if (sortMode === 'year-desc') return (new Date(b.year || 0)) - (new Date(a.year || 0));
                 return 0;
             });
 
@@ -1296,7 +1252,7 @@
                     <div class="p-4 flex-1 flex flex-col justify-between">
                         <div>
                             <h3 class="editorial-title text-xl leading-tight mb-1 group-hover:text-accentGold transition-colors truncate">${item.title}</h3>
-                            <p class="text-[11px] text-textMuted truncate">${item.director || 'Unknown Creator'} ${item.year ? `(${item.year})` : ''}</p>
+                            <p class="text-[11px] text-textMuted truncate">${item.year ? `Release: ${item.year}` : ''}</p>
                         </div>
                         <div class="flex items-center justify-between mt-3 pt-3 border-t border-borderSubtle text-[10px] text-textMuted">
                             <span class="uppercase tracking-wider">${item.status}</span>
@@ -1322,17 +1278,29 @@
                 resultsBox.innerHTML = data.slice(0, 5).map(item => {
                     const show = item.show;
                     const cleanTitle = (show.name || '').replace(/'/g, "\\'");
-                    const year = show.premiered ? show.premiered.split('-')[0] : '';
-                    const country = show.network && show.network.country ? show.network.country.name : '';
-                    const poster = show.image && show.image.original ? show.image.original : '';
+                    const releaseDate = show.premiered || '';
+                    const country = show.network && show.network.country ? show.network.country.name : (show.webChannel && show.webChannel.country ? show.webChannel.country.name : '');
+                    const poster = show.image && show.image.original ? show.image.original : (show.image && show.image.medium ? show.image.medium : '');
                     const summary = show.summary ? show.summary.replace(/<[^>]*>?/gm, '').substring(0, 100) + '...' : '';
-                    const genres = show.genres ? show.genres.join(', ') : 'Series';
+                    const platform = show.network && show.network.name ? show.network.name : (show.webChannel && show.webChannel.name ? show.webChannel.name : '');
+                    
+                    let mediaType = 'Series';
+                    const typeStr = (show.type || '').toLowerCase();
+                    const genresStr = (show.genres || []).join(' ').toLowerCase();
+                    if (typeStr.includes('documentary') || genresStr.includes('documentary')) {
+                        mediaType = 'Documentary';
+                    } else if (typeStr.includes('animation') || genresStr.includes('anime') || country.toLowerCase() === 'japan' && genresStr.includes('animation')) {
+                        mediaType = 'Anime';
+                    } else if (typeStr.includes('short')) {
+                        mediaType = 'Short';
+                    }
+
                     return `
-                        <div onclick="selectWatchResult('${cleanTitle}', '${year}', '${country}', '${genres}', '${poster}', '${summary.replace(/'/g, "\\'")}')" class="flex items-center space-x-3 p-2 rounded-xl bg-bgSurface hover:bg-bgCard border border-borderSubtle cursor-pointer">
+                        <div onclick="selectWatchResult('${cleanTitle}', '${mediaType}', '${country}', '${releaseDate}', '${platform.replace(/'/g, "\\'")}', '${poster}', '${summary.replace(/'/g, "\\'")}')" class="flex items-center space-x-3 p-2 rounded-xl bg-bgSurface hover:bg-bgCard border border-borderSubtle cursor-pointer">
                             <img src="${poster || 'https://via.placeholder.com/40x60?text=No+Img'}" class="w-8 h-12 object-cover rounded">
                             <div class="flex-1 min-w-0">
-                                <h4 class="text-xs font-semibold truncate">${show.name} (${year || 'N/A'})</h4>
-                                <p class="text-[10px] text-textMuted truncate">${genres}</p>
+                                <h4 class="text-xs font-semibold truncate">${show.name} (${releaseDate || 'N/A'})</h4>
+                                <p class="text-[10px] text-textMuted truncate">${mediaType} • ${platform || country || 'TV'}</p>
                             </div>
                             <span class="text-[10px] bg-textMain text-bgMain px-2 py-1 rounded">Select</span>
                         </div>
@@ -1343,10 +1311,13 @@
             }
         }
 
-        function selectWatchResult(title, year, country, genres, poster, summary) {
+        function selectWatchResult(title, type, country, releaseDate, platform, poster, summary) {
             document.getElementById('w-form-title-input').value = title;
-            document.getElementById('w-form-year').value = year;
+            const typeSelect = document.getElementById('w-form-type');
+            if (typeSelect) typeSelect.value = type;
             document.getElementById('w-form-country').value = country;
+            document.getElementById('w-form-year').value = releaseDate;
+            document.getElementById('w-form-platform').value = platform;
             document.getElementById('w-form-art-base64').value = poster;
             document.getElementById('w-form-notes').value = summary;
             document.getElementById('w-api-results').innerHTML = `<p class="text-[11px] text-emerald-600 font-semibold py-1 text-center">✓ Auto-filled!</p>`;
@@ -1360,21 +1331,17 @@
                 document.getElementById('w-form-title').innerText = 'Edit Watchlist Entry';
                 document.getElementById('w-form-id').value = item.id;
                 document.getElementById('w-form-title-input').value = item.title;
-                document.getElementById('w-form-type').value = item.type;
-                document.getElementById('w-form-director').value = item.director || '';
+                document.getElementById('w-form-type').value = item.type || 'Movie';
                 document.getElementById('w-form-country').value = item.country || '';
                 document.getElementById('w-form-year').value = item.year || '';
                 document.getElementById('w-form-platform').value = item.platform || '';
-                document.getElementById('w-form-rating').value = item.rating;
-                document.getElementById('w-form-status').value = item.status;
-                document.getElementById('w-form-tags').value = item.tags ? item.tags.join(', ') : '';
-                document.getElementById('w-form-date').value = item.date || '';
+                document.getElementById('w-form-rating').value = item.rating || 8;
+                document.getElementById('w-form-status').value = item.status || 'watched';
                 document.getElementById('w-form-favorite').checked = !!item.favorite;
                 document.getElementById('w-form-art-base64').value = item.poster || '';
                 document.getElementById('w-form-notes').value = item.notes || '';
             } else {
                 document.getElementById('w-form-title').innerText = 'Add Watchlist Entry';
-                document.getElementById('w-form-date').value = new Date().toISOString().split('T')[0];
             }
             document.getElementById('w-form-modal').style.display = 'flex';
         }
@@ -1398,17 +1365,15 @@
                 user_id: currentUser ? currentUser.id : null,
                 title: document.getElementById('w-form-title-input').value,
                 type: document.getElementById('w-form-type').value,
-                director: document.getElementById('w-form-director').value,
                 country: document.getElementById('w-form-country').value,
                 year: document.getElementById('w-form-year').value,
                 platform: document.getElementById('w-form-platform').value,
                 rating: parseFloat(document.getElementById('w-form-rating').value) || 8.0,
                 status: document.getElementById('w-form-status').value,
-                tags: document.getElementById('w-form-tags').value.split(',').map(t => t.trim()).filter(Boolean),
-                date: document.getElementById('w-form-date').value,
                 favorite: document.getElementById('w-form-favorite').checked,
                 poster: document.getElementById('w-form-art-base64').value,
                 notes: document.getElementById('w-form-notes').value,
+                created_at: existing ? existing.created_at : new Date().toISOString(),
                 _synced: existing ? !!existing._synced : false
             };
 
@@ -1440,7 +1405,7 @@
                             ${item.favorite ? '<span class="text-amber-600 text-xs"><i class="fa-solid fa-heart"></i></span>' : ''}
                         </div>
                         <h2 class="editorial-title text-4xl mb-1">${item.title}</h2>
-                        <p class="text-xs text-textMuted mb-4">${item.director || 'Unknown Creator'} ${item.year ? `(${item.year})` : ''}</p>
+                        <p class="text-xs text-textMuted mb-4">${item.year ? `Release Date: ${item.year}` : ''} ${item.country ? `• ${item.country}` : ''}</p>
                         <div class="grid grid-cols-2 gap-4 py-3 border-y border-borderSubtle text-xs mb-4">
                             <div><span class="text-textMuted block text-[10px] uppercase">Rating</span><span class="font-semibold text-sm">★ ${item.rating} / 10</span></div>
                             <div><span class="text-textMuted block text-[10px] uppercase">Platform</span><span class="font-semibold text-sm">${item.platform || 'N/A'}</span></div>
@@ -1449,10 +1414,10 @@
                 </div>
                 ${item.notes ? `<div class="bg-bgCard border border-borderSubtle rounded-xl p-4 mb-6"><h4 class="text-[10px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Notes</h4><p class="text-xs text-textMain leading-relaxed whitespace-pre-line">${item.notes}</p></div>` : ''}
                 <div class="flex justify-between items-center pt-4 border-t border-borderSubtle">
-                    <span class="text-[11px] text-textMuted">Added: ${item.date || 'N/A'}</span>
+                    <span class="text-[11px] text-textMuted">Added: ${item.created_at ? item.created_at.split('T')[0] : 'N/A'}</span>
                     <div class="flex items-center space-x-3">
                         <button onclick="deleteWatchItem('${item.id}')" class="px-4 py-2 rounded-xl border border-rose-200 bg-rose-50 text-rose-600 text-xs font-medium">Delete</button>
-                        <button onclick="closeWatchDetail(); openWatchModal(watchDatabase.find(i => i.id === '${item.id}'))" class="px-5 py-2 rounded-xl bg-textMain text-bgMain text-xs font-medium">Edit</button>
+                        <button onclick="closeWatchDetail(); openWatchModal(watchDatabase.find(i=>i.id==='${item.id}'))" class="px-4 py-2 rounded-xl bg-textMain text-bgMain text-xs font-medium">Edit</button>
                     </div>
                 </div>
             `;
@@ -1462,11 +1427,9 @@
         function closeWatchDetail() { document.getElementById('w-detail-modal').style.display = 'none'; }
 
         async function deleteWatchItem(id) {
-            if (!confirm('Are you sure you want to delete this entry?')) return;
-            const item = watchDatabase.find(i => i.id === id);
-            if (currentUser && item && item._synced) {
-                const { error } = await supabaseClient.from('watchlist').delete().eq('id', id);
-                if (error) console.error('watchlist delete failed:', error.message);
+            if (!confirm('Delete this entry?')) return;
+            if (currentUser) {
+                await supabaseClient.from('watchlist').delete().eq('id', id);
             }
             watchDatabase = watchDatabase.filter(i => i.id !== id);
             localStorage.setItem('peaks_watchlist', JSON.stringify(watchDatabase));
@@ -1476,7 +1439,8 @@
 
         function pickRandomWatchItem() {
             if (watchDatabase.length === 0) return;
-            openWatchDetailView(watchDatabase[Math.floor(Math.random() * watchDatabase.length)].id);
+            const random = watchDatabase[Math.floor(Math.random() * watchDatabase.length)];
+            openWatchDetailView(random.id);
         }
 
         // --- MUSICLIST LOGIC ---
@@ -1497,14 +1461,14 @@
             const sortMode = document.getElementById('music-sort').value;
 
             let filtered = musicDatabase.filter(item => {
-                const matchesTab = currentMusicTab === 'all' ? true : item.favorite;
-                const matchesGenre = filterGenre === 'all' || item.genre === filterGenre;
-                const matchesSearch = !search || item.title.toLowerCase().includes(search) || item.artist.toLowerCase().includes(search);
+                const matchesTab = currentMusicTab === 'all' || item.favorite;
+                const matchesGenre = filterGenre === 'all' || (item.genre || 'Others') === filterGenre;
+                const matchesSearch = !search || item.title.toLowerCase().includes(search) || item.artist.toLowerCase().includes(search) || (item.album && item.album.toLowerCase().includes(search));
                 return matchesTab && matchesGenre && matchesSearch;
             });
 
             filtered.sort((a, b) => {
-                if (sortMode === 'date-desc') return new Date(b.date || 0) - new Date(a.date || 0);
+                if (sortMode === 'date-desc') return new Date(b.created_at || 0) - new Date(a.created_at || 0);
                 if (sortMode === 'rating-desc') return b.rating - a.rating;
                 if (sortMode === 'title-asc') return a.title.localeCompare(b.title);
                 if (sortMode === 'artist-asc') return a.artist.localeCompare(b.artist);
@@ -1512,7 +1476,8 @@
             });
 
             document.getElementById('music-count-display').innerText = `Showing ${filtered.length} tracks`;
-            document.getElementById('music-stats-display').innerText = `Total: ${musicDatabase.length}`;
+            const favCount = musicDatabase.filter(i => i.favorite).length;
+            document.getElementById('music-stats-display').innerText = `Favorites: ${favCount} | Total: ${musicDatabase.length}`;
 
             if (filtered.length === 0) {
                 grid.innerHTML = `<div class="col-span-full py-20 text-center text-textMuted"><i class="fa-solid fa-music text-3xl mb-3 opacity-40"></i><p class="text-xs uppercase tracking-wider">No matching tracks found</p></div>`;
@@ -1522,18 +1487,18 @@
             grid.innerHTML = filtered.map(item => `
                 <div onclick="openMusicDetailView('${item.id}')" class="group bg-bgSurface border border-borderSubtle hover:border-textMain rounded-2xl overflow-hidden transition-all duration-300 shadow-editorial hover:shadow-editorial-hover cursor-pointer flex flex-col">
                     <div class="aspect-square bg-bgCard relative overflow-hidden flex items-center justify-center">
-                        ${item.cover ? `<img src="${item.cover}" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">` : `<div class="text-center p-4"><i class="fa-solid fa-compact-disc text-3xl text-textMuted/40 mb-2"></i><span class="block editorial-title text-xl text-textMuted line-clamp-1 px-2">${item.title}</span></div>`}
-                        <div class="absolute top-3 left-3"><span class="bg-bgSurface/90 backdrop-blur-xs text-[10px] font-medium px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">${item.genre}</span></div>
+                        ${item.cover ? `<img src="${item.cover}" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">` : `<div class="text-center p-4"><i class="fa-solid fa-music text-2xl text-textMuted/40 mb-2"></i><span class="block editorial-title text-xl text-textMuted line-clamp-2 px-2">${item.title}</span></div>`}
+                        <div class="absolute top-3 left-3"><span class="bg-bgSurface/90 backdrop-blur-xs text-[10px] font-medium px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">${item.genre || 'Pop'}</span></div>
                         ${item.favorite ? `<div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-bgSurface/90 backdrop-blur-xs border border-borderSubtle flex items-center justify-center text-amber-600 shadow-xs"><i class="fa-solid fa-heart text-[10px]"></i></div>` : ''}
                         <div class="absolute bottom-3 right-3 bg-bgSurface/90 backdrop-blur-xs text-[10px] font-semibold px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">★ ${item.rating}</div>
                     </div>
                     <div class="p-4 flex-1 flex flex-col justify-between">
                         <div>
-                            <h3 class="editorial-title text-xl leading-tight mb-0.5 group-hover:text-accentGold transition-colors truncate">${item.title}</h3>
+                            <h3 class="editorial-title text-xl leading-tight mb-1 group-hover:text-accentGold transition-colors truncate">${item.title}</h3>
                             <p class="text-[11px] text-textMuted truncate">${item.artist}</p>
                         </div>
                         <div class="flex items-center justify-between mt-3 pt-3 border-t border-borderSubtle text-[10px] text-textMuted">
-                            <span class="truncate pr-2">${item.album || 'Single'}</span>
+                            <span class="truncate pr-2">${item.album || ''}</span>
                             <span class="shrink-0">${item.platform || ''}</span>
                         </div>
                     </div>
@@ -1545,7 +1510,7 @@
             const query = document.getElementById('m-api-search-input').value.trim();
             const resultsBox = document.getElementById('m-api-results');
             if (!query) return;
-            resultsBox.innerHTML = `<p class="text-[11px] text-textMuted py-2 text-center"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Searching music catalog...</p>`;
+            resultsBox.innerHTML = `<p class="text-[11px] text-textMuted py-2 text-center"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Searching Apple Music...</p>`;
             try {
                 const response = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=5`);
                 const data = await response.json();
@@ -1553,15 +1518,34 @@
                     resultsBox.innerHTML = `<p class="text-[11px] text-rose-500 py-2 text-center">No tracks found.</p>`;
                     return;
                 }
-                window._tempMusicResults = data.results;
-                resultsBox.innerHTML = data.results.map((track, index) => {
+                resultsBox.innerHTML = data.results.map(track => {
+                    const cleanTitle = (track.trackName || '').replace(/'/g, "\\'");
+                    const cleanArtist = (track.artistName || '').replace(/'/g, "\\'");
+                    const cleanAlbum = (track.collectionName || '').replace(/'/g, "\\'");
+                    const year = track.releaseDate ? track.releaseDate.split('-')[0] : '';
+                    const rawGenre = track.primaryGenreName || '';
                     const cover = track.artworkUrl100 ? track.artworkUrl100.replace('100x100bb', '600x600bb') : '';
+                    
+                    let mappedGenre = 'Pop';
+                    const gLower = rawGenre.toLowerCase();
+                    if (gLower.includes('k-pop') || gLower.includes('kpop')) mappedGenre = 'K-Pop';
+                    else if (gLower.includes('t-pop') || gLower.includes('tpop')) mappedGenre = 'T-Pop';
+                    else if (gLower.includes('hip') || gLower.includes('rap')) mappedGenre = 'Hip-Hop';
+                    else if (gLower.includes('r&b') || gLower.includes('soul')) mappedGenre = 'R&B';
+                    else if (gLower.includes('rock') || gLower.includes('alternative')) mappedGenre = 'Rock';
+                    else if (gLower.includes('electronic') || gLower.includes('dance') || gLower.includes('edm')) mappedGenre = 'Electronic';
+                    else if (gLower.includes('classical') || gLower.includes('orchestral')) mappedGenre = 'Classical';
+                    else if (gLower.includes('soundtrack') || gLower.includes('score')) mappedGenre = 'Soundtrack';
+                    else if (['pop', 'hip-hop', 'r&b', 'rock', 'electronic', 'classical', 'soundtrack', 'k-pop', 't-pop'].includes(rawGenre.toLowerCase())) {
+                        mappedGenre = rawGenre;
+                    }
+
                     return `
-                        <div onclick="selectMusicResultByIndex(${index})" class="flex items-center space-x-3 p-2 rounded-xl bg-bgSurface hover:bg-bgCard border border-borderSubtle cursor-pointer">
-                            <img src="${cover || 'https://via.placeholder.com/40x40?text=No+Art'}" class="w-10 h-10 object-cover rounded">
+                        <div onclick="selectMusicResult('${cleanTitle}', '${cleanArtist}', '${cleanAlbum}', '${mappedGenre}', '${year}', 'Apple Music', '${cover}')" class="flex items-center space-x-3 p-2 rounded-xl bg-bgSurface hover:bg-bgCard border border-borderSubtle cursor-pointer">
+                            <img src="${cover || 'https://via.placeholder.com/40x40?text=No+Img'}" class="w-10 h-10 object-cover rounded">
                             <div class="flex-1 min-w-0">
                                 <h4 class="text-xs font-semibold truncate">${track.trackName}</h4>
-                                <p class="text-[10px] text-textMuted truncate">${track.artistName}</p>
+                                <p class="text-[10px] text-textMuted truncate">${track.artistName} • ${track.collectionName || ''}</p>
                             </div>
                             <span class="text-[10px] bg-textMain text-bgMain px-2 py-1 rounded">Select</span>
                         </div>
@@ -1572,15 +1556,16 @@
             }
         }
 
-        function selectMusicResultByIndex(index) {
-            const track = window._tempMusicResults[index];
-            if (!track) return;
-            document.getElementById('m-form-title-input').value = track.trackName || '';
-            document.getElementById('m-form-artist').value = track.artistName || '';
-            document.getElementById('m-form-album').value = track.collectionName || '';
-            document.getElementById('m-form-year').value = track.releaseDate ? track.releaseDate.split('-')[0] : '';
-            document.getElementById('m-form-art-base64').value = track.artworkUrl100 ? track.artworkUrl100.replace('100x100bb', '600x600bb') : '';
-            document.getElementById('m-api-results').innerHTML = `<p class="text-[11px] text-emerald-600 font-semibold py-1 text-center">✓ Track auto-filled!</p>`;
+        function selectMusicResult(title, artist, album, genre, year, platform, cover) {
+            document.getElementById('m-form-title-input').value = title;
+            document.getElementById('m-form-artist').value = artist;
+            document.getElementById('m-form-album').value = album;
+            const genreSelect = document.getElementById('m-form-genre');
+            if (genreSelect) genreSelect.value = genre;
+            document.getElementById('m-form-year').value = year;
+            document.getElementById('m-form-platform').value = platform;
+            document.getElementById('m-form-art-base64').value = cover;
+            document.getElementById('m-api-results').innerHTML = `<p class="text-[11px] text-emerald-600 font-semibold py-1 text-center">✓ Auto-filled!</p>`;
         }
 
         function openMusicModal(item = null) {
@@ -1593,18 +1578,15 @@
                 document.getElementById('m-form-title-input').value = item.title;
                 document.getElementById('m-form-artist').value = item.artist;
                 document.getElementById('m-form-album').value = item.album || '';
-                document.getElementById('m-form-genre').value = item.genre;
+                document.getElementById('m-form-genre').value = item.genre || 'Pop';
                 document.getElementById('m-form-year').value = item.year || '';
                 document.getElementById('m-form-platform').value = item.platform || '';
-                document.getElementById('m-form-rating').value = item.rating;
-                document.getElementById('m-form-date').value = item.date || '';
-                document.getElementById('m-form-tags').value = item.tags ? item.tags.join(', ') : '';
+                document.getElementById('m-form-rating').value = item.rating || 9;
                 document.getElementById('m-form-favorite').checked = !!item.favorite;
                 document.getElementById('m-form-art-base64').value = item.cover || '';
                 document.getElementById('m-form-notes').value = item.notes || '';
             } else {
                 document.getElementById('m-form-title').innerText = 'Add Track Entry';
-                document.getElementById('m-form-date').value = new Date().toISOString().split('T')[0];
             }
             document.getElementById('m-form-modal').style.display = 'flex';
         }
@@ -1633,11 +1615,10 @@
                 year: document.getElementById('m-form-year').value,
                 platform: document.getElementById('m-form-platform').value,
                 rating: parseFloat(document.getElementById('m-form-rating').value) || 9.0,
-                tags: document.getElementById('m-form-tags').value.split(',').map(t => t.trim()).filter(Boolean),
-                date: document.getElementById('m-form-date').value,
                 favorite: document.getElementById('m-form-favorite').checked,
                 cover: document.getElementById('m-form-art-base64').value,
                 notes: document.getElementById('m-form-notes').value,
+                created_at: existing ? existing.created_at : new Date().toISOString(),
                 _synced: existing ? !!existing._synced : false
             };
 
@@ -1660,7 +1641,7 @@
             document.getElementById('m-detail-content').innerHTML = `
                 <div class="flex flex-col sm:flex-row gap-6 mb-6">
                     <div class="w-full sm:w-48 aspect-square bg-bgCard rounded-xl overflow-hidden shrink-0 flex items-center justify-center border border-borderSubtle">
-                        ${item.cover ? `<img src="${item.cover}" class="w-full h-full object-cover">` : `<i class="fa-solid fa-compact-disc text-3xl text-textMuted/40"></i>`}
+                        ${item.cover ? `<img src="${item.cover}" class="w-full h-full object-cover">` : `<i class="fa-solid fa-music text-3xl text-textMuted/40"></i>`}
                     </div>
                     <div class="flex-1">
                         <div class="flex items-center space-x-2 mb-2">
@@ -1668,19 +1649,19 @@
                             ${item.favorite ? '<span class="text-amber-600 text-xs"><i class="fa-solid fa-heart"></i></span>' : ''}
                         </div>
                         <h2 class="editorial-title text-4xl mb-1">${item.title}</h2>
-                        <p class="text-xs text-textMuted mb-4">${item.artist} ${item.album ? `• ${item.album}` : ''}</p>
+                        <p class="text-xs text-textMuted mb-4">${item.artist} ${item.album ? `• ${item.album}` : ''} ${item.year ? `(${item.year})` : ''}</p>
                         <div class="grid grid-cols-2 gap-4 py-3 border-y border-borderSubtle text-xs mb-4">
                             <div><span class="text-textMuted block text-[10px] uppercase">Rating</span><span class="font-semibold text-sm">★ ${item.rating} / 10</span></div>
                             <div><span class="text-textMuted block text-[10px] uppercase">Platform</span><span class="font-semibold text-sm">${item.platform || 'N/A'}</span></div>
                         </div>
                     </div>
                 </div>
-                ${item.notes ? `<div class="bg-bgCard border border-borderSubtle rounded-xl p-4 mb-6"><h4 class="text-[10px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Notes</h4><p class="text-xs text-textMain leading-relaxed whitespace-pre-line">${item.notes}</p></div>` : ''}
+                ${item.notes ? `<div class="bg-bgCard border border-borderSubtle rounded-xl p-4 mb-6"><h4 class="text-[10px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Notes & Timestamp</h4><p class="text-xs text-textMain leading-relaxed whitespace-pre-line">${item.notes}</p></div>` : ''}
                 <div class="flex justify-between items-center pt-4 border-t border-borderSubtle">
-                    <span class="text-[11px] text-textMuted">Added: ${item.date || 'N/A'}</span>
+                    <span class="text-[11px] text-textMuted">Added: ${item.created_at ? item.created_at.split('T')[0] : 'N/A'}</span>
                     <div class="flex items-center space-x-3">
                         <button onclick="deleteMusicItem('${item.id}')" class="px-4 py-2 rounded-xl border border-rose-200 bg-rose-50 text-rose-600 text-xs font-medium">Delete</button>
-                        <button onclick="closeMusicDetail(); openMusicModal(musicDatabase.find(i => i.id === '${item.id}'))" class="px-5 py-2 rounded-xl bg-textMain text-bgMain text-xs font-medium">Edit</button>
+                        <button onclick="closeMusicDetail(); openMusicModal(musicDatabase.find(i=>i.id==='${item.id}'))" class="px-4 py-2 rounded-xl bg-textMain text-bgMain text-xs font-medium">Edit</button>
                     </div>
                 </div>
             `;
@@ -1690,11 +1671,9 @@
         function closeMusicDetail() { document.getElementById('m-detail-modal').style.display = 'none'; }
 
         async function deleteMusicItem(id) {
-            if (!confirm('Are you sure you want to delete this track?')) return;
-            const item = musicDatabase.find(i => i.id === id);
-            if (currentUser && item && item._synced) {
-                const { error } = await supabaseClient.from('musiclist').delete().eq('id', id);
-                if (error) console.error('musiclist delete failed:', error.message);
+            if (!confirm('Delete this track?')) return;
+            if (currentUser) {
+                await supabaseClient.from('musiclist').delete().eq('id', id);
             }
             musicDatabase = musicDatabase.filter(i => i.id !== id);
             localStorage.setItem('peaks_musiclist', JSON.stringify(musicDatabase));
@@ -1704,102 +1683,144 @@
 
         function pickRandomMusicItem() {
             if (musicDatabase.length === 0) return;
-            openMusicDetailView(musicDatabase[Math.floor(Math.random() * musicDatabase.length)].id);
+            const random = musicDatabase[Math.floor(Math.random() * musicDatabase.length)];
+            openMusicDetailView(random.id);
         }
 
-        // --- COMICMANAGER LOGIC ---
+        // --- COMICLIST LOGIC (AniList) ---
         const comicManager = {
-            onlyFavorites: false,
-            openModal(comic = null) {
+            searchTimeout: null,
+            async handleApiSearch(query) {
+                clearTimeout(this.searchTimeout);
+                const resultsBox = document.getElementById('apiSearchResults');
+                if (!query || query.trim().length < 2) {
+                    resultsBox.classList.add('hidden');
+                    resultsBox.innerHTML = '';
+                    return;
+                }
+                this.searchTimeout = setTimeout(async () => {
+                    resultsBox.innerHTML = `<div class="p-3 text-xs text-textMuted text-center"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Searching AniList...</div>`;
+                    resultsBox.classList.remove('hidden');
+                    try {
+                        const graphqlQuery = `
+                            query ($search: String) {
+                              Page (perPage: 5) {
+                                media (search: $search, type: MANGA) {
+                                  id
+                                  title { romaji english native }
+                                  countryOfOrigin
+                                  format
+                                  status
+                                  chapters
+                                  genres
+                                  coverImage { large }
+                                  staff { nodes { name { full } } }
+                                }
+                              }
+                            }
+                        `;
+                        const res = await fetch('https://graphql.anilist.co', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                            body: JSON.stringify({ query: graphqlQuery, variables: { search: query } })
+                        });
+                        const json = await res.json();
+                        const mediaList = json?.data?.Page?.media || [];
+                        if (mediaList.length === 0) {
+                            resultsBox.innerHTML = `<div class="p-3 text-xs text-rose-500 text-center">No manga/webcomics found</div>`;
+                            return;
+                        }
+                        resultsBox.innerHTML = mediaList.map(m => {
+                            const title = m.title.english || m.title.romaji || m.title.native || 'Unknown';
+                            const altTitle = m.title.romaji || '';
+                            const cover = m.coverImage?.large || '';
+                            const country = m.countryOfOrigin || '';
+                            const format = m.format || '';
+                            
+                            let comicType = 'Manga';
+                            if (country === 'KR' || format === 'MANHWA') comicType = 'Manhwa';
+                            else if (country === 'CN' || format === 'MANHUA') comicType = 'Manhua';
+                            else if (format === 'NOVEL' || format === 'ONE_SHOT' || format === 'WEB') comicType = 'Webcomic';
+
+                            const status = m.status || 'RELEASING';
+                            const chapters = m.chapters || 0;
+                            const genres = (m.genres || []).join(', ');
+                            const author = m.staff?.nodes?.[0]?.name?.full || '';
+
+                            return `
+                                <div onclick='comicManager.selectMedia(${JSON.stringify({title, altTitle, comicType, status, chapters, genres, author, cover})})' class="flex items-center gap-3 p-2.5 hover:bg-bgCard cursor-pointer border-b border-borderSubtle last:border-0">
+                                    <img src="${cover}" class="w-9 h-12 object-cover rounded">
+                                    <div class="flex-1 min-w-0">
+                                        <div class="text-xs font-semibold truncate">${title}</div>
+                                        <div class="text-[10px] text-textMuted truncate">${comicType} • ${status} • ${chapters ? chapters + ' Ch' : 'Ongoing'}</div>
+                                    </div>
+                                    <span class="text-[10px] bg-textMain text-bgMain px-2 py-1 rounded">Select</span>
+                                </div>
+                            `;
+                        }).join('');
+                    } catch (err) {
+                        resultsBox.innerHTML = `<div class="p-3 text-xs text-rose-500 text-center">Search error</div>`;
+                    }
+                }, 300);
+            },
+            selectMedia(data) {
+                document.getElementById('formTitle').value = data.title;
+                document.getElementById('formAltTitle').value = data.altTitle;
+                document.getElementById('formType').value = data.comicType;
+                
+                const statusMap = {
+                    'RELEASING': 'Releasing',
+                    'FINISHED': 'Finished',
+                    'NOT_YET_RELEASED': 'Not Yet Released',
+                    'CANCELLED': 'Cancelled',
+                    'HIATUS': 'Hiatus'
+                };
+                document.getElementById('formStatus').value = statusMap[data.status] || 'Releasing';
+                document.getElementById('formTotalChapters').value = data.chapters || 0;
+                document.getElementById('formGenres').value = data.genres;
+                document.getElementById('formAuthor').value = data.author;
+                document.getElementById('formCoverUrl').value = data.cover;
+
+                document.getElementById('apiSearchResults').classList.add('hidden');
+                document.getElementById('apiSearchInput').value = '';
+            },
+            openModal(item = null) {
                 document.getElementById('comicForm').reset();
                 document.getElementById('comicId').value = '';
-                document.getElementById('apiSearchResults').innerHTML = '';
                 document.getElementById('apiSearchResults').classList.add('hidden');
-                if (comic) {
+                if (item) {
                     document.getElementById('modalTitle').innerText = 'Edit Comic';
-                    document.getElementById('comicId').value = comic.id;
-                    document.getElementById('formTitle').value = comic.title;
-                    document.getElementById('formAltTitle').value = comic.altTitle || '';
-                    document.getElementById('formType').value = comic.type;
-                    document.getElementById('formReadingStatus').value = comic.readingStatus;
-                    document.getElementById('formStatus').value = comic.status;
-                    document.getElementById('formGenres').value = comic.genres ? comic.genres.join(', ') : '';
-                    document.getElementById('formAuthor').value = comic.author || '';
-                    document.getElementById('formChaptersRead').value = comic.chaptersRead;
-                    document.getElementById('formTotalChapters').value = comic.totalChapters;
-                    document.getElementById('formRating').value = comic.rating;
-                    document.getElementById('formStartDate').value = comic.startDate || '';
-                    document.getElementById('formFinishDate').value = comic.finishDate || '';
-                    document.getElementById('formCoverUrl').value = comic.coverUrl || '';
-                    document.getElementById('formFavorite').checked = !!comic.favorite;
-                    document.getElementById('formNotes').value = comic.notes || '';
+                    document.getElementById('comicId').value = item.id;
+                    document.getElementById('formTitle').value = item.title;
+                    document.getElementById('formAltTitle').value = item.altTitle || '';
+                    document.getElementById('formType').value = item.type || 'Manga';
+                    document.getElementById('formReadingStatus').value = item.readingStatus || 'Reading';
+                    document.getElementById('formStatus').value = item.status || 'Releasing';
+                    document.getElementById('formGenres').value = item.genres || '';
+                    document.getElementById('formAuthor').value = item.author || '';
+                    document.getElementById('formChaptersRead').value = item.chaptersRead || 0;
+                    document.getElementById('formTotalChapters').value = item.totalChapters || 0;
+                    document.getElementById('formRating').value = item.rating || 0;
+                    document.getElementById('formStartDate').value = item.startDate || '';
+                    document.getElementById('formFinishDate').value = item.finishDate || '';
+                    document.getElementById('formCoverUrl').value = item.coverUrl || '';
+                    document.getElementById('formFavorite').checked = !!item.favorite;
+                    document.getElementById('formNotes').value = item.notes || '';
                 } else {
                     document.getElementById('modalTitle').innerText = 'Add New Comic';
                 }
-                document.getElementById('comicModal').style.display = 'flex';
+                document.getElementById('comicModal').classList.remove('hidden');
+                document.getElementById('comicModal').classList.add('flex');
             },
-            closeModal() { document.getElementById('comicModal').style.display = 'none'; },
-            closeDetail() { document.getElementById('comicDetailModal').style.display = 'none'; },
-            toggleFavoriteFilter() {
-                this.onlyFavorites = !this.onlyFavorites;
-                const btn = document.getElementById('filterFavBtn');
-                btn.className = this.onlyFavorites ? 'bg-textMain text-bgMain rounded-xl px-3 py-2.5 text-xs transition-colors flex items-center gap-1.5 shadow-xs' : 'bg-bgSurface border border-borderSubtle rounded-xl px-3 py-2.5 text-xs text-textMuted hover:text-amber-600 hover:border-textMain transition-colors flex items-center gap-1.5 shadow-xs';
-                this.render();
-            },
-            async handleApiSearch(query) {
-                const resultsBox = document.getElementById('apiSearchResults');
-                if (!query || query.length < 3) {
-                    resultsBox.innerHTML = '';
-                    resultsBox.classList.add('hidden');
-                    return;
-                }
-                try {
-                    const res = await fetch('https://graphql.anilist.co', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                        body: JSON.stringify({
-                            query: `query ($search: String) { Page(page: 1, perPage: 5) { media(search: $search, type: MANGA) { id title { romaji english } coverImage { large } chapters status genres staff { nodes { name { full } } } } } }`,
-                            variables: { search: query }
-                        })
-                    });
-                    const json = await res.json();
-                    const media = json.data?.Page?.media || [];
-                    if (media.length === 0) {
-                        resultsBox.innerHTML = `<div class="p-3 text-xs text-textMuted">No comics found.</div>`;
-                        resultsBox.classList.remove('hidden');
-                        return;
-                    }
-                    resultsBox.innerHTML = media.map(m => {
-                        const title = m.title.english || m.title.romaji;
-                        const author = m.staff?.nodes?.[0]?.name?.full || '';
-                        return `
-                            <div onclick="comicManager.selectApiMedia(${m.id}, '${title.replace(/'/g, "\\'")}', '${(m.title.romaji || '').replace(/'/g, "\\'")}', '${m.coverImage?.large || ''}', ${m.chapters || 0}, '${m.status || 'Releasing'}', '${(m.genres || []).join(', ')}', '${author.replace(type => type, '')}')" class="flex items-center gap-3 p-2 hover:bg-bgCard cursor-pointer border-b border-borderSubtle text-xs">
-                                <img src="${m.coverImage?.large || ''}" class="w-8 h-10 object-cover rounded">
-                                <div class="flex-1 truncate">
-                                    <div class="font-semibold truncate">${title}</div>
-                                    <div class="text-[10px] text-textMuted">${m.chapters || '?'} ch • ${m.status}</div>
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
-                    resultsBox.classList.remove('hidden');
-                } catch(e) { console.error(e); }
-            },
-            selectApiMedia(id, title, altTitle, cover, chapters, status, genres, author) {
-                document.getElementById('formTitle').value = title;
-                document.getElementById('formAltTitle').value = altTitle;
-                document.getElementById('formCoverUrl').value = cover;
-                document.getElementById('formTotalChapters').value = chapters || 0;
-                document.getElementById('formGenres').value = genres;
-                document.getElementById('formAuthor').value = author;
-                document.getElementById('formStatus').value = status === 'RELEASING' ? 'Releasing' : 'Finished';
-                document.getElementById('apiSearchResults').classList.add('hidden');
+            closeModal() {
+                document.getElementById('comicModal').classList.add('hidden');
+                document.getElementById('comicModal').classList.remove('flex');
             },
             async saveComic(e) {
                 e.preventDefault();
                 const id = document.getElementById('comicId').value;
-                const existing = id ? comicDatabase.find(c => c.id === id) : null;
-                let comicData = {
+                const existing = id ? comicDatabase.find(i => i.id === id) : null;
+                let entryData = {
                     id: id || 'c_' + Date.now(),
                     user_id: currentUser ? currentUser.id : null,
                     title: document.getElementById('formTitle').value,
@@ -1807,7 +1828,7 @@
                     type: document.getElementById('formType').value,
                     readingStatus: document.getElementById('formReadingStatus').value,
                     status: document.getElementById('formStatus').value,
-                    genres: document.getElementById('formGenres').value.split(',').map(s => s.trim()).filter(Boolean),
+                    genres: document.getElementById('formGenres').value,
                     author: document.getElementById('formAuthor').value,
                     chaptersRead: parseInt(document.getElementById('formChaptersRead').value) || 0,
                     totalChapters: parseInt(document.getElementById('formTotalChapters').value) || 0,
@@ -1817,16 +1838,16 @@
                     coverUrl: document.getElementById('formCoverUrl').value,
                     favorite: document.getElementById('formFavorite').checked,
                     notes: document.getElementById('formNotes').value,
-                    updatedAt: new Date().toISOString(),
+                    created_at: existing ? existing.created_at : new Date().toISOString(),
                     _synced: existing ? !!existing._synced : false
                 };
 
-                const oldId = comicData.id;
-                comicData = await pushItemToCloud('comiclist', comicData);
+                const oldId = entryData.id;
+                entryData = await pushItemToCloud('comiclist', entryData);
 
-                const index = comicDatabase.findIndex(c => c.id === oldId);
-                if (index !== -1) comicDatabase[index] = comicData;
-                else comicDatabase.unshift(comicData);
+                const index = comicDatabase.findIndex(i => i.id === oldId);
+                if (index !== -1) comicDatabase[index] = entryData;
+                else comicDatabase.unshift(entryData);
 
                 localStorage.setItem('peaks_comiclist', JSON.stringify(comicDatabase));
                 this.closeModal();
@@ -1834,49 +1855,56 @@
                 this.render();
             },
             render() {
-                const grid = document.getElementById('comicsGrid');
-                const empty = document.getElementById('emptyState');
                 const search = document.getElementById('searchInput').value.toLowerCase();
                 const filterStatus = document.getElementById('filterStatus').value;
                 const filterType = document.getElementById('filterType').value;
                 const filterGenre = document.getElementById('filterGenre').value;
                 const sortBy = document.getElementById('sortBy').value;
+                const favBtn = document.getElementById('filterFavBtn');
+                const isFavFiltered = favBtn.classList.contains('text-amber-600');
 
-                // Populate genres dropdown dynamically
-                const allGenres = [...new Set(comicDatabase.flatMap(c => c.genres || []))];
-                const genreSelect = document.getElementById('filterGenre');
-                const currentGenreVal = genreSelect.value;
-                genreSelect.innerHTML = '<option value="All">All Genres</option>' + allGenres.map(g => `<option value="${g}">${g}</option>`).join('');
-                genreSelect.value = allGenres.includes(currentGenreVal) ? currentGenreVal : 'All';
-
-                let filtered = comicDatabase.filter(c => {
-                    const matchSearch = c.title.toLowerCase().includes(search) || (c.author && c.author.toLowerCase().includes(search));
-                    const matchStatus = filterStatus === 'All' || c.readingStatus === filterStatus;
-                    const matchType = filterType === 'All' || c.type === filterType;
-                    const matchGenre = filterGenre === 'All' || (c.genres && c.genres.includes(filterGenre));
-                    const matchFav = !this.onlyFavorites || c.favorite;
-                    return matchSearch && matchStatus && matchType && matchGenre && matchFav;
+                let filtered = comicDatabase.filter(item => {
+                    const matchesSearch = !search || item.title.toLowerCase().includes(search) || (item.author && item.author.toLowerCase().includes(search));
+                    const matchesStatus = filterStatus === 'All' || item.readingStatus === filterStatus;
+                    const matchesType = filterType === 'All' || item.type === filterType;
+                    const matchesGenre = filterGenre === 'All' || (item.genres && item.genres.toLowerCase().includes(filterGenre.toLowerCase()));
+                    const matchesFav = !isFavFiltered || item.favorite;
+                    return matchesSearch && matchesStatus && matchesType && matchesGenre && matchesFav;
                 });
 
                 filtered.sort((a, b) => {
-                    if (sortBy === 'recentlyAdded') return new Date(b.id.split('_')[1] || 0) - new Date(a.id.split('_')[1] || 0);
-                    if (sortBy === 'recentlyUpdated') return new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0);
+                    if (sortBy === 'recentlyAdded') return new Date(b.created_at || 0) - new Date(a.created_at || 0);
                     if (sortBy === 'alphabetical') return a.title.localeCompare(b.title);
-                    if (sortBy === 'rating') return b.rating - a.rating;
-                    if (sortBy === 'progress') return (b.chaptersRead / (b.totalChapters || 1)) - (a.chaptersRead / (a.totalChapters || 1));
+                    if (sortBy === 'rating') return (b.rating || 0) - (a.rating || 0);
+                    if (sortBy === 'progress') return (b.chaptersRead || 0) - (a.chaptersRead || 0);
                     return 0;
                 });
 
-                // Stats
+                // Stats calculation
                 document.getElementById('headerTotalCount').innerText = comicDatabase.length;
-                document.getElementById('statReading').innerText = comicDatabase.filter(c => c.readingStatus === 'Reading').length;
-                document.getElementById('statCompleted').innerText = comicDatabase.filter(c => c.readingStatus === 'Completed').length;
-                document.getElementById('statOnHold').innerText = comicDatabase.filter(c => c.readingStatus === 'On Hold').length;
-                document.getElementById('statDropped').innerText = comicDatabase.filter(c => c.readingStatus === 'Dropped').length;
-                document.getElementById('statPlanToRead').innerText = comicDatabase.filter(c => c.readingStatus === 'Plan to Read').length;
-                document.getElementById('statFavCount').innerText = comicDatabase.filter(c => c.favorite).length;
-                const avgRating = comicDatabase.length > 0 ? (comicDatabase.reduce((acc, c) => acc + (c.rating || 0), 0) / comicDatabase.length).toFixed(1) : '0.0';
-                document.getElementById('statAvgRating').innerText = `★ ${avgRating}`;
+                document.getElementById('statReading').innerText = comicDatabase.filter(i => i.readingStatus === 'Reading').length;
+                document.getElementById('statCompleted').innerText = comicDatabase.filter(i => i.readingStatus === 'Completed').length;
+                document.getElementById('statOnHold').innerText = comicDatabase.filter(i => i.readingStatus === 'On Hold').length;
+                document.getElementById('statDropped').innerText = comicDatabase.filter(i => i.readingStatus === 'Dropped').length;
+                document.getElementById('statPlanToRead').innerText = comicDatabase.filter(i => i.readingStatus === 'Plan to Read').length;
+                document.getElementById('statFavCount').innerText = comicDatabase.filter(i => i.favorite).length;
+
+                const rated = comicDatabase.filter(i => i.rating > 0);
+                const avg = rated.length > 0 ? (rated.reduce((acc, curr) => acc + curr.rating, 0) / rated.length).toFixed(1) : '0.0';
+                document.getElementById('statAvgRating').innerText = `★ ${avg}`;
+
+                // Populate genres dropdown dynamically
+                const genresSet = new Set();
+                comicDatabase.forEach(i => {
+                    if (i.genres) i.genres.split(',').forEach(g => genresSet.add(g.trim()));
+                });
+                const genreSelect = document.getElementById('filterGenre');
+                const currentGenreVal = genreSelect.value;
+                genreSelect.innerHTML = '<option value="All">All Genres</option>' + Array.from(genresSet).sort().map(g => `<option value="${g}">${g}</option>`).join('');
+                genreSelect.value = genresSet.has(currentGenreVal) ? currentGenreVal : 'All';
+
+                const grid = document.getElementById('comicsGrid');
+                const empty = document.getElementById('emptyState');
 
                 if (filtered.length === 0) {
                     grid.innerHTML = '';
@@ -1885,209 +1913,208 @@
                 }
                 empty.classList.add('hidden');
 
-                grid.innerHTML = filtered.map(c => `
-                    <div onclick="comicManager.openDetail('${c.id}')" class="group bg-bgSurface border border-borderSubtle hover:border-textMain rounded-2xl overflow-hidden transition-all duration-300 shadow-editorial hover:shadow-editorial-hover cursor-pointer flex flex-col">
+                grid.innerHTML = filtered.map(item => `
+                    <div onclick="comicManager.openDetail('${item.id}')" class="group bg-bgSurface border border-borderSubtle hover:border-textMain rounded-2xl overflow-hidden transition-all duration-300 shadow-editorial hover:shadow-editorial-hover cursor-pointer flex flex-col">
                         <div class="aspect-[2/3] bg-bgCard relative overflow-hidden flex items-center justify-center">
-                            ${c.coverUrl ? `<img src="${c.coverUrl}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">` : `<div class="text-center p-4"><i class="fa-solid fa-book text-2xl text-textMuted/40 mb-2"></i><span class="block editorial-title text-xl text-textMuted line-clamp-2 px-2">${c.title}</span></div>`}
-                            <div class="absolute top-3 left-3"><span class="bg-bgSurface/90 backdrop-blur-xs text-[10px] font-medium px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">${c.type}</span></div>
-                            ${c.favorite ? `<div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-bgSurface/90 backdrop-blur-xs border border-borderSubtle flex items-center justify-center text-amber-600 shadow-xs"><i class="fa-solid fa-heart text-[10px]"></i></div>` : ''}
-                            <div class="absolute bottom-3 right-3 bg-bgSurface/90 backdrop-blur-xs text-[10px] font-semibold px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">★ ${c.rating}</div>
+                            ${item.coverUrl ? `<img src="${item.coverUrl}" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">` : `<div class="text-center p-4"><i class="fa-solid fa-book-open text-2xl text-textMuted/40 mb-2"></i><span class="block editorial-title text-xl text-textMuted line-clamp-2 px-2">${item.title}</span></div>`}
+                            <div class="absolute top-3 left-3"><span class="bg-bgSurface/90 backdrop-blur-xs text-[10px] font-medium px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">${item.type}</span></div>
+                            ${item.favorite ? `<div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-bgSurface/90 backdrop-blur-xs border border-borderSubtle flex items-center justify-center text-amber-600 shadow-xs"><i class="fa-solid fa-heart text-[10px]"></i></div>` : ''}
+                            <div class="absolute bottom-3 right-3 bg-bgSurface/90 backdrop-blur-xs text-[10px] font-semibold px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">★ ${item.rating || 0}</div>
                         </div>
                         <div class="p-4 flex-1 flex flex-col justify-between">
                             <div>
-                                <h3 class="editorial-title text-xl leading-tight mb-1 group-hover:text-accentGold transition-colors truncate">${c.title}</h3>
-                                <p class="text-[11px] text-textMuted truncate">${c.author || 'Unknown Author'}</p>
+                                <h3 class="editorial-title text-xl leading-tight mb-1 group-hover:text-accentGold transition-colors truncate">${item.title}</h3>
+                                <p class="text-[11px] text-textMuted truncate">${item.author || 'Unknown Author'}</p>
                             </div>
                             <div class="flex items-center justify-between mt-3 pt-3 border-t border-borderSubtle text-[10px] text-textMuted">
-                                <span class="uppercase tracking-wider font-medium">${c.readingStatus}</span>
-                                <span>Ch. ${c.chaptersRead}/${c.totalChapters || '?'}</span>
+                                <span class="uppercase tracking-wider">${item.readingStatus}</span>
+                                <span>Ch. ${item.chaptersRead} / ${item.totalChapters || '?'}</span>
                             </div>
                         </div>
                     </div>
                 `).join('');
             },
+            toggleFavoriteFilter() {
+                const btn = document.getElementById('filterFavBtn');
+                btn.classList.toggle('text-amber-600');
+                btn.classList.toggle('border-textMain');
+                this.render();
+            },
             openDetail(id) {
-                const c = comicDatabase.find(item => item.id === id);
-                if (!c) return;
+                const item = comicDatabase.find(i => i.id === id);
+                if (!item) return;
                 document.getElementById('comicDetailContent').innerHTML = `
                     <div class="flex flex-col sm:flex-row gap-6 mb-6">
                         <div class="w-full sm:w-48 aspect-[2/3] bg-bgCard rounded-xl overflow-hidden shrink-0 flex items-center justify-center border border-borderSubtle">
-                            ${c.coverUrl ? `<img src="${c.coverUrl}" class="w-full h-full object-cover">` : `<i class="fa-solid fa-book text-3xl text-textMuted/40"></i>`}
+                            ${item.coverUrl ? `<img src="${item.coverUrl}" class="w-full h-full object-cover">` : `<i class="fa-solid fa-book-open text-3xl text-textMuted/40"></i>`}
                         </div>
                         <div class="flex-1">
                             <div class="flex items-center space-x-2 mb-2">
-                                <span class="text-[10px] uppercase tracking-wider font-medium px-2.5 py-1 rounded-md bg-bgCard border border-borderSubtle">${c.type}</span>
-                                <span class="text-[10px] uppercase tracking-wider font-medium px-2.5 py-1 rounded-md bg-bgCard border border-borderSubtle">${c.readingStatus}</span>
-                                ${c.favorite ? '<span class="text-amber-600 text-xs"><i class="fa-solid fa-heart"></i></span>' : ''}
+                                <span class="text-[10px] uppercase tracking-wider font-medium px-2.5 py-1 rounded-md bg-bgCard border border-borderSubtle">${item.type}</span>
+                                <span class="text-[10px] uppercase tracking-wider font-medium px-2.5 py-1 rounded-md bg-bgCard border border-borderSubtle">${item.readingStatus}</span>
+                                ${item.favorite ? '<span class="text-amber-600 text-xs"><i class="fa-solid fa-heart"></i></span>' : ''}
                             </div>
-                            <h2 class="editorial-title text-4xl mb-1">${c.title}</h2>
-                            <p class="text-xs text-textMuted mb-4">${c.author || 'Unknown Author'}</p>
+                            <h2 class="editorial-title text-4xl mb-1">${item.title}</h2>
+                            <p class="text-xs text-textMuted mb-4">${item.author || 'Unknown Author'} ${item.genres ? `• ${item.genres}` : ''}</p>
                             <div class="grid grid-cols-2 gap-4 py-3 border-y border-borderSubtle text-xs mb-4">
-                                <div><span class="text-textMuted block text-[10px] uppercase">Rating</span><span class="font-semibold text-sm">★ ${c.rating} / 5</span></div>
-                                <div><span class="text-textMuted block text-[10px] uppercase">Progress</span><span class="font-semibold text-sm">${c.chaptersRead} / ${c.totalChapters || '?'} Ch.</span></div>
+                                <div><span class="text-textMuted block text-[10px] uppercase">Rating</span><span class="font-semibold text-sm">★ ${item.rating || 0} / 5</span></div>
+                                <div><span class="text-textMuted block text-[10px] uppercase">Progress</span><span class="font-semibold text-sm">Ch. ${item.chaptersRead} / ${item.totalChapters || '?'}</span></div>
                             </div>
                         </div>
                     </div>
-                    ${c.notes ? `<div class="bg-bgCard border border-borderSubtle rounded-xl p-4 mb-6"><h4 class="text-[10px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Notes</h4><p class="text-xs text-textMain leading-relaxed whitespace-pre-line">${c.notes}</p></div>` : ''}
+                    ${item.notes ? `<div class="bg-bgCard border border-borderSubtle rounded-xl p-4 mb-6"><h4 class="text-[10px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Personal Notes</h4><p class="text-xs text-textMain leading-relaxed whitespace-pre-line">${item.notes}</p></div>` : ''}
                     <div class="flex justify-between items-center pt-4 border-t border-borderSubtle">
-                        <span class="text-[11px] text-textMuted">Genres: ${(c.genres || []).join(', ') || 'N/A'}</span>
+                        <span class="text-[11px] text-textMuted">Added: ${item.created_at ? item.created_at.split('T')[0] : 'N/A'}</span>
                         <div class="flex items-center space-x-3">
-                            <button onclick="comicManager.delete('${c.id}')" class="px-4 py-2 rounded-xl border border-rose-200 bg-rose-50 text-rose-600 text-xs font-medium">Delete</button>
-                            <button onclick="comicManager.closeDetail(); comicManager.openModal(comicDatabase.find(i => i.id === '${c.id}'))" class="px-5 py-2 rounded-xl bg-textMain text-bgMain text-xs font-medium">Edit</button>
+                            <button onclick="comicManager.delete('${item.id}')" class="px-4 py-2 rounded-xl border border-rose-200 bg-rose-50 text-rose-600 text-xs font-medium">Delete</button>
+                            <button onclick="comicManager.closeDetail(); comicManager.openModal(comicDatabase.find(i=>i.id==='${item.id}'))" class="px-4 py-2 rounded-xl bg-textMain text-bgMain text-xs font-medium">Edit</button>
                         </div>
                     </div>
                 `;
-                document.getElementById('comicDetailModal').style.display = 'flex';
+                document.getElementById('comicDetailModal').classList.remove('hidden');
+                document.getElementById('comicDetailModal').classList.add('flex');
+            },
+            closeDetail() {
+                document.getElementById('comicDetailModal').classList.add('hidden');
+                document.getElementById('comicDetailModal').classList.remove('flex');
             },
             async delete(id) {
                 if (!confirm('Delete this comic?')) return;
-                const item = comicDatabase.find(c => c.id === id);
-                if (currentUser && item && item._synced) {
-                    const { error } = await supabaseClient.from('comiclist').delete().eq('id', id);
-                    if (error) console.error('comiclist delete failed:', error.message);
+                if (currentUser) {
+                    await supabaseClient.from('comiclist').delete().eq('id', id);
                 }
-                comicDatabase = comicDatabase.filter(c => c.id !== id);
+                comicDatabase = comicDatabase.filter(i => i.id !== id);
                 localStorage.setItem('peaks_comiclist', JSON.stringify(comicDatabase));
                 this.closeDetail();
                 this.render();
             }
         };
 
-        // --- READMANAGER LOGIC ---
+        // --- READLIST LOGIC (Google Books & Open Library) ---
         const readManager = {
-            onlyFavorites: false,
-            openModal(book = null) {
+            searchTimeout: null,
+            async handleApiSearch(query) {
+                clearTimeout(this.searchTimeout);
+                const resultsBox = document.getElementById('readApiSearchResults');
+                if (!query || query.trim().length < 2) {
+                    resultsBox.classList.add('hidden');
+                    resultsBox.innerHTML = '';
+                    return;
+                }
+                this.searchTimeout = setTimeout(async () => {
+                    resultsBox.innerHTML = `<div class="p-3 text-xs text-textMuted text-center"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Searching Google Books & Open Library...</div>`;
+                    resultsBox.classList.remove('hidden');
+                    try {
+                        let combinedBooks = [];
+                        // 1. Google Books Lookup
+                        const gRes = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=5`);
+                        const gData = await gRes.json();
+                        if (gData.items) {
+                            gData.items.forEach(item => {
+                                const info = item.volumeInfo || {};
+                                combinedBooks.push({
+                                    title: info.title || '',
+                                    author: (info.authors || []).join(', ') || 'Unknown Author',
+                                    cover: info.imageLinks?.thumbnail || info.imageLinks?.smallThumbnail || '',
+                                    totalPages: info.pageCount || 0,
+                                    genres: (info.categories || []).join(', ')
+                                });
+                            });
+                        }
+
+                        // 2. Open Library Lookup if Google Books returns few or none
+                        if (combinedBooks.length < 3) {
+                            const olRes = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=5`);
+                            const olData = await olRes.json();
+                            if (olData.docs) {
+                                olData.docs.forEach(doc => {
+                                    const title = doc.title || '';
+                                    const author = (doc.author_name || []).join(', ') || 'Unknown Author';
+                                    const cover = doc.cover_i ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg` : '';
+                                    const totalPages = doc.number_of_pages_median || 0;
+                                    const genres = (doc.subject || []).slice(0, 3).join(', ');
+                                    if (!combinedBooks.some(b => b.title.toLowerCase() === title.toLowerCase())) {
+                                        combinedBooks.push({ title, author, cover, totalPages, genres });
+                                    }
+                                });
+                            }
+                        }
+
+                        if (combinedBooks.length === 0) {
+                            resultsBox.innerHTML = `<div class="p-3 text-xs text-rose-500 text-center">No books found</div>`;
+                            return;
+                        }
+
+                        resultsBox.innerHTML = combinedBooks.slice(0, 5).map(b => {
+                            const cleanTitle = (b.title || '').replace(/'/g, "\\'");
+                            const cleanAuthor = (b.author || '').replace(/'/g, "\\'");
+                            const cleanGenres = (b.genres || '').replace(/'/g, "\\'");
+                            return `
+                                <div onclick='readManager.selectBook(${JSON.stringify({title: b.title, author: b.author, cover: b.cover, totalPages: b.totalPages, genres: b.genres})})' class="flex items-center gap-3 p-2.5 hover:bg-bgCard cursor-pointer border-b border-borderSubtle last:border-0">
+                                    <img src="${b.cover || 'https://via.placeholder.com/40x60?text=No+Img'}" class="w-9 h-12 object-cover rounded">
+                                    <div class="flex-1 min-w-0">
+                                        <div class="text-xs font-semibold truncate">${b.title}</div>
+                                        <div class="text-[10px] text-textMuted truncate">${b.author} • ${b.totalPages ? b.totalPages + ' Pages' : ''}</div>
+                                    </div>
+                                    <span class="text-[10px] bg-textMain text-bgMain px-2 py-1 rounded">Select</span>
+                                </div>
+                            `;
+                        }).join('');
+                    } catch (err) {
+                        resultsBox.innerHTML = `<div class="p-3 text-xs text-rose-500 text-center">Search error</div>`;
+                    }
+                }, 300);
+            },
+            selectBook(data) {
+                document.getElementById('readFormTitle').value = data.title;
+                document.getElementById('readFormAuthor').value = data.author;
+                document.getElementById('readFormTotalPages').value = data.totalPages || 0;
+                document.getElementById('readFormGenres').value = data.genres;
+                document.getElementById('readFormCoverUrl').value = data.cover;
+
+                document.getElementById('readApiSearchResults').classList.add('hidden');
+                document.getElementById('readApiSearchInput').value = '';
+            },
+            openModal(item = null) {
                 document.getElementById('readForm').reset();
                 document.getElementById('readId').value = '';
-                document.getElementById('readApiSearchResults').innerHTML = '';
                 document.getElementById('readApiSearchResults').classList.add('hidden');
-                if (book) {
+                if (item) {
                     document.getElementById('readModalTitle').innerText = 'Edit Book';
-                    document.getElementById('readId').value = book.id;
-                    document.getElementById('readFormTitle').value = book.title;
-                    document.getElementById('readFormAuthor').value = book.author;
-                    document.getElementById('readFormStatus').value = book.readingStatus;
-                    document.getElementById('readFormGenres').value = book.genres ? book.genres.join(', ') : '';
-                    document.getElementById('readFormPagesRead').value = book.pagesRead;
-                    document.getElementById('readFormTotalPages').value = book.totalPages;
-                    document.getElementById('readFormRating').value = book.rating;
-                    document.getElementById('readFormStartDate').value = book.startDate || '';
-                    document.getElementById('readFormFinishDate').value = book.finishDate || '';
-                    document.getElementById('readFormCoverUrl').value = book.coverUrl || '';
-                    document.getElementById('readFormFavorite').checked = !!book.favorite;
-                    document.getElementById('readFormNotes').value = book.notes || '';
+                    document.getElementById('readId').value = item.id;
+                    document.getElementById('readFormTitle').value = item.title;
+                    document.getElementById('readFormAuthor').value = item.author;
+                    document.getElementById('readFormStatus').value = item.status || 'Reading';
+                    document.getElementById('readFormGenres').value = item.genres || '';
+                    document.getElementById('readFormPagesRead').value = item.pagesRead || 0;
+                    document.getElementById('readFormTotalPages').value = item.totalPages || 0;
+                    document.getElementById('readFormRating').value = item.rating || 0;
+                    document.getElementById('readFormStartDate').value = item.startDate || '';
+                    document.getElementById('readFormFinishDate').value = item.finishDate || '';
+                    document.getElementById('readFormCoverUrl').value = item.coverUrl || '';
+                    document.getElementById('readFormFavorite').checked = !!item.favorite;
+                    document.getElementById('readFormNotes').value = item.notes || '';
                 } else {
                     document.getElementById('readModalTitle').innerText = 'Add New Book';
                 }
-                document.getElementById('readModal').style.display = 'flex';
+                document.getElementById('readModal').classList.remove('hidden');
+                document.getElementById('readModal').classList.add('flex');
             },
-            closeModal() { document.getElementById('readModal').style.display = 'none'; },
-            closeDetail() { document.getElementById('readDetailModal').style.display = 'none'; },
-            toggleFavoriteFilter() {
-                this.onlyFavorites = !this.onlyFavorites;
-                const btn = document.getElementById('readFilterFavBtn');
-                btn.className = this.onlyFavorites ? 'bg-textMain text-bgMain rounded-xl px-3 py-2.5 text-xs transition-colors flex items-center gap-1.5 shadow-xs' : 'bg-bgSurface border border-borderSubtle rounded-xl px-3 py-2.5 text-xs text-textMuted hover:text-amber-600 hover:border-textMain transition-colors flex items-center gap-1.5 shadow-xs';
-                this.render();
-            },
-            async handleApiSearch(query) {
-                const resultsBox = document.getElementById('readApiSearchResults');
-                if (!query || query.length < 3) {
-                    resultsBox.innerHTML = '';
-                    resultsBox.classList.add('hidden');
-                    return;
-                }
-                resultsBox.innerHTML = `<div class="p-3 text-xs text-textMuted">Searching...</div>`;
-                resultsBox.classList.remove('hidden');
-
-                let items = [];
-                let searchError = null;
-
-                // 1. Google Books first
-                try {
-                    const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=5`);
-                    if (res.ok) {
-                        const data = await res.json();
-                        if (data.error) {
-                            searchError = data.error.message || `Google Books error ${res.status}`;
-                        } else if (Array.isArray(data.items)) {
-                            items = data.items.map(item => {
-                                const info = item.volumeInfo || {};
-                                return {
-                                    title: info.title || '',
-                                    author: (info.authors || []).join(', '),
-                                    cover: info.imageLinks?.thumbnail || info.imageLinks?.smallThumbnail || '',
-                                    pages: info.pageCount || 0,
-                                    categories: (info.categories || []).join(', ')
-                                };
-                            });
-                        }
-                    } else {
-                        searchError = `Google Books returned HTTP ${res.status}`;
-                    }
-                } catch (e) {
-                    searchError = e.message || 'Network error contacting Google Books';
-                }
-
-                // 2. Fall back to Open Library if Google Books had nothing usable
-                if (items.length === 0) {
-                    try {
-                        const olRes = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=5`);
-                        if (olRes.ok) {
-                            const olData = await olRes.json();
-                            items = (olData.docs || []).map(doc => ({
-                                title: doc.title || '',
-                                author: (doc.author_name || []).join(', '),
-                                cover: doc.cover_i ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg` : '',
-                                pages: doc.number_of_pages_median || 0,
-                                categories: (doc.subject || []).slice(0, 3).join(', ')
-                            }));
-                            if (items.length > 0) searchError = null;
-                        } else if (!searchError) {
-                            searchError = `Open Library returned HTTP ${olRes.status}`;
-                        }
-                    } catch (e) {
-                        if (!searchError) searchError = e.message || 'Network error contacting Open Library';
-                    }
-                }
-
-                if (items.length === 0) {
-                    resultsBox.innerHTML = searchError
-                        ? `<div class="p-3 text-xs text-rose-500">Search failed: ${searchError}. Please try again.</div>`
-                        : `<div class="p-3 text-xs text-textMuted">No books found.</div>`;
-                    resultsBox.classList.remove('hidden');
-                    return;
-                }
-
-                resultsBox.innerHTML = items.map(b => `
-                    <div onclick="readManager.selectApiBook('${b.title.replace(/'/g, "\\'")}', '${b.author.replace(/'/g, "\\'")}', '${b.cover}', ${b.pages}, '${b.categories.replace(/'/g, "\\'")}')" class="flex items-center gap-3 p-2 hover:bg-bgCard cursor-pointer border-b border-borderSubtle text-xs">
-                        <img src="${b.cover || 'https://via.placeholder.com/35x50?text=No+Img'}" class="w-8 h-10 object-cover rounded">
-                        <div class="flex-1 truncate">
-                            <div class="font-semibold truncate">${b.title}</div>
-                            <div class="text-[10px] text-textMuted truncate">${b.author}</div>
-                        </div>
-                    </div>
-                `).join('');
-                resultsBox.classList.remove('hidden');
-            },
-            selectApiBook(title, author, cover, pages, categories) {
-                document.getElementById('readFormTitle').value = title;
-                document.getElementById('readFormAuthor').value = author;
-                document.getElementById('readFormCoverUrl').value = cover;
-                document.getElementById('readFormTotalPages').value = pages;
-                document.getElementById('readFormGenres').value = categories;
-                document.getElementById('readApiSearchResults').classList.add('hidden');
+            closeModal() {
+                document.getElementById('readModal').classList.add('hidden');
+                document.getElementById('readModal').classList.remove('flex');
             },
             async saveBook(e) {
                 e.preventDefault();
                 const id = document.getElementById('readId').value;
-                const existing = id ? readDatabase.find(b => b.id === id) : null;
-                let bookData = {
+                const existing = id ? readDatabase.find(i => i.id === id) : null;
+                let entryData = {
                     id: id || 'r_' + Date.now(),
                     user_id: currentUser ? currentUser.id : null,
                     title: document.getElementById('readFormTitle').value,
                     author: document.getElementById('readFormAuthor').value,
-                    readingStatus: document.getElementById('readFormStatus').value,
-                    genres: document.getElementById('readFormGenres').value.split(',').map(s => s.trim()).filter(Boolean),
+                    status: document.getElementById('readFormStatus').value,
+                    genres: document.getElementById('readFormGenres').value,
                     pagesRead: parseInt(document.getElementById('readFormPagesRead').value) || 0,
                     totalPages: parseInt(document.getElementById('readFormTotalPages').value) || 0,
                     rating: parseFloat(document.getElementById('readFormRating').value) || 0,
@@ -2096,16 +2123,16 @@
                     coverUrl: document.getElementById('readFormCoverUrl').value,
                     favorite: document.getElementById('readFormFavorite').checked,
                     notes: document.getElementById('readFormNotes').value,
-                    updatedAt: new Date().toISOString(),
+                    created_at: existing ? existing.created_at : new Date().toISOString(),
                     _synced: existing ? !!existing._synced : false
                 };
 
-                const oldId = bookData.id;
-                bookData = await pushItemToCloud('readlist', bookData);
+                const oldId = entryData.id;
+                entryData = await pushItemToCloud('readlist', entryData);
 
-                const index = readDatabase.findIndex(b => b.id === oldId);
-                if (index !== -1) readDatabase[index] = bookData;
-                else readDatabase.unshift(bookData);
+                const index = readDatabase.findIndex(i => i.id === oldId);
+                if (index !== -1) readDatabase[index] = entryData;
+                else readDatabase.unshift(entryData);
 
                 localStorage.setItem('peaks_readlist', JSON.stringify(readDatabase));
                 this.closeModal();
@@ -2113,43 +2140,51 @@
                 this.render();
             },
             render() {
-                const grid = document.getElementById('readsGrid');
-                const empty = document.getElementById('readEmptyState');
                 const search = document.getElementById('readSearchInput').value.toLowerCase();
                 const filterStatus = document.getElementById('readFilterStatus').value;
                 const filterGenre = document.getElementById('readFilterGenre').value;
                 const sortBy = document.getElementById('readSortBy').value;
+                const favBtn = document.getElementById('readFilterFavBtn');
+                const isFavFiltered = favBtn.classList.contains('text-amber-600');
 
-                const allGenres = [...new Set(readDatabase.flatMap(b => b.genres || []))];
-                const genreSelect = document.getElementById('readFilterGenre');
-                const currentGenreVal = genreSelect.value;
-                genreSelect.innerHTML = '<option value="All">All Genres</option>' + allGenres.map(g => `<option value="${g}">${g}</option>`).join('');
-                genreSelect.value = allGenres.includes(currentGenreVal) ? currentGenreVal : 'All';
-
-                let filtered = readDatabase.filter(b => {
-                    const matchSearch = b.title.toLowerCase().includes(search) || b.author.toLowerCase().includes(search);
-                    const matchStatus = filterStatus === 'All' || b.readingStatus === filterStatus;
-                    const matchGenre = filterGenre === 'All' || (b.genres && b.genres.includes(filterGenre));
-                    const matchFav = !this.onlyFavorites || b.favorite;
-                    return matchSearch && matchStatus && matchGenre && matchFav;
+                let filtered = readDatabase.filter(item => {
+                    const matchesSearch = !search || item.title.toLowerCase().includes(search) || item.author.toLowerCase().includes(search);
+                    const matchesStatus = filterStatus === 'All' || item.status === filterStatus;
+                    const matchesGenre = filterGenre === 'All' || (item.genres && item.genres.toLowerCase().includes(filterGenre.toLowerCase()));
+                    const matchesFav = !isFavFiltered || item.favorite;
+                    return matchesSearch && matchesStatus && matchesGenre && matchesFav;
                 });
 
                 filtered.sort((a, b) => {
-                    if (sortBy === 'recentlyAdded') return new Date(b.id.split('_')[1] || 0) - new Date(a.id.split('_')[1] || 0);
+                    if (sortBy === 'recentlyAdded') return new Date(b.created_at || 0) - new Date(a.created_at || 0);
                     if (sortBy === 'alphabetical') return a.title.localeCompare(b.title);
-                    if (sortBy === 'rating') return b.rating - a.rating;
-                    if (sortBy === 'pages') return (b.pagesRead / (b.totalPages || 1)) - (a.pagesRead / (a.totalPages || 1));
+                    if (sortBy === 'rating') return (b.rating || 0) - (a.rating || 0);
+                    if (sortBy === 'pages') return (b.pagesRead || 0) - (a.pagesRead || 0);
                     return 0;
                 });
 
                 document.getElementById('readHeaderTotalCount').innerText = readDatabase.length;
-                document.getElementById('readStatReading').innerText = readDatabase.filter(b => b.readingStatus === 'Reading').length;
-                document.getElementById('readStatCompleted').innerText = readDatabase.filter(b => b.readingStatus === 'Completed').length;
-                document.getElementById('readStatOnHold').innerText = readDatabase.filter(b => b.readingStatus === 'On Hold').length;
-                document.getElementById('readStatWantToRead').innerText = readDatabase.filter(b => b.readingStatus === 'Want to Read').length;
-                document.getElementById('readStatFavCount').innerText = readDatabase.filter(b => b.favorite).length;
-                const avgRating = readDatabase.length > 0 ? (readDatabase.reduce((acc, b) => acc + (b.rating || 0), 0) / readDatabase.length).toFixed(1) : '0.0';
-                document.getElementById('readStatAvgRating').innerText = `★ ${avgRating}`;
+                document.getElementById('readStatReading').innerText = readDatabase.filter(i => i.status === 'Reading').length;
+                document.getElementById('readStatCompleted').innerText = readDatabase.filter(i => i.status === 'Completed').length;
+                document.getElementById('readStatOnHold').innerText = readDatabase.filter(i => i.status === 'On Hold').length;
+                document.getElementById('readStatWantToRead').innerText = readDatabase.filter(i => i.status === 'Want to Read').length;
+                document.getElementById('readStatFavCount').innerText = readDatabase.filter(i => i.favorite).length;
+
+                const rated = readDatabase.filter(i => i.rating > 0);
+                const avg = rated.length > 0 ? (rated.reduce((acc, curr) => acc + curr.rating, 0) / rated.length).toFixed(1) : '0.0';
+                document.getElementById('readStatAvgRating').innerText = `★ ${avg}`;
+
+                const genresSet = new Set();
+                readDatabase.forEach(i => {
+                    if (i.genres) i.genres.split(',').forEach(g => genresSet.add(g.trim()));
+                });
+                const genreSelect = document.getElementById('readFilterGenre');
+                const currentGenreVal = genreSelect.value;
+                genreSelect.innerHTML = '<option value="All">All Genres</option>' + Array.from(genresSet).sort().map(g => `<option value="${g}">${g}</option>`).join('');
+                genreSelect.value = genresSet.has(currentGenreVal) ? currentGenreVal : 'All';
+
+                const grid = document.getElementById('readsGrid');
+                const empty = document.getElementById('readEmptyState');
 
                 if (filtered.length === 0) {
                     grid.innerHTML = '';
@@ -2158,67 +2193,77 @@
                 }
                 empty.classList.add('hidden');
 
-                grid.innerHTML = filtered.map(b => `
-                    <div onclick="readManager.openDetail('${b.id}')" class="group bg-bgSurface border border-borderSubtle hover:border-textMain rounded-2xl overflow-hidden transition-all duration-300 shadow-editorial hover:shadow-editorial-hover cursor-pointer flex flex-col">
+                grid.innerHTML = filtered.map(item => `
+                    <div onclick="readManager.openDetail('${item.id}')" class="group bg-bgSurface border border-borderSubtle hover:border-textMain rounded-2xl overflow-hidden transition-all duration-300 shadow-editorial hover:shadow-editorial-hover cursor-pointer flex flex-col">
                         <div class="aspect-[2/3] bg-bgCard relative overflow-hidden flex items-center justify-center">
-                            ${b.coverUrl ? `<img src="${b.coverUrl}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">` : `<div class="text-center p-4"><i class="fa-solid fa-bookmark text-2xl text-textMuted/40 mb-2"></i><span class="block editorial-title text-xl text-textMuted line-clamp-2 px-2">${b.title}</span></div>`}
-                            <div class="absolute top-3 left-3"><span class="bg-bgSurface/90 backdrop-blur-xs text-[10px] font-medium px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">${b.readingStatus}</span></div>
-                            ${b.favorite ? `<div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-bgSurface/90 backdrop-blur-xs border border-borderSubtle flex items-center justify-center text-amber-600 shadow-xs"><i class="fa-solid fa-heart text-[10px]"></i></div>` : ''}
-                            <div class="absolute bottom-3 right-3 bg-bgSurface/90 backdrop-blur-xs text-[10px] font-semibold px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">★ ${b.rating}</div>
+                            ${item.coverUrl ? `<img src="${item.coverUrl}" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">` : `<div class="text-center p-4"><i class="fa-solid fa-bookmark text-2xl text-textMuted/40 mb-2"></i><span class="block editorial-title text-xl text-textMuted line-clamp-2 px-2">${item.title}</span></div>`}
+                            <div class="absolute top-3 left-3"><span class="bg-bgSurface/90 backdrop-blur-xs text-[10px] font-medium px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">Book</span></div>
+                            ${item.favorite ? `<div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-bgSurface/90 backdrop-blur-xs border border-borderSubtle flex items-center justify-center text-amber-600 shadow-xs"><i class="fa-solid fa-heart text-[10px]"></i></div>` : ''}
+                            <div class="absolute bottom-3 right-3 bg-bgSurface/90 backdrop-blur-xs text-[10px] font-semibold px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">★ ${item.rating || 0}</div>
                         </div>
                         <div class="p-4 flex-1 flex flex-col justify-between">
                             <div>
-                                <h3 class="editorial-title text-xl leading-tight mb-1 group-hover:text-accentGold transition-colors truncate">${b.title}</h3>
-                                <p class="text-[11px] text-textMuted truncate">${b.author}</p>
+                                <h3 class="editorial-title text-xl leading-tight mb-1 group-hover:text-accentGold transition-colors truncate">${item.title}</h3>
+                                <p class="text-[11px] text-textMuted truncate">${item.author}</p>
                             </div>
                             <div class="flex items-center justify-between mt-3 pt-3 border-t border-borderSubtle text-[10px] text-textMuted">
-                                <span class="uppercase tracking-wider font-medium">Pages</span>
-                                <span>${b.pagesRead}/${b.totalPages || '?'}</span>
+                                <span class="uppercase tracking-wider">${item.status}</span>
+                                <span>${item.pagesRead || 0} / ${item.totalPages || '?'} pgs</span>
                             </div>
                         </div>
                     </div>
                 `).join('');
             },
+            toggleFavoriteFilter() {
+                const btn = document.getElementById('readFilterFavBtn');
+                btn.classList.toggle('text-amber-600');
+                btn.classList.toggle('border-textMain');
+                this.render();
+            },
             openDetail(id) {
-                const b = readDatabase.find(item => item.id === id);
-                if (!b) return;
+                const item = readDatabase.find(i => i.id === id);
+                if (!item) return;
                 document.getElementById('readDetailContent').innerHTML = `
                     <div class="flex flex-col sm:flex-row gap-6 mb-6">
                         <div class="w-full sm:w-48 aspect-[2/3] bg-bgCard rounded-xl overflow-hidden shrink-0 flex items-center justify-center border border-borderSubtle">
-                            ${b.coverUrl ? `<img src="${b.coverUrl}" class="w-full h-full object-cover">` : `<i class="fa-solid fa-bookmark text-3xl text-textMuted/40"></i>`}
+                            ${item.coverUrl ? `<img src="${item.coverUrl}" class="w-full h-full object-cover">` : `<i class="fa-solid fa-bookmark text-3xl text-textMuted/40"></i>`}
                         </div>
                         <div class="flex-1">
                             <div class="flex items-center space-x-2 mb-2">
-                                <span class="text-[10px] uppercase tracking-wider font-medium px-2.5 py-1 rounded-md bg-bgCard border border-borderSubtle">${b.readingStatus}</span>
-                                ${b.favorite ? '<span class="text-amber-600 text-xs"><i class="fa-solid fa-heart"></i></span>' : ''}
+                                <span class="text-[10px] uppercase tracking-wider font-medium px-2.5 py-1 rounded-md bg-bgCard border border-borderSubtle">Book</span>
+                                <span class="text-[10px] uppercase tracking-wider font-medium px-2.5 py-1 rounded-md bg-bgCard border border-borderSubtle">${item.status}</span>
+                                ${item.favorite ? '<span class="text-amber-600 text-xs"><i class="fa-solid fa-heart"></i></span>' : ''}
                             </div>
-                            <h2 class="editorial-title text-4xl mb-1">${b.title}</h2>
-                            <p class="text-xs text-textMuted mb-4">${b.author}</p>
+                            <h2 class="editorial-title text-4xl mb-1">${item.title}</h2>
+                            <p class="text-xs text-textMuted mb-4">${item.author} ${item.genres ? `• ${item.genres}` : ''}</p>
                             <div class="grid grid-cols-2 gap-4 py-3 border-y border-borderSubtle text-xs mb-4">
-                                <div><span class="text-textMuted block text-[10px] uppercase">Rating</span><span class="font-semibold text-sm">★ ${b.rating} / 5</span></div>
-                                <div><span class="text-textMuted block text-[10px] uppercase">Pages Read</span><span class="font-semibold text-sm">${b.pagesRead} / ${b.totalPages || '?'}</span></div>
+                                <div><span class="text-textMuted block text-[10px] uppercase">Rating</span><span class="font-semibold text-sm">★ ${item.rating || 0} / 5</span></div>
+                                <div><span class="text-textMuted block text-[10px] uppercase">Pages</span><span class="font-semibold text-sm">${item.pagesRead || 0} / ${item.totalPages || '?'}</span></div>
                             </div>
                         </div>
                     </div>
-                    ${b.notes ? `<div class="bg-bgCard border border-borderSubtle rounded-xl p-4 mb-6"><h4 class="text-[10px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Notes & Quotes</h4><p class="text-xs text-textMain leading-relaxed whitespace-pre-line">${b.notes}</p></div>` : ''}
+                    ${item.notes ? `<div class="bg-bgCard border border-borderSubtle rounded-xl p-4 mb-6"><h4 class="text-[10px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Personal Notes</h4><p class="text-xs text-textMain leading-relaxed whitespace-pre-line">${item.notes}</p></div>` : ''}
                     <div class="flex justify-between items-center pt-4 border-t border-borderSubtle">
-                        <span class="text-[11px] text-textMuted">Genres: ${(b.genres || []).join(', ') || 'N/A'}</span>
+                        <span class="text-[11px] text-textMuted">Added: ${item.created_at ? item.created_at.split('T')[0] : 'N/A'}</span>
                         <div class="flex items-center space-x-3">
-                            <button onclick="readManager.delete('${b.id}')" class="px-4 py-2 rounded-xl border border-rose-200 bg-rose-50 text-rose-600 text-xs font-medium">Delete</button>
-                            <button onclick="readManager.closeDetail(); readManager.openModal(readDatabase.find(i => i.id === '${b.id}'))" class="px-5 py-2 rounded-xl bg-textMain text-bgMain text-xs font-medium">Edit</button>
+                            <button onclick="readManager.delete('${item.id}')" class="px-4 py-2 rounded-xl border border-rose-200 bg-rose-50 text-rose-600 text-xs font-medium">Delete</button>
+                            <button onclick="readManager.closeDetail(); readManager.openModal(readDatabase.find(i=>i.id==='${item.id}'))" class="px-4 py-2 rounded-xl bg-textMain text-bgMain text-xs font-medium">Edit</button>
                         </div>
                     </div>
                 `;
-                document.getElementById('readDetailModal').style.display = 'flex';
+                document.getElementById('readDetailModal').classList.remove('hidden');
+                document.getElementById('readDetailModal').classList.add('flex');
+            },
+            closeDetail() {
+                document.getElementById('readDetailModal').classList.add('hidden');
+                document.getElementById('readDetailModal').classList.remove('flex');
             },
             async delete(id) {
                 if (!confirm('Delete this book?')) return;
-                const item = readDatabase.find(b => b.id === id);
-                if (currentUser && item && item._synced) {
-                    const { error } = await supabaseClient.from('readlist').delete().eq('id', id);
-                    if (error) console.error('readlist delete failed:', error.message);
+                if (currentUser) {
+                    await supabaseClient.from('readlist').delete().eq('id', id);
                 }
-                readDatabase = readDatabase.filter(b => b.id !== id);
+                readDatabase = readDatabase.filter(i => i.id !== id);
                 localStorage.setItem('peaks_readlist', JSON.stringify(readDatabase));
                 this.closeDetail();
                 this.render();

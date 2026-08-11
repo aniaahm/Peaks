@@ -1855,84 +1855,118 @@
                 this.render();
             },
             render() {
-                const search = document.getElementById('searchInput').value.toLowerCase();
-                const filterStatus = document.getElementById('filterStatus').value;
-                const filterType = document.getElementById('filterType').value;
-                const filterGenre = document.getElementById('filterGenre').value;
-                const sortBy = document.getElementById('sortBy').value;
+                const searchInput = document.getElementById('searchInput');
+                const statusSelect = document.getElementById('filterStatus');
+                const typeSelect = document.getElementById('filterType');
+                const genreSelect = document.getElementById('filterGenre');
+                const sortSelect = document.getElementById('sortBy');
                 const favBtn = document.getElementById('filterFavBtn');
-                const isFavFiltered = favBtn.classList.contains('text-amber-600');
+
+                const search = (searchInput?.value || '').trim().toLowerCase();
+                const filterStatus = statusSelect?.value || 'All';
+                const filterType = typeSelect?.value || 'All';
+                const sortBy = sortSelect?.value || 'recentlyAdded';
+                const isFavFiltered = !!favBtn?.classList.contains('text-amber-600');
+
+                // Old entries/API responses can store genres as either a string or an array.
+                // Normalize them before filtering/rendering so one malformed entry cannot stop the grid.
+                const getGenres = item => {
+                    if (Array.isArray(item?.genres)) return item.genres.map(String).map(g => g.trim()).filter(Boolean);
+                    if (typeof item?.genres === 'string') return item.genres.split(',').map(g => g.trim()).filter(Boolean);
+                    return [];
+                };
+                const safeText = value => value == null ? '' : String(value);
+
+                // Rebuild the genre filter without changing the currently selected value unless it no longer exists.
+                const genresSet = new Set();
+                comicDatabase.forEach(item => getGenres(item).forEach(g => genresSet.add(g)));
+                const currentGenreVal = genreSelect?.value || 'All';
+                if (genreSelect) {
+                    genreSelect.innerHTML = '<option value="All">All Genres</option>' +
+                        Array.from(genresSet).sort((a, b) => a.localeCompare(b)).map(g =>
+                            `<option value="${g.replace(/"/g, '&quot;')}">${g}</option>`
+                        ).join('');
+                    genreSelect.value = genresSet.has(currentGenreVal) ? currentGenreVal : 'All';
+                }
+                const filterGenre = genreSelect?.value || 'All';
 
                 let filtered = comicDatabase.filter(item => {
-                    const matchesSearch = !search || item.title.toLowerCase().includes(search) || (item.author && item.author.toLowerCase().includes(search));
-                    const matchesStatus = filterStatus === 'All' || item.readingStatus === filterStatus;
-                    const matchesType = filterType === 'All' || item.type === filterType;
-                    const matchesGenre = filterGenre === 'All' || (item.genres && item.genres.toLowerCase().includes(filterGenre.toLowerCase()));
-                    const matchesFav = !isFavFiltered || item.favorite;
+                    const title = safeText(item?.title);
+                    const author = safeText(item?.author);
+                    const genres = getGenres(item);
+                    const matchesSearch = !search || title.toLowerCase().includes(search) || author.toLowerCase().includes(search);
+                    const matchesStatus = filterStatus === 'All' || item?.readingStatus === filterStatus;
+                    const matchesType = filterType === 'All' || item?.type === filterType;
+                    const matchesGenre = filterGenre === 'All' || genres.some(g => g.toLowerCase() === filterGenre.toLowerCase());
+                    const matchesFav = !isFavFiltered || !!item?.favorite;
                     return matchesSearch && matchesStatus && matchesType && matchesGenre && matchesFav;
                 });
 
                 filtered.sort((a, b) => {
-                    if (sortBy === 'recentlyAdded') return new Date(b.created_at || 0) - new Date(a.created_at || 0);
-                    if (sortBy === 'alphabetical') return a.title.localeCompare(b.title);
-                    if (sortBy === 'rating') return (b.rating || 0) - (a.rating || 0);
-                    if (sortBy === 'progress') return (b.chaptersRead || 0) - (a.chaptersRead || 0);
+                    if (sortBy === 'recentlyAdded') return new Date(b?.created_at || 0) - new Date(a?.created_at || 0);
+                    if (sortBy === 'alphabetical') return safeText(a?.title).localeCompare(safeText(b?.title));
+                    if (sortBy === 'rating') return (Number(b?.rating) || 0) - (Number(a?.rating) || 0);
+                    if (sortBy === 'progress') return (Number(b?.chaptersRead) || 0) - (Number(a?.chaptersRead) || 0);
                     return 0;
                 });
 
-                // Stats calculation
+                // Stats always use the full database, so they remain accurate even when filters are active.
                 document.getElementById('headerTotalCount').innerText = comicDatabase.length;
-                document.getElementById('statReading').innerText = comicDatabase.filter(i => i.readingStatus === 'Reading').length;
-                document.getElementById('statCompleted').innerText = comicDatabase.filter(i => i.readingStatus === 'Completed').length;
-                document.getElementById('statOnHold').innerText = comicDatabase.filter(i => i.readingStatus === 'On Hold').length;
-                document.getElementById('statDropped').innerText = comicDatabase.filter(i => i.readingStatus === 'Dropped').length;
-                document.getElementById('statPlanToRead').innerText = comicDatabase.filter(i => i.readingStatus === 'Plan to Read').length;
-                document.getElementById('statFavCount').innerText = comicDatabase.filter(i => i.favorite).length;
+                document.getElementById('statReading').innerText = comicDatabase.filter(i => i?.readingStatus === 'Reading').length;
+                document.getElementById('statCompleted').innerText = comicDatabase.filter(i => i?.readingStatus === 'Completed').length;
+                document.getElementById('statOnHold').innerText = comicDatabase.filter(i => i?.readingStatus === 'On Hold').length;
+                document.getElementById('statDropped').innerText = comicDatabase.filter(i => i?.readingStatus === 'Dropped').length;
+                document.getElementById('statPlanToRead').innerText = comicDatabase.filter(i => i?.readingStatus === 'Plan to Read').length;
+                document.getElementById('statFavCount').innerText = comicDatabase.filter(i => !!i?.favorite).length;
 
-                const rated = comicDatabase.filter(i => i.rating > 0);
-                const avg = rated.length > 0 ? (rated.reduce((acc, curr) => acc + curr.rating, 0) / rated.length).toFixed(1) : '0.0';
+                const rated = comicDatabase.filter(i => Number(i?.rating) > 0);
+                const avg = rated.length > 0 ? (rated.reduce((acc, curr) => acc + (Number(curr.rating) || 0), 0) / rated.length).toFixed(1) : '0.0';
                 document.getElementById('statAvgRating').innerText = `★ ${avg}`;
-
-                // Populate genres dropdown dynamically
-                const genresSet = new Set();
-                comicDatabase.forEach(i => {
-                    if (i.genres) i.genres.split(',').forEach(g => genresSet.add(g.trim()));
-                });
-                const genreSelect = document.getElementById('filterGenre');
-                const currentGenreVal = genreSelect.value;
-                genreSelect.innerHTML = '<option value="All">All Genres</option>' + Array.from(genresSet).sort().map(g => `<option value="${g}">${g}</option>`).join('');
-                genreSelect.value = genresSet.has(currentGenreVal) ? currentGenreVal : 'All';
 
                 const grid = document.getElementById('comicsGrid');
                 const empty = document.getElementById('emptyState');
+                if (!grid || !empty) return;
 
                 if (filtered.length === 0) {
                     grid.innerHTML = '';
                     empty.classList.remove('hidden');
                     return;
                 }
-                empty.classList.add('hidden');
 
-                grid.innerHTML = filtered.map(item => `
-                    <div onclick="comicManager.openDetail('${item.id}')" class="group bg-bgSurface border border-borderSubtle hover:border-textMain rounded-2xl overflow-hidden transition-all duration-300 shadow-editorial hover:shadow-editorial-hover cursor-pointer flex flex-col">
+                empty.classList.add('hidden');
+                grid.innerHTML = filtered.map(item => {
+                    const title = safeText(item?.title);
+                    const author = safeText(item?.author) || 'Unknown Author';
+                    const type = safeText(item?.type) || 'Manga';
+                    const cover = safeText(item?.coverUrl);
+                    const rating = Number(item?.rating) || 0;
+                    const chaptersRead = Number(item?.chaptersRead) || 0;
+                    const totalChapters = Number(item?.totalChapters) || 0;
+                    const id = safeText(item?.id).replace(/'/g, "\\'");
+                    return `
+                    <div onclick="comicManager.openDetail('${id}')" class="group bg-bgSurface border border-borderSubtle hover:border-textMain rounded-2xl overflow-hidden transition-all duration-300 shadow-editorial hover:shadow-editorial-hover cursor-pointer flex flex-col">
                         <div class="aspect-[2/3] bg-bgCard relative overflow-hidden flex items-center justify-center">
-                            ${item.coverUrl ? `<img src="${item.coverUrl}" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">` : `<div class="text-center p-4"><i class="fa-solid fa-book-open text-2xl text-textMuted/40 mb-2"></i><span class="block editorial-title text-xl text-textMuted line-clamp-2 px-2">${item.title}</span></div>`}
-                            <div class="absolute top-3 left-3"><span class="bg-bgSurface/90 backdrop-blur-xs text-[10px] font-medium px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">${item.type}</span></div>
-                            ${item.favorite ? `<div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-bgSurface/90 backdrop-blur-xs border border-borderSubtle flex items-center justify-center text-amber-600 shadow-xs"><i class="fa-solid fa-heart text-[10px]"></i></div>` : ''}
-                            <div class="absolute bottom-3 right-3 bg-bgSurface/90 backdrop-blur-xs text-[10px] font-semibold px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">★ ${item.rating || 0}</div>
+                            ${cover ? `<img src="${cover}" alt="${title.replace(/"/g, '&quot;')}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ''}
+                            <div class="${cover ? 'hidden' : 'flex'} text-center p-4 w-full h-full items-center justify-center flex-col">
+                                <i class="fa-solid fa-book-open text-2xl text-textMuted/40 mb-2"></i>
+                                <span class="block editorial-title text-xl text-textMuted line-clamp-2 px-2">${title}</span>
+                            </div>
+                            <div class="absolute top-3 left-3"><span class="bg-bgSurface/90 backdrop-blur-xs text-[10px] font-medium px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">${type}</span></div>
+                            ${item?.favorite ? `<div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-bgSurface/90 backdrop-blur-xs border border-borderSubtle flex items-center justify-center text-amber-600 shadow-xs"><i class="fa-solid fa-heart text-[10px]"></i></div>` : ''}
+                            <div class="absolute bottom-3 right-3 bg-bgSurface/90 backdrop-blur-xs text-[10px] font-semibold px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">★ ${rating}</div>
                         </div>
                         <div class="p-4 flex-1 flex flex-col justify-between">
                             <div>
-                                <h3 class="editorial-title text-xl leading-tight mb-1 group-hover:text-accentGold transition-colors truncate">${item.title}</h3>
-                                <p class="text-[11px] text-textMuted truncate">${item.author || 'Unknown Author'}</p>
+                                <h3 class="editorial-title text-xl leading-tight mb-1 group-hover:text-accentGold transition-colors truncate">${title}</h3>
+                                <p class="text-[11px] text-textMuted truncate">${author}</p>
                             </div>
                             <div class="flex items-center justify-between mt-3 pt-3 border-t border-borderSubtle text-[10px] text-textMuted">
-                                <span class="uppercase tracking-wider">${item.readingStatus}</span>
-                                <span>Ch. ${item.chaptersRead} / ${item.totalChapters || '?'}</span>
+                                <span class="uppercase tracking-wider">${safeText(item?.readingStatus)}</span>
+                                <span>Ch. ${chaptersRead} / ${totalChapters || '?'}</span>
                             </div>
                         </div>
-                    </div>
-                `).join('');
+                    </div>`;
+                }).join('');
             },
             toggleFavoriteFilter() {
                 const btn = document.getElementById('filterFavBtn');
@@ -2140,79 +2174,110 @@
                 this.render();
             },
             render() {
-                const search = document.getElementById('readSearchInput').value.toLowerCase();
-                const filterStatus = document.getElementById('readFilterStatus').value;
-                const filterGenre = document.getElementById('readFilterGenre').value;
-                const sortBy = document.getElementById('readSortBy').value;
+                const searchInput = document.getElementById('readSearchInput');
+                const statusSelect = document.getElementById('readFilterStatus');
+                const genreSelect = document.getElementById('readFilterGenre');
+                const sortSelect = document.getElementById('readSortBy');
                 const favBtn = document.getElementById('readFilterFavBtn');
-                const isFavFiltered = favBtn.classList.contains('text-amber-600');
+
+                const search = (searchInput?.value || '').trim().toLowerCase();
+                const filterStatus = statusSelect?.value || 'All';
+                const sortBy = sortSelect?.value || 'recentlyAdded';
+                const isFavFiltered = !!favBtn?.classList.contains('text-amber-600');
+
+                const getGenres = item => {
+                    if (Array.isArray(item?.genres)) return item.genres.map(String).map(g => g.trim()).filter(Boolean);
+                    if (typeof item?.genres === 'string') return item.genres.split(',').map(g => g.trim()).filter(Boolean);
+                    return [];
+                };
+                const safeText = value => value == null ? '' : String(value);
+
+                const genresSet = new Set();
+                readDatabase.forEach(item => getGenres(item).forEach(g => genresSet.add(g)));
+                const currentGenreVal = genreSelect?.value || 'All';
+                if (genreSelect) {
+                    genreSelect.innerHTML = '<option value="All">All Genres</option>' +
+                        Array.from(genresSet).sort((a, b) => a.localeCompare(b)).map(g =>
+                            `<option value="${g.replace(/"/g, '&quot;')}">${g}</option>`
+                        ).join('');
+                    genreSelect.value = genresSet.has(currentGenreVal) ? currentGenreVal : 'All';
+                }
+                const filterGenre = genreSelect?.value || 'All';
 
                 let filtered = readDatabase.filter(item => {
-                    const matchesSearch = !search || item.title.toLowerCase().includes(search) || item.author.toLowerCase().includes(search);
-                    const matchesStatus = filterStatus === 'All' || item.status === filterStatus;
-                    const matchesGenre = filterGenre === 'All' || (item.genres && item.genres.toLowerCase().includes(filterGenre.toLowerCase()));
-                    const matchesFav = !isFavFiltered || item.favorite;
+                    const title = safeText(item?.title);
+                    const author = safeText(item?.author);
+                    const genres = getGenres(item);
+                    const matchesSearch = !search || title.toLowerCase().includes(search) || author.toLowerCase().includes(search);
+                    const matchesStatus = filterStatus === 'All' || item?.status === filterStatus;
+                    const matchesGenre = filterGenre === 'All' || genres.some(g => g.toLowerCase() === filterGenre.toLowerCase());
+                    const matchesFav = !isFavFiltered || !!item?.favorite;
                     return matchesSearch && matchesStatus && matchesGenre && matchesFav;
                 });
 
                 filtered.sort((a, b) => {
-                    if (sortBy === 'recentlyAdded') return new Date(b.created_at || 0) - new Date(a.created_at || 0);
-                    if (sortBy === 'alphabetical') return a.title.localeCompare(b.title);
-                    if (sortBy === 'rating') return (b.rating || 0) - (a.rating || 0);
-                    if (sortBy === 'pages') return (b.pagesRead || 0) - (a.pagesRead || 0);
+                    if (sortBy === 'recentlyAdded') return new Date(b?.created_at || 0) - new Date(a?.created_at || 0);
+                    if (sortBy === 'alphabetical') return safeText(a?.title).localeCompare(safeText(b?.title));
+                    if (sortBy === 'rating') return (Number(b?.rating) || 0) - (Number(a?.rating) || 0);
+                    if (sortBy === 'pages') return (Number(b?.pagesRead) || 0) - (Number(a?.pagesRead) || 0);
                     return 0;
                 });
 
                 document.getElementById('readHeaderTotalCount').innerText = readDatabase.length;
-                document.getElementById('readStatReading').innerText = readDatabase.filter(i => i.status === 'Reading').length;
-                document.getElementById('readStatCompleted').innerText = readDatabase.filter(i => i.status === 'Completed').length;
-                document.getElementById('readStatOnHold').innerText = readDatabase.filter(i => i.status === 'On Hold').length;
-                document.getElementById('readStatWantToRead').innerText = readDatabase.filter(i => i.status === 'Want to Read').length;
-                document.getElementById('readStatFavCount').innerText = readDatabase.filter(i => i.favorite).length;
+                document.getElementById('readStatReading').innerText = readDatabase.filter(i => i?.status === 'Reading').length;
+                document.getElementById('readStatCompleted').innerText = readDatabase.filter(i => i?.status === 'Completed').length;
+                document.getElementById('readStatOnHold').innerText = readDatabase.filter(i => i?.status === 'On Hold').length;
+                document.getElementById('readStatWantToRead').innerText = readDatabase.filter(i => i?.status === 'Want to Read').length;
+                document.getElementById('readStatFavCount').innerText = readDatabase.filter(i => !!i?.favorite).length;
 
-                const rated = readDatabase.filter(i => i.rating > 0);
-                const avg = rated.length > 0 ? (rated.reduce((acc, curr) => acc + curr.rating, 0) / rated.length).toFixed(1) : '0.0';
+                const rated = readDatabase.filter(i => Number(i?.rating) > 0);
+                const avg = rated.length > 0 ? (rated.reduce((acc, curr) => acc + (Number(curr.rating) || 0), 0) / rated.length).toFixed(1) : '0.0';
                 document.getElementById('readStatAvgRating').innerText = `★ ${avg}`;
-
-                const genresSet = new Set();
-                readDatabase.forEach(i => {
-                    if (i.genres) i.genres.split(',').forEach(g => genresSet.add(g.trim()));
-                });
-                const genreSelect = document.getElementById('readFilterGenre');
-                const currentGenreVal = genreSelect.value;
-                genreSelect.innerHTML = '<option value="All">All Genres</option>' + Array.from(genresSet).sort().map(g => `<option value="${g}">${g}</option>`).join('');
-                genreSelect.value = genresSet.has(currentGenreVal) ? currentGenreVal : 'All';
 
                 const grid = document.getElementById('readsGrid');
                 const empty = document.getElementById('readEmptyState');
+                if (!grid || !empty) return;
 
                 if (filtered.length === 0) {
                     grid.innerHTML = '';
                     empty.classList.remove('hidden');
                     return;
                 }
-                empty.classList.add('hidden');
 
-                grid.innerHTML = filtered.map(item => `
-                    <div onclick="readManager.openDetail('${item.id}')" class="group bg-bgSurface border border-borderSubtle hover:border-textMain rounded-2xl overflow-hidden transition-all duration-300 shadow-editorial hover:shadow-editorial-hover cursor-pointer flex flex-col">
+                empty.classList.add('hidden');
+                grid.innerHTML = filtered.map(item => {
+                    const title = safeText(item?.title);
+                    const author = safeText(item?.author) || 'Unknown Author';
+                    const cover = safeText(item?.coverUrl);
+                    const rating = Number(item?.rating) || 0;
+                    const pagesRead = Number(item?.pagesRead) || 0;
+                    const totalPages = Number(item?.totalPages) || 0;
+                    const status = safeText(item?.status);
+                    const id = safeText(item?.id).replace(/'/g, "\\'");
+                    return `
+                    <div onclick="readManager.openDetail('${id}')" class="group bg-bgSurface border border-borderSubtle hover:border-textMain rounded-2xl overflow-hidden transition-all duration-300 shadow-editorial hover:shadow-editorial-hover cursor-pointer flex flex-col">
                         <div class="aspect-[2/3] bg-bgCard relative overflow-hidden flex items-center justify-center">
-                            ${item.coverUrl ? `<img src="${item.coverUrl}" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">` : `<div class="text-center p-4"><i class="fa-solid fa-bookmark text-2xl text-textMuted/40 mb-2"></i><span class="block editorial-title text-xl text-textMuted line-clamp-2 px-2">${item.title}</span></div>`}
+                            ${cover ? `<img src="${cover}" alt="${title.replace(/"/g, '&quot;')}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ''}
+                            <div class="${cover ? 'hidden' : 'flex'} text-center p-4 w-full h-full items-center justify-center flex-col">
+                                <i class="fa-solid fa-bookmark text-2xl text-textMuted/40 mb-2"></i>
+                                <span class="block editorial-title text-xl text-textMuted line-clamp-2 px-2">${title}</span>
+                            </div>
                             <div class="absolute top-3 left-3"><span class="bg-bgSurface/90 backdrop-blur-xs text-[10px] font-medium px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">Book</span></div>
-                            ${item.favorite ? `<div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-bgSurface/90 backdrop-blur-xs border border-borderSubtle flex items-center justify-center text-amber-600 shadow-xs"><i class="fa-solid fa-heart text-[10px]"></i></div>` : ''}
-                            <div class="absolute bottom-3 right-3 bg-bgSurface/90 backdrop-blur-xs text-[10px] font-semibold px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">★ ${item.rating || 0}</div>
+                            ${item?.favorite ? `<div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-bgSurface/90 backdrop-blur-xs border border-borderSubtle flex items-center justify-center text-amber-600 shadow-xs"><i class="fa-solid fa-heart text-[10px]"></i></div>` : ''}
+                            <div class="absolute bottom-3 right-3 bg-bgSurface/90 backdrop-blur-xs text-[10px] font-semibold px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">★ ${rating}</div>
                         </div>
                         <div class="p-4 flex-1 flex flex-col justify-between">
                             <div>
-                                <h3 class="editorial-title text-xl leading-tight mb-1 group-hover:text-accentGold transition-colors truncate">${item.title}</h3>
-                                <p class="text-[11px] text-textMuted truncate">${item.author}</p>
+                                <h3 class="editorial-title text-xl leading-tight mb-1 group-hover:text-accentGold transition-colors truncate">${title}</h3>
+                                <p class="text-[11px] text-textMuted truncate">${author}</p>
                             </div>
                             <div class="flex items-center justify-between mt-3 pt-3 border-t border-borderSubtle text-[10px] text-textMuted">
-                                <span class="uppercase tracking-wider">${item.status}</span>
-                                <span>${item.pagesRead || 0} / ${item.totalPages || '?'} pgs</span>
+                                <span class="uppercase tracking-wider">${status}</span>
+                                <span>${pagesRead} / ${totalPages || '?'} pgs</span>
                             </div>
                         </div>
-                    </div>
-                `).join('');
+                    </div>`;
+                }).join('');
             },
             toggleFavoriteFilter() {
                 const btn = document.getElementById('readFilterFavBtn');

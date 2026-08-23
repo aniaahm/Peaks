@@ -2867,7 +2867,7 @@ const PeaksPlanBridge = {
 
 function loadPlanData() {
     try {
-        const raw = localStorage.getItem(peaks_plan);
+        const raw = localStorage.getItem(PLAN_STORAGE_KEY);
         const parsed = raw ? JSON.parse(raw) : null;
         return parsed && parsed.periods ? parsed : { periods: {} };
     } catch (err) {

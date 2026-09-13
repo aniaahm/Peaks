@@ -550,6 +550,7 @@
                         <option value="Anime">Anime</option>
                         <option value="Documentary">Documentary</option>
                         <option value="BL">BL</option>
+                         <option value="GL">GL</option>
                     </select>
 
                     <select id="watch-sort" onchange="renderWatchlist()" class="bg-bgSurface border border-borderSubtle focus:border-textMain rounded-xl px-3 py-2.5 outline-none shadow-xs font-medium cursor-pointer">
@@ -1063,6 +1064,7 @@
                             <option value="Anime">Anime</option>
                             <option value="Documentary">Documentary</option>
                             <option value="BL">BL</option>
+                            <option value="GL">GL</option>
                         </select>
                     </div>
                 </div>
@@ -1777,6 +1779,8 @@
                         mediaType = 'Anime';
                     } else if (typeStr.includes('BL')) {
                         mediaType = 'BL';
+                        } else if (typeStr.includes('GL')) {
+                        mediaType = 'GL';
                     }
 
                     return `
@@ -2892,7 +2896,7 @@ const CATEGORIES = {
     watch: {
         key: 'watch', label: 'Watch', emoji: '🎬', color: 'catWatch',
         searchPlaceholder: 'Search movies or series…',
-        types: ['Movie', 'Series', 'Anime', 'Documentary', 'BL'],
+        types: ['Movie', 'Series', 'Anime', 'Documentary', 'BL', 'GL'],
         hasGoal: true, goalLabel: 'Episode goal', goalUnit: 'eps',
         hasReaction: false,
     },
@@ -3215,6 +3219,7 @@ async function searchWatch(query) {
         if (typeStr.includes('documentary') || genresStr.includes('documentary')) type = 'Documentary';
         else if (genresStr.includes('anime') || (country.toLowerCase() === 'japan' && genresStr.includes('animation'))) type = 'Anime';
         else if (typeStr.includes('BL')) type = 'BL';
+        else if (typeStr.includes('GL')) type = 'GL';
         return {
             title: show.name || '',
             artwork: show.image?.original || show.image?.medium || '',

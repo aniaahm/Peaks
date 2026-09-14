@@ -547,10 +547,12 @@
                         <option value="all">All Types</option>
                         <option value="Movie">Movie</option>
                         <option value="Series">Series</option>
-                        <option value="Anime">Anime</option>
-                        <option value="Documentary">Documentary</option>
+                        <option value="Kdrama">Kdrama</option>
+                        <option value="Cdrama">Cdrama</option>
                         <option value="BL">BL</option>
                          <option value="GL">GL</option>
+                        <option value="Anime">Anime</option>
+                        <option value="Documentary">Documentary</option>
                     </select>
 
                     <select id="watch-sort" onchange="renderWatchlist()" class="bg-bgSurface border border-borderSubtle focus:border-textMain rounded-xl px-3 py-2.5 outline-none shadow-xs font-medium cursor-pointer">
@@ -1061,10 +1063,12 @@
                         <select id="w-form-type" class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none font-medium">
                             <option value="Movie">Movie</option>
                             <option value="Series">Series</option>
-                            <option value="Anime">Anime</option>
-                            <option value="Documentary">Documentary</option>
+                            <option value="Kdrama">Kdrama</option>
+                            <option value="Cdrama">Cdrama</option>
                             <option value="BL">BL</option>
                             <option value="GL">GL</option>
+                            <option value="Anime">Anime</option>
+                            <option value="Documentary">Documentary</option>
                         </select>
                     </div>
                 </div>
@@ -2896,7 +2900,7 @@ const CATEGORIES = {
     watch: {
         key: 'watch', label: 'Watch', emoji: '🎬', color: 'catWatch',
         searchPlaceholder: 'Search movies or series…',
-        types: ['Movie', 'Series', 'Anime', 'Documentary', 'BL', 'GL'],
+        types: ['Movie', 'Series','Kdrama', 'Cdrama', 'BL', 'GL', 'Anime', 'Documentary'],
         hasGoal: true, goalLabel: 'Episode goal', goalUnit: 'eps',
         hasReaction: false,
     },

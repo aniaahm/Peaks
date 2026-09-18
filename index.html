@@ -537,7 +537,9 @@
                     <div class="flex bg-bgSurface border border-borderSubtle rounded-xl p-1 shadow-xs text-xs">
                         <button onclick="setWatchTab('all')" id="w-tab-all" class="px-3 py-1.5 rounded-lg font-medium transition-all tab-active">All</button>
                         <button onclick="setWatchTab('watched')" id="w-tab-watched" class="px-3 py-1.5 rounded-lg font-medium transition-all tab-inactive">Watched</button>
+                        <button onclick="setWatchTab('watching')" id="w-tab-watching" class="px-3 py-1.5 rounded-lg font-medium transition-all tab-inactive">Watching</button>
                         <button onclick="setWatchTab('watchlist')" id="w-tab-watchlist" class="px-3 py-1.5 rounded-lg font-medium transition-all tab-inactive">Watchlist</button>
+                        <button onclick="setWatchTab('dropped')" id="w-tab-dropped" class="px-3 py-1.5 rounded-lg font-medium transition-all tab-inactive">dropped</button>
                         <button onclick="setWatchTab('favorites')" id="w-tab-favorites" class="px-3 py-1.5 rounded-lg font-medium transition-all tab-inactive"><i class="fa-solid fa-heart text-amber-600 mr-1"></i>Favs</button>
                     </div>
                 </div>
@@ -1095,7 +1097,9 @@
                         <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Status</label>
                         <select id="w-form-status" class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none font-medium">
                             <option value="watched">Watched</option>
+                            <option value="watchlist">Watching</option>
                             <option value="watchlist">Watchlist</option>
+                            <option value="watchlist">dropped</option>
                         </select>
                     </div>
                 </div>
@@ -1688,7 +1692,7 @@
         let currentWatchTab = 'all';
         function setWatchTab(tab) {
             currentWatchTab = tab;
-            ['all', 'watched', 'watchlist', 'favorites'].forEach(t => {
+            ['all', 'watched','watching', 'watchlist','dropped', 'favorites'].forEach(t => {
                 const btn = document.getElementById(`w-tab-${t}`);
                 if (btn) btn.className = (t === tab) ? 'px-3 py-1.5 rounded-lg font-medium transition-all tab-active' : 'px-3 py-1.5 rounded-lg font-medium transition-all tab-inactive';
             });
@@ -1705,7 +1709,9 @@
                 const matchesTab = 
                     currentWatchTab === 'all' ? true :
                     currentWatchTab === 'watched' ? item.status === 'watched' :
+                    currentWatchTab === 'watching' ? item.status === 'watching' :
                     currentWatchTab === 'watchlist' ? item.status === 'watchlist' :
+                    currentWatchTab === 'dropped' ? item.status === 'dropped' :
                     currentWatchTab === 'favorites' ? item.favorite : true;
 
                 const matchesType = filterType === 'all' || item.type === filterType;
@@ -1722,9 +1728,9 @@
             });
 
             document.getElementById('watch-count-display').innerText = `Showing ${filtered.length} entries`;
-            const watchedCount = watchDatabase.filter(i => i.status === 'watched').length;
+            const watchlistCount = watchDatabase.filter(i => i.status === 'watchlist').length;
             const favCount = watchDatabase.filter(i => i.favorite).length;
-            document.getElementById('watch-stats-display').innerText = `Watched: ${watchedCount} | Favorites: ${favCount} | Total: ${watchDatabase.length}`;
+            document.getElementById('watch-stats-display').innerText = `Watchlist: ${watchlistCount} | Favorites: ${favCount} | Total: ${watchDatabase.length}`;
 
             if (filtered.length === 0) {
                 grid.innerHTML = `<div class="col-span-full py-20 text-center text-textMuted"><i class="fa-solid fa-film text-3xl mb-3 opacity-40"></i><p class="text-xs uppercase tracking-wider">No matching entries found</p></div>`;

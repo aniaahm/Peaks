@@ -81,6 +81,14 @@
             from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        body {
+  cursor: url("cursor.png") 4 4, auto;
+}
+
+button,
+a {
+  cursor: url("cursor-hover.png") 4 4, pointer;
+}
 
         /* ---- PEAKS PLAN additions (additive only) ---- */
 
@@ -623,15 +631,10 @@
                 <div class="flex items-center space-x-3 text-xs">
                     <select id="music-filter-genre" onchange="renderMusiclist()" class="bg-bgSurface border border-borderSubtle focus:border-textMain rounded-xl px-3 py-2.5 outline-none shadow-xs font-medium cursor-pointer">
                         <option value="all">All Genres</option>
-                        <option value="Pop">Pop</option>
-                        <option value="Hip-Hop">Hip-Hop / Rap</option>
-                        <option value="R&B">R&B</option>
-                        <option value="Rock">Rock / Alternative</option>
-                        <option value="Electronic">Electronic / Dance</option>
-                        <option value="Classical">Classical / Orchestral</option>
-                        <option value="Soundtrack">Soundtrack / Score</option>
                         <option value="K-Pop">K-Pop</option>
                         <option value="T-Pop">T-Pop</option>
+                        <option value="C-Pop">C-Pop</option>
+                        <option value="Pop">Pop</option>
                         <option value="Others">Others</option>
                     </select>
 
@@ -1169,15 +1172,10 @@
                     <div>
                         <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Genre</label>
                         <select id="m-form-genre" class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none font-medium">
-                            <option value="Pop">Pop</option>
-                            <option value="Hip-Hop">Hip-Hop / Rap</option>
-                            <option value="R&B">R&B</option>
-                            <option value="Rock">Rock / Alternative</option>
-                            <option value="Electronic">Electronic / Dance</option>
-                            <option value="Classical">Classical / Orchestral</option>
-                            <option value="Soundtrack">Soundtrack / Score</option>
                             <option value="K-Pop">K-Pop</option>
                             <option value="T-Pop">T-Pop</option>
+                            <option value="C-Pop">C-Pop</option>
+                            <option value="Pop">Pop</option>
                             <option value="Others">Others</option>
                         </select>
                     </div>
@@ -2030,13 +2028,10 @@
                     const gLower = rawGenre.toLowerCase();
                     if (gLower.includes('k-pop') || gLower.includes('kpop')) mappedGenre = 'K-Pop';
                     else if (gLower.includes('t-pop') || gLower.includes('tpop')) mappedGenre = 'T-Pop';
-                    else if (gLower.includes('hip') || gLower.includes('rap')) mappedGenre = 'Hip-Hop';
-                    else if (gLower.includes('r&b') || gLower.includes('soul')) mappedGenre = 'R&B';
-                    else if (gLower.includes('rock') || gLower.includes('alternative')) mappedGenre = 'Rock';
-                    else if (gLower.includes('electronic') || gLower.includes('dance') || gLower.includes('edm')) mappedGenre = 'Electronic';
-                    else if (gLower.includes('classical') || gLower.includes('orchestral')) mappedGenre = 'Classical';
-                    else if (gLower.includes('soundtrack') || gLower.includes('score')) mappedGenre = 'Soundtrack';
-                    else if (['pop', 'hip-hop', 'r&b', 'rock', 'electronic', 'classical', 'soundtrack', 'k-pop', 't-pop'].includes(rawGenre.toLowerCase())) {
+                    else if (gLower.includes('c-pop') || gLower.includes('cpop')) mappedGenre = 'C-Pop';
+                    else if (gLower.includes('pop') || gLower.includes('pop')) mappedGenre = 'Pop';
+                    else if (gLower.includes('others') || gLower.includes('others')) mappedGenre = 'Others';
+                    else if (['k-pop', 't-pop', 'c-pop', 'pop', 'others'].includes(rawGenre.toLowerCase())) {
                         mappedGenre = rawGenre;
                     }
 

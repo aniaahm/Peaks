@@ -481,7 +481,20 @@ a {
                         Personal Reading Journal & Library with Google Books lookup.
                     </p>
                 </div>
-
+                
+<div onclick="switchApp('artists')" class="group bg-bgSurface border border-borderSubtle hover:border-textMain rounded-2xl p-8 text-left transition-all duration-300 shadow-editorial hover:shadow-editorial-hover cursor-pointer relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-32 h-32 bg-stone-200/40 rounded-bl-full pointer-events-none transition-transform duration-500 group-hover:scale-110"></div>
+    <div class="flex justify-between items-start mb-10 relative z-10">
+        <span class="w-10 h-10 rounded-xl bg-bgCard flex items-center justify-center text-textMain border border-borderSubtle group-hover:bg-textMain group-hover:text-bgMain transition-colors">
+            <i class="fa-solid fa-microphone-lines text-sm"></i>
+        </span>
+        <i class="fa-solid fa-arrow-right text-textMuted group-hover:text-textMain group-hover:translate-x-1 transition-all"></i>
+    </div>
+    <h2 class="editorial-title text-3xl mb-2 relative z-10">PEAK.ARTISTS</h2>
+    <p class="text-xs text-textMuted font-light leading-relaxed relative z-10">
+        Archive musical acts, idols, bands, custom bias notes, and discography favorites.
+    </p>
+</div>
                 <div onclick="switchApp('plan')" class="group bg-bgSurface border border-textMain hover:shadow-editorial-hover rounded-2xl p-8 text-left transition-all duration-300 shadow-editorial cursor-pointer relative overflow-hidden sm:col-span-2">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-pastelLavender/40 rounded-bl-full pointer-events-none transition-transform duration-500 group-hover:scale-110"></div>
                     <div class="flex justify-between items-start mb-10 relative z-10">
@@ -870,8 +883,45 @@ a {
             </div>
         </main>
     </div>
-
-
+    
+<!-- ARTIST APP -->
+<div id="artists-app" class="hidden min-h-screen flex flex-col fade-in">
+    <header class="border-b border-borderSubtle bg-bgSurface/85 backdrop-blur-md sticky top-0 z-30">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-6">
+                <button onclick="returnToPortal()" class="text-xs text-textMuted hover:text-textMain transition-colors flex items-center space-x-2 py-1 px-3 rounded-full border border-borderSubtle bg-bgMain">
+                    <i class="fa-solid fa-arrow-left text-[10px]"></i>
+                    <span>PEAKS Portal</span>
+                </button>
+                <div>
+                    <h1 class="editorial-title text-3xl sm:text-4xl tracking-tight">PEAK.ARTISTS</h1>
+                    <p class="text-[11px] text-textMuted uppercase tracking-widest font-medium">Musical Acts & Bias Archive</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button onclick="openArtistsModal()" class="flex items-center space-x-2 py-2.5 px-5 rounded-xl bg-textMain text-bgMain hover:opacity-90 text-xs font-medium transition-all shadow-editorial">
+                    <i class="fa-solid fa-plus text-[10px]"></i>
+                    <span>Add Artist</span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <!-- Filters & Search Toolbar -->
+    <div class="max-w-7xl mx-auto w-full px-6 py-6 space-y-4">
+        <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4">
+            <div class="flex flex-wrap items-center gap-2">
+                <div class="relative">
+                    <i class="fa-solid fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-textMuted text-xs"></i>
+                    <input type="text" id="artists-search" oninput="renderArtistslist()" placeholder="Search artist or group..." class="bg-bgSurface border border-borderSubtle focus:border-textMain text-xs rounded-xl pl-9 pr-4 py-2.5 w-64 outline-none transition-all shadow-xs">
+                </div>
+            </div>
+        </div>
+    </div>
+    <main class="max-w-7xl mx-auto w-full px-6 pb-20 flex-1">
+        <div id="artists-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6"></div>
+    </main>
+</div> 
+    
     <!-- PLAN APP -->
     <div id="plan-app" class="hidden min-h-screen flex flex-col fade-in">
         <header class="border-b border-borderSubtle bg-bgSurface/85 backdrop-blur-md sticky top-0 z-30">
@@ -1432,7 +1482,36 @@ a {
             </div>
         </div>
     </div>
-
+<!-- READLIST MODAL -->
+    <div id="artists-form-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="bg-bgSurface border border-borderSubtle rounded-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto shadow-modal p-6 sm:p-8 fade-in">
+        <div class="flex justify-between items-center mb-6 pb-4 border-b border-borderSubtle">
+            <h2 class="editorial-title text-3xl">Add Artist Entry</h2>
+            <button onclick="closeArtistsModal()" class="w-8 h-8 rounded-full bg-bgCard border border-borderSubtle flex items-center justify-center text-textMuted hover:text-textMain transition-colors">
+                <i class="fa-solid fa-xmark text-xs"></i>
+            </button>
+        </div>
+        <form id="artists-entry-form" onsubmit="saveArtistsEntry(event)" class="space-y-4">
+            <div>
+                <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Artist / Group Name *</label>
+                <input type="text" id="artists-form-name" required class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
+            </div>
+            <div>
+                <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Category / Genre</label>
+                <input type="text" id="artists-form-genre" placeholder="e.g. K-Pop, Soloist, Band" class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
+            </div>
+            <div>
+                <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Bias / Notes</label>
+                <textarea id="artists-form-notes" rows="3" placeholder="Favorite members, album notes..." class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none resize-none"></textarea>
+            </div>
+            <div class="flex justify-end space-x-3 pt-4 border-t border-borderSubtle">
+                <button type="button" onclick="closeArtistsModal()" class="px-5 py-2.5 rounded-xl border border-borderSubtle bg-bgMain text-xs font-medium text-textMuted hover:text-textMain">Cancel</button>
+                <button type="submit" class="px-6 py-2.5 rounded-xl bg-textMain text-bgMain text-xs font-medium hover:opacity-90 shadow-editorial">Save Artist</button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
 <!-- Past plan viewer (read-only) -->
     <div id="past-plan-modal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4">
         <div class="bg-bgSurface rounded-3xl w-full max-w-lg max-h-[85vh] overflow-y-auto p-6 shadow-modal relative">

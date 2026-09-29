@@ -1643,11 +1643,13 @@ a {
                 musicDatabase = JSON.parse(localStorage.getItem('peaks_musiclist')) || [];
                 comicDatabase = JSON.parse(localStorage.getItem('peaks_comiclist')) || [];
                 readDatabase = JSON.parse(localStorage.getItem('peaks_readlist')) || [];
-
+                artistsDatabase = JSON.parse(localStorage.getItem('peaks_artistslist')) || [];
+                
                 renderWatchlist();
                 renderMusiclist();
                 comicManager.render();
                 readManager.render();
+                renderArtistslist();
             }
         }
 
@@ -1732,6 +1734,7 @@ async function loadUserCloudData() {
                 const localMusic = JSON.parse(localStorage.getItem('peaks_musiclist')) || [];
                 const localComic = JSON.parse(localStorage.getItem('peaks_comiclist')) || [];
                 const localRead  = JSON.parse(localStorage.getItem('peaks_readlist'))  || [];
+                const localArtist  = JSON.parse(localStorage.getItem('peaks_artists'))  || [];
 
                 async function pushUnsynced(table, list) {
                     const out = [];
@@ -1744,6 +1747,7 @@ async function loadUserCloudData() {
                 const pushedMusic = await pushUnsynced('musiclist', localMusic);
                 const pushedComic = await pushUnsynced('comiclist', localComic);
                 const pushedRead  = await pushUnsynced('readlist', localRead);
+                const pushedArtist  = await pushUnsynced('Artist', localArtist);
 
                 // Fetch every user's rows in pages so Watchlist access is not
                 // limited by a single Supabase response-size/row limit.
@@ -1751,13 +1755,15 @@ async function loadUserCloudData() {
                     fetchAllUserRows('watchlist', currentUser.id),
                     fetchAllUserRows('musiclist', currentUser.id),
                     fetchAllUserRows('comiclist', currentUser.id),
-                    fetchAllUserRows('readlist', currentUser.id)
+                    fetchAllUserRows('readlist', currentUser.id),
+                    fetchAllUserRows('Artist', currentUser.id)
                 ]);
 
                 const cloudWatch = wRows.map(mergeFromCloud);
                 const cloudMusic = mRows.map(mergeFromCloud);
                 const cloudComic = cRows.map(mergeFromCloud);
                 const cloudRead  = rRows.map(mergeFromCloud);
+                const cloudArtist  = rRows.map(mergeFromCloud);
 
                 function mergeLists(cloudList, pushedList) {
                     const cloudIds = new Set(cloudList.map(i => i.id));
@@ -1769,11 +1775,13 @@ async function loadUserCloudData() {
                 musicDatabase = mergeLists(cloudMusic, pushedMusic);
                 comicDatabase = mergeLists(cloudComic, pushedComic);
                 readDatabase  = mergeLists(cloudRead, pushedRead);
+                readDatabase  = mergeLists(cloudArtist, pushedArtist);
 
                 safeSetWatchlistCache(watchDatabase);
                 localStorage.setItem('peaks_musiclist', JSON.stringify(musicDatabase));
                 localStorage.setItem('peaks_comiclist', JSON.stringify(comicDatabase));
                 localStorage.setItem('peaks_readlist', JSON.stringify(readDatabase));
+                localStorage.setItem('peaks_artists', JSON.stringify(artistsDatabase));
 
                 renderWatchlist();
                 renderMusiclist();
@@ -1785,11 +1793,12 @@ async function loadUserCloudData() {
                 musicDatabase = JSON.parse(localStorage.getItem('peaks_musiclist')) || [];
                 comicDatabase = JSON.parse(localStorage.getItem('peaks_comiclist')) || [];
                 readDatabase = JSON.parse(localStorage.getItem('peaks_readlist')) || [];
+                artistDatabase = JSON.parse(localStorage.getItem('peaks_artists')) || [];
             }
         }
 
         function switchApp(appKey) {
-            ['portal-screen', 'watchlist-app', 'musiclist-app', 'comiclist-app', 'readlist-app', 'plan-app'].forEach(id => {
+            ['portal-screen', 'watchlist-app', 'musiclist-app', 'comiclist-app', 'readlist-app', 'artists-app', 'plan-app'].forEach(id => {
                 document.getElementById(id).classList.add('hidden');
             });
             document.getElementById(`${appKey}-app`).classList.remove('hidden');
@@ -1797,11 +1806,12 @@ async function loadUserCloudData() {
             if (appKey === 'musiclist') renderMusiclist();
             if (appKey === 'comiclist') comicManager.render();
             if (appKey === 'readlist') readManager.render();
+            if (appKey === 'artists') renderArtistslist();
             if (appKey === 'plan') renderPlanAll();
         }
 
         function returnToPortal() {
-            ['watchlist-app', 'musiclist-app', 'comiclist-app', 'readlist-app', 'plan-app'].forEach(id => {
+            ['watchlist-app', 'musiclist-app', 'comiclist-app', 'readlist-app', 'artists-app', 'plan-app'].forEach(id => {
                 document.getElementById(id).classList.add('hidden');
             });
             document.getElementById('portal-screen').classList.remove('hidden');
@@ -2946,6 +2956,218 @@ async function loadUserCloudData() {
                 localStorage.setItem('peaks_readlist', JSON.stringify(readDatabase));
                 this.closeDetail();
                 this.render();
+            }
+        };
+        // --- ARTISTS LIST LOGIC ---
+        let currentArtistTab = 'all';
+        function setArtistTab(tab) {
+            currentArtistTab = tab;
+            ['all', 'group', 'soloist', 'band', 'favorites'].forEach(t => {
+                const btn = document.getElementById(`artist-tab-${t}`);
+                if (btn) btn.className = (t === tab) ? 'px-3 py-1.5 rounded-lg font-medium transition-all tab-active' : 'px-3 py-1.5 rounded-lg font-medium transition-all tab-inactive';
+            });
+            renderArtistslist();
+        }
+
+        function renderArtistslist() {
+            const grid = document.getElementById('artists-grid');
+            const search = (document.getElementById('artists-search')?.value || '').toLowerCase();
+            const sortMode = document.getElementById('artists-sort')?.value || 'date-desc';
+
+            let filtered = artistsDatabase.filter(item => {
+                const matchesTab = 
+                    currentArtistTab === 'all' ? true :
+                    currentArtistTab === 'group' ? (item.type || '').toLowerCase() === 'group' :
+                    currentArtistTab === 'soloist' ? (item.type || '').toLowerCase() === 'soloist' :
+                    currentArtistTab === 'band' ? (item.type || '').toLowerCase() === 'band' :
+                    currentArtistTab === 'favorites' ? item.favorite : true;
+
+                const matchesSearch = !search || (item.name && item.name.toLowerCase().includes(search)) || (item.genre && item.genre.toLowerCase().includes(search));
+                return matchesTab && matchesSearch;
+            });
+
+            filtered.sort((a, b) => {
+                if (sortMode === 'date-desc') return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+                if (sortMode === 'rating-desc') return (b.rating || 0) - (a.rating || 0);
+                if (sortMode === 'title-asc') return (a.name || '').localeCompare(b.name || '');
+                return 0;
+            });
+
+            if (document.getElementById('artists-count-display')) {
+                document.getElementById('artists-count-display').innerText = `Showing ${filtered.length} entries`;
+            }
+            if (document.getElementById('artists-stats-display')) {
+                const favCount = artistsDatabase.filter(i => i.favorite).length;
+                document.getElementById('artists-stats-display').innerText = `Favorites: ${favCount} | Total: ${artistsDatabase.length}`;
+            }
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full py-20 text-center text-textMuted"><i class="fa-solid fa-microphone-lines text-3xl mb-3 opacity-40"></i><p class="text-xs uppercase tracking-wider">No matching artists found</p></div>`;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(item => `
+                <div onclick="openArtistDetailView('${item.id}')" class="group bg-bgSurface border border-borderSubtle hover:border-textMain rounded-2xl overflow-hidden transition-all duration-300 shadow-editorial hover:shadow-editorial-hover cursor-pointer flex flex-col">
+                    <div class="aspect-[4/3] bg-bgCard relative overflow-hidden flex items-center justify-center">
+                        ${item.poster ? `<img src="${item.poster}" alt="${item.name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">` : `<div class="text-center p-4"><i class="fa-solid fa-microphone-lines text-2xl text-textMuted/40 mb-2"></i><span class="block editorial-title text-xl text-textMuted line-clamp-2 px-2">${item.name}</span></div>`}
+                        <div class="absolute top-3 left-3"><span class="bg-bgSurface/90 backdrop-blur-xs text-[10px] font-medium px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">${item.type || 'Artist'}</span></div>
+                        ${item.favorite ? `<div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-bgSurface/90 backdrop-blur-xs border border-borderSubtle flex items-center justify-center text-amber-600 shadow-xs"><i class="fa-solid fa-heart text-[10px]"></i></div>` : ''}
+                        ${item.rating ? `<div class="absolute bottom-3 right-3 bg-bgSurface/90 backdrop-blur-xs text-[10px] font-semibold px-2 py-0.5 rounded-md border border-borderSubtle text-textMain">★ ${item.rating}</div>` : ''}
+                    </div>
+                    <div class="p-4 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h3 class="editorial-title text-xl leading-tight mb-1 group-hover:text-accentGold transition-colors truncate">${item.name}</h3>
+                            <p class="text-[11px] text-textMuted truncate">${item.genre ? `Genre: ${item.genre}` : ''}</p>
+                        </div>
+                        <div class="flex items-center justify-between mt-3 pt-3 border-t border-borderSubtle text-[10px] text-textMuted">
+                            <span class="uppercase tracking-wider">Bias Notes Saved</span>
+                            <span>${item.debutYear ? `Debut: ${item.debutYear}` : ''}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openArtistsModal(item = null) {
+            const form = document.getElementById('artists-entry-form');
+            if (form) form.reset();
+            const idField = document.getElementById('artists-form-id');
+            if (idField) idField.value = '';
+            
+            if (item) {
+                const titleElem = document.getElementById('artists-form-modal-title');
+                if (titleElem) titleElem.innerText = 'Edit Artist Entry';
+                if (idField) idField.value = item.id;
+                document.getElementById('artists-form-name').value = item.name || '';
+                document.getElementById('artists-form-type').value = item.type || 'Group';
+                document.getElementById('artists-form-genre').value = item.genre || '';
+                document.getElementById('artists-form-debut').value = item.debutYear || '';
+                document.getElementById('artists-form-rating').value = item.rating || 0;
+                document.getElementById('artists-form-favorite').checked = !!item.favorite;
+                document.getElementById('artists-form-art-base64').value = item.poster || '';
+                document.getElementById('artists-form-notes').value = item.notes || '';
+            } else {
+                const titleElem = document.getElementById('artists-form-modal-title');
+                if (titleElem) titleElem.innerText = 'Add Artist Entry';
+            }
+            const modal = document.getElementById('artists-form-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+        }
+
+        function closeArtistsModal() {
+            const modal = document.getElementById('artists-form-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        function handleArtistPosterUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) { 
+                const posterInput = document.getElementById('artists-form-art-base64');
+                if (posterInput) posterInput.value = e.target.result; 
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function saveArtistsEntry(e) {
+            e.preventDefault();
+            const id = document.getElementById('artists-form-id').value;
+            const existing = id ? artistsDatabase.find(i => i.id === id) : null;
+            let entryData = {
+                id: id || 'art_' + Date.now(),
+                user_id: currentUser ? currentUser.id : null,
+                name: document.getElementById('artists-form-name').value,
+                type: document.getElementById('artists-form-type').value,
+                genre: document.getElementById('artists-form-genre').value,
+                debutYear: document.getElementById('artists-form-debut').value,
+                rating: parseFloat(document.getElementById('artists-form-rating').value) || 0,
+                favorite: document.getElementById('artists-form-favorite').checked,
+                poster: document.getElementById('artists-form-art-base64').value,
+                notes: document.getElementById('artists-form-notes').value,
+                created_at: existing ? existing.created_at : new Date().toISOString(),
+                _synced: existing ? !!existing._synced : false
+            };
+
+            const oldId = entryData.id;
+            // Saves to Supabase if logged in, or processes local item securely
+            entryData = await pushItemToCloud('artistslist', entryData);
+
+            const index = artistsDatabase.findIndex(i => i.id === oldId);
+            if (index !== -1) artistsDatabase[index] = entryData;
+            else artistsDatabase.unshift(entryData);
+
+            // Safe localStorage caching fallback
+            safeSetArtistsCache(artistsDatabase);
+            closeArtistsModal();
+            closeArtistDetail();
+            renderArtistslist();
+        }
+
+        function openArtistDetailView(id) {
+            const item = artistsDatabase.find(i => i.id === id);
+            if (!item) return;
+            const content = document.getElementById('artist-detail-content');
+            if (content) {
+                content.innerHTML = `
+                    <div class="flex flex-col sm:flex-row gap-6 mb-6">
+                        <div class="w-full sm:w-48 aspect-[4/3] bg-bgCard rounded-xl overflow-hidden shrink-0 flex items-center justify-center border border-borderSubtle">
+                            ${item.poster ? `<img src="${item.poster}" class="w-full h-full object-cover">` : `<i class="fa-solid fa-microphone-lines text-3xl text-textMuted/40"></i>`}
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <span class="text-[10px] uppercase tracking-wider font-medium px-2.5 py-1 rounded-md bg-bgCard border border-borderSubtle">${item.type || 'Artist'}</span>
+                                ${item.favorite ? '<span class="text-amber-600 text-xs"><i class="fa-solid fa-heart"></i></span>' : ''}
+                            </div>
+                            <h2 class="editorial-title text-4xl mb-1">${item.name}</h2>
+                            <p class="text-xs text-textMuted mb-4">${item.genre ? `Genre: ${item.genre}` : ''} ${item.debutYear ? `• Debut: ${item.debutYear}` : ''}</p>
+                            <div class="grid grid-cols-2 gap-4 py-3 border-y border-borderSubtle text-xs mb-4">
+                                <div><span class="text-textMuted block text-[10px] uppercase">Rating</span><span class="font-semibold text-sm">★ ${item.rating || 0} / 10</span></div>
+                                <div><span class="text-textMuted block text-[10px] uppercase">Act Type</span><span class="font-semibold text-sm">${item.genre || 'Musical Act'}</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    ${item.notes ? `<div class="bg-bgCard border border-borderSubtle rounded-xl p-4 mb-6"><h4 class="text-[10px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Bias / Notes</h4><p class="text-xs text-textMain leading-relaxed whitespace-pre-line">${item.notes}</p></div>` : ''}
+                    <div class="flex justify-between items-center pt-4 border-t border-borderSubtle">
+                        <span class="text-[11px] text-textMuted">Added: ${item.created_at ? item.created_at.split('T')[0] : 'N/A'}</span>
+                        <div class="flex items-center space-x-3">
+                            <button onclick="deleteArtistItem('${item.id}')" class="px-4 py-2 rounded-xl border border-rose-200 bg-rose-50 text-rose-600 text-xs font-medium">Delete</button>
+                            <button onclick="closeArtistDetail(); openArtistsModal(artistsDatabase.find(i=>i.id==='${item.id}'))" class="px-4 py-2 rounded-xl bg-textMain text-bgMain text-xs font-medium">Edit</button>
+                        </div>
+                    </div>
+                `;
+            }
+            const modal = document.getElementById('artist-detail-modal');
+            if (modal) modal.style.display = 'flex';
+        }
+
+        function closeArtistDetail() {
+            const modal = document.getElementById('artist-detail-modal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        async function deleteArtistItem(id) {
+            if (!confirm('Delete this artist entry?')) return;
+            if (currentUser) {
+                await supabaseClient.from('artistslist').delete().eq('id', id);
+            }
+            artistsDatabase = artistsDatabase.filter(i => i.id !== id);
+            safeSetArtistsCache(artistsDatabase);
+            closeArtistDetail();
+            renderArtistslist();
+        }
+
+        function safeSetArtistsCache(data) {
+            try {
+                localStorage.setItem('peaks_artistslist', JSON.stringify(data));
+            } catch (e) {
+                console.error('Cache save failed', e);
             }
         };
     </script>

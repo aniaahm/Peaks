@@ -920,7 +920,7 @@ a {
     <main class="max-w-7xl mx-auto w-full px-6 pb-20 flex-1">
         <div id="artists-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6"></div>
     </main>
-</div> 
+</div>
     
     <!-- PLAN APP -->
     <div id="plan-app" class="hidden min-h-screen flex flex-col fade-in">
@@ -1483,7 +1483,7 @@ a {
         </div>
     </div>
 <!-- ARTIST MODAL -->
-    <div id="artists-form-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+<div id="artists-form-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
     <div class="bg-bgSurface border border-borderSubtle rounded-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto shadow-modal p-6 sm:p-8 fade-in">
         <div class="flex justify-between items-center mb-6 pb-4 border-b border-borderSubtle">
             <h2 class="editorial-title text-3xl">Add Artist Entry</h2>
@@ -1491,18 +1491,24 @@ a {
                 <i class="fa-solid fa-xmark text-xs"></i>
             </button>
         </div>
+
+        <!-- Online Search & Auto-fill Box matching other sections -->
+        <div class="mb-6 p-4 bg-bgCard rounded-xl border border-borderSubtle">
+            <label class="block text-[11px] uppercase tracking-wider text-accentGold font-semibold mb-2"><i class="fa-solid fa-globe mr-1"></i> Instant Online Artist Search & Auto-Fill</label>
+            <div class="flex space-x-2">
+                <input type="text" id="artists-api-search-input" onkeydown="if(event.key==='Enter') { event.preventDefault(); searchOnlineArtists(); }" placeholder="Type artist name (e.g. NewJeans, IU)..." class="flex-1 bg-bgSurface border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2 text-xs outline-none">
+                <button type="button" onclick="searchOnlineArtists()" class="px-4 py-2 rounded-xl bg-textMain text-bgMain text-xs font-medium hover:opacity-90 cursor-pointer">Search</button>
+            </div>
+            <div id="artists-api-results" class="mt-2 space-y-1.5 max-h-48 overflow-y-auto"></div>
+        </div>
+
         <form id="artists-entry-form" onsubmit="saveArtistsEntry(event)" class="space-y-4">
             <input type="hidden" id="artists-form-id">
             <div>
-    <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Artist / Group Name *</label>
-    <div class="flex space-x-2">
-        <input type="text" id="artists-form-name" required placeholder="e.g. NewJeans, IU" class="flex-1 bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
-        <button type="button" onclick="lookupArtistOnline()" class="px-4 py-2.5 border border-borderSubtle hover:border-textMain rounded-xl text-xs font-medium bg-bgMain text-textMuted hover:text-textMain transition-colors flex items-center space-x-1.5">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <span>Auto-Fill</span>
-        </button>
-    </div>
-</div>
+                <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Artist / Group Name *</label>
+                <input type="text" id="artists-form-name" required placeholder="e.g. NewJeans, IU" class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
+            </div>
+            <div>
                 <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Category / Genre</label>
                 <input type="text" id="artists-form-genre" placeholder="e.g. K-Pop, Soloist, Band" class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
             </div>
@@ -3092,38 +3098,41 @@ async function loadUserCloudData() {
         }
 
         // ---> ADD THESE NEW FUNCTIONS RIGHT HERE <---
-        async function lookupArtistOnline() {
-            const nameInput = document.getElementById('artists-form-name');
-            const query = nameInput.value.trim();
-            
-            if (!query) {
-                alert("Please type an artist name first to search!");
-                return;
-            }
+        async function searchOnlineArtists() {
+    const query = document.getElementById('artists-api-search-input').value.trim();
+    const resultsContainer = document.getElementById('artists-api-results');
+    if (!query) return;
 
-            try {
-                const response = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=musicArtist&limit=1`);
-                const data = await response.json();
+    resultsContainer.innerHTML = '<div class="text-xs text-textMuted p-2">Searching online...</div>';
+    try {
+        const response = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=musicArtist&limit=5`);
+        const data = await response.json();
 
-                if (data.results && data.results.length > 0) {
-                    const artist = data.results[0];
-                    nameInput.value = artist.artistName;
-
-                    if (artist.primaryGenreName) {
-                        const genreInput = document.getElementById('artists-form-genre');
-                        if (genreInput) genreInput.value = artist.primaryGenreName;
-                    }
-
-                    fetchArtistArtwork(artist.artistName);
-                } else {
-                    alert("No artist found. Try a different spelling!");
-                }
-            } catch (error) {
-                console.error("Error fetching artist data:", error);
-                alert("Failed to fetch artist details. Check your internet connection.");
-            }
+        if (data.results && data.results.length > 0) {
+            resultsContainer.innerHTML = data.results.map(artist => `
+                <div onclick="selectOnlineArtist(${JSON.stringify({
+                    name: artist.artistName,
+                    genre: artist.primaryGenreName || 'Music'
+                }).replace(/"/g, '&quot;')})" 
+                class="search-result-row p-2 cursor-pointer hover:bg-bgSurface rounded-lg flex items-center justify-between border border-borderSubtle bg-bgMain">
+                    <span class="text-xs font-medium">${artist.artistName}</span>
+                    <span class="text-[10px] text-textMuted uppercase">${artist.primaryGenreName || 'Artist'}</span>
+                </div>
+            `).join('');
+        } else {
+            resultsContainer.innerHTML = '<div class="text-xs text-textMuted p-2">No artists found online.</div>';
         }
+    } catch (err) {
+        resultsContainer.innerHTML = '<div class="text-xs text-red-500 p-2">Error connecting to online database.</div>';
+    }
+}
 
+function selectOnlineArtist(artist) {
+    document.getElementById('artists-form-name').value = artist.name;
+    document.getElementById('artists-form-genre').value = artist.genre;
+    document.getElementById('artists-api-results').innerHTML = '';
+    document.getElementById('artists-api-search-input').value = '';
+}
         async function fetchArtistArtwork(artistName) {
             try {
                 const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(artistName)}&entity=album&limit=1`);

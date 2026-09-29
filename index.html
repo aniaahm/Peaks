@@ -1482,7 +1482,7 @@ a {
             </div>
         </div>
     </div>
-<!-- READLIST MODAL -->
+<!-- ARTIST MODAL -->
     <div id="artists-form-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
     <div class="bg-bgSurface border border-borderSubtle rounded-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto shadow-modal p-6 sm:p-8 fade-in">
         <div class="flex justify-between items-center mb-6 pb-4 border-b border-borderSubtle">
@@ -1492,6 +1492,7 @@ a {
             </button>
         </div>
         <form id="artists-entry-form" onsubmit="saveArtistsEntry(event)" class="space-y-4">
+            <input type="hidden" id="artists-form-id">
             <div>
                 <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Artist / Group Name *</label>
                 <input type="text" id="artists-form-name" required class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
@@ -1499,6 +1500,16 @@ a {
             <div>
                 <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Category / Genre</label>
                 <input type="text" id="artists-form-genre" placeholder="e.g. K-Pop, Soloist, Band" class="w-full bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
+            </div>
+            <div>
+                <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Artist Photo URL / Upload</label>
+                <div class="flex items-center space-x-3">
+                    <input type="text" id="artists-form-art" placeholder="Paste image URL or upload file" class="flex-1 bg-bgMain border border-borderSubtle focus:border-textMain rounded-xl px-3.5 py-2.5 text-xs outline-none">
+                    <label class="px-4 py-2.5 border border-borderSubtle hover:border-textMain rounded-xl text-xs cursor-pointer bg-bgMain transition-colors text-textMuted hover:text-textMain">
+                        Upload File
+                        <input type="file" id="artists-poster-file" accept="image/*" onchange="handleArtistsPhotoUpload(event)" class="hidden">
+                    </label>
+                </div>
             </div>
             <div>
                 <label class="block text-[11px] uppercase tracking-wider text-textMuted font-medium mb-1.5">Bias / Notes</label>
@@ -1510,7 +1521,6 @@ a {
             </div>
         </form>
     </div>
-</div>
 </div>
 <!-- Past plan viewer (read-only) -->
     <div id="past-plan-modal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4">

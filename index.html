@@ -412,6 +412,158 @@ a {
 </head>
 <body class="bg-bgMain text-textMain font-sans min-h-screen selection:bg-textMain selection:text-bgMain antialiased">
 
+<!-- TEMPORARY SERVICE ANNOUNCEMENT -->
+<div id="service-announcement">
+  <div class="announcement-content">
+    <div class="announcement-top">
+      <span class="announcement-label">A LITTLE UPDATE ♡</span>
+      <button id="close-announcement" aria-label="Dismiss announcement">
+        ×
+      </button>
+    </div>
+
+    <h3>A small apology & an important update.</h3>
+
+    <p>
+      First of all, I'm genuinely sorry for the inconvenience.
+      If you've recently tried logging in and encountered an error,
+      please know that it's not something you've done wrong.
+    </p>
+
+    <p>
+      My websites are currently experiencing a service interruption
+      because my database provider (Supabase) has restricted the
+      projects after exceeding its data transfer quota.
+    </p>
+
+    <p>
+      I've been trying to manage the usage and find a sustainable
+      solution, but unfortunately, the restrictions have affected
+      some of the websites' features, especially login and
+      account-related functions.
+    </p>
+
+    <p>
+      These projects are independently created and maintained by me,
+      and I'm currently working on figuring out a better long-term
+      solution. I don't want to rush into something that could cause
+      further problems.
+    </p>
+
+    <p>
+      I know some of you use these websites regularly, and I truly
+      appreciate your patience and support. I'm sorry that I can't
+      provide the experience you expected right now.
+    </p>
+
+    <p class="announcement-thanks">
+      Thank you for being here and for supporting my little projects.
+      I hope to get everything back to normal soon. ♡
+    </p>
+
+    <div class="announcement-footer">
+      <span>With love, Ania</span>
+      <span>Thank you for understanding ♡</span>
+    </div>
+  </div>
+</div>
+
+<style>
+#service-announcement {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20px;
+  margin: 0 auto 24px;
+  border: 1px solid #e9d8dc;
+  border-radius: 14px;
+  background: #fff9fa;
+  color: #57464b;
+  font-family: inherit;
+  line-height: 1.7;
+}
+
+.announcement-content {
+  max-width: 850px;
+  margin: auto;
+}
+
+.announcement-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.announcement-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #ad7888;
+}
+
+#close-announcement {
+  border: none;
+  background: transparent;
+  color: #997681;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.announcement-content h3 {
+  font-size: 21px;
+  font-weight: 500;
+  margin: 12px 0 16px;
+}
+
+.announcement-content p {
+  font-size: 13px;
+  margin: 0 0 12px;
+}
+
+.announcement-thanks {
+  color: #956778;
+}
+
+.announcement-footer {
+  border-top: 1px solid #eedfe3;
+  padding-top: 13px;
+  margin-top: 18px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 11px;
+  color: #a47d89;
+}
+
+@media (max-width: 600px) {
+  #service-announcement {
+    padding: 15px;
+  }
+  .announcement-content h3 {
+    font-size: 18px;
+  }
+}
+</style>
+
+<script>
+(function () {
+  const announcement = document.getElementById(
+    'service-announcement'
+  );
+  const closeButton = document.getElementById(
+    'close-announcement'
+  );
+
+  if (localStorage.getItem('serviceAnnouncementDismissed') === 'yes') {
+    announcement.style.display = 'none';
+  }
+
+  closeButton.addEventListener('click', function () {
+    announcement.style.display = 'none';
+    localStorage.setItem('serviceAnnouncementDismissed', 'yes');
+  });
+})();
+</script>
+
     <!-- PORTAL SCREEN -->
     <div id="portal-screen" class="min-h-screen flex flex-col justify-between p-6 sm:p-12 relative overflow-hidden">
         <div class="absolute -top-40 -left-40 w-96 h-96 bg-accentGold/5 rounded-full blur-3xl pointer-events-none"></div>
